@@ -21,6 +21,60 @@ body {
   margin-bottom: 60px;
 }
 
+.login-shell {
+  min-height: calc(100vh - 160px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 16px;
+  background: linear-gradient(135deg, #f5f8ff 0%, #f1fff8 100%);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 32px;
+  box-shadow: 0 20px 45px rgba(20, 30, 80, 0.12);
+  border: 1px solid rgba(20, 30, 80, 0.08);
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.login-kicker {
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  font-size: 0.7rem;
+  color: #7a8099;
+}
+
+.login-title {
+  margin: 8px 0 6px;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #1c1f2e;
+}
+
+.login-subtitle {
+  margin: 0;
+  color: #5b627a;
+}
+
+.login-form .form-control {
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+
+.login-footer {
+  text-align: center;
+  margin-top: 20px;
+  color: #5b627a;
+}
+
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
   color: var(--bs-secondary-color);
   text-align: end;
