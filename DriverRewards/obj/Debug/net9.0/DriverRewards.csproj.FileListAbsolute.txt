@@ -118,7 +118,6 @@ C:\Users\Wwc20\OneDrive\Documents\GitHub\S26-CPSC4910-Team08\DriverRewards\obj\D
 C:\Users\Wwc20\OneDrive\Documents\GitHub\S26-CPSC4910-Team08\DriverRewards\obj\Debug\net9.0\scopedcss\Pages\Shared\_Layout.cshtml.rz.scp.css
 C:\Users\Wwc20\OneDrive\Documents\GitHub\S26-CPSC4910-Team08\DriverRewards\obj\Debug\net9.0\scopedcss\bundle\DriverRewards.styles.css
 C:\Users\Wwc20\OneDrive\Documents\GitHub\S26-CPSC4910-Team08\DriverRewards\obj\Debug\net9.0\scopedcss\projectbundle\DriverRewards.bundle.scp.css
-C:\Users\Wwc20\OneDrive\Documents\GitHub\S26-CPSC4910-Team08\DriverRewards\obj\Debug\net9.0\compressed\4gjv41vooy-fdtgrsbd8h.gz
 C:\Users\Wwc20\OneDrive\Documents\GitHub\S26-CPSC4910-Team08\DriverRewards\obj\Debug\net9.0\compressed\0m9rbn9u0b-61n19gt1b8.gz
 C:\Users\Wwc20\OneDrive\Documents\GitHub\S26-CPSC4910-Team08\DriverRewards\obj\Debug\net9.0\compressed\jgmbtuhn6x-xtxxf3hu2r.gz
 C:\Users\Wwc20\OneDrive\Documents\GitHub\S26-CPSC4910-Team08\DriverRewards\obj\Debug\net9.0\compressed\9e1pio8bkf-bqjiyaj88i.gz
@@ -180,8 +179,6 @@ C:\Users\Wwc20\OneDrive\Documents\GitHub\S26-CPSC4910-Team08\DriverRewards\obj\D
 C:\Users\Wwc20\OneDrive\Documents\GitHub\S26-CPSC4910-Team08\DriverRewards\obj\Debug\net9.0\compressed\fiokx88m6j-muycvpuwrr.gz
 C:\Users\Wwc20\OneDrive\Documents\GitHub\S26-CPSC4910-Team08\DriverRewards\obj\Debug\net9.0\compressed\bc733kzgiz-87fc7y1x7t.gz
 C:\Users\Wwc20\OneDrive\Documents\GitHub\S26-CPSC4910-Team08\DriverRewards\obj\Debug\net9.0\compressed\54fg21uau5-mlv21k5csn.gz
-C:\Users\Wwc20\OneDrive\Documents\GitHub\S26-CPSC4910-Team08\DriverRewards\obj\Debug\net9.0\compressed\kbfwmze3y5-683ugvj8go.gz
-C:\Users\Wwc20\OneDrive\Documents\GitHub\S26-CPSC4910-Team08\DriverRewards\obj\Debug\net9.0\compressed\86yls0y489-683ugvj8go.gz
 C:\Users\Wwc20\OneDrive\Documents\GitHub\S26-CPSC4910-Team08\DriverRewards\obj\Debug\net9.0\staticwebassets.build.json
 C:\Users\Wwc20\OneDrive\Documents\GitHub\S26-CPSC4910-Team08\DriverRewards\obj\Debug\net9.0\staticwebassets.build.json.cache
 C:\Users\Wwc20\OneDrive\Documents\GitHub\S26-CPSC4910-Team08\DriverRewards\obj\Debug\net9.0\staticwebassets.development.json
@@ -191,3 +188,6 @@ C:\Users\Wwc20\OneDrive\Documents\GitHub\S26-CPSC4910-Team08\DriverRewards\obj\D
 C:\Users\Wwc20\OneDrive\Documents\GitHub\S26-CPSC4910-Team08\DriverRewards\obj\Debug\net9.0\DriverRewards.pdb
 C:\Users\Wwc20\OneDrive\Documents\GitHub\S26-CPSC4910-Team08\DriverRewards\obj\Debug\net9.0\DriverRewards.genruntimeconfig.cache
 C:\Users\Wwc20\OneDrive\Documents\GitHub\S26-CPSC4910-Team08\DriverRewards\obj\Debug\net9.0\ref\DriverRewards.dll
+C:\Users\Wwc20\OneDrive\Documents\GitHub\S26-CPSC4910-Team08\DriverRewards\obj\Debug\net9.0\compressed\kbfwmze3y5-9w56prfz4r.gz
+C:\Users\Wwc20\OneDrive\Documents\GitHub\S26-CPSC4910-Team08\DriverRewards\obj\Debug\net9.0\compressed\86yls0y489-9w56prfz4r.gz
+C:\Users\Wwc20\OneDrive\Documents\GitHub\S26-CPSC4910-Team08\DriverRewards\obj\Debug\net9.0\compressed\4gjv41vooy-scpjflh87p.gz

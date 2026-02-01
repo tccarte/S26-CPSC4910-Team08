@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DriverRewards")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c4e2010255a86537b7249e3c7e4f00b364ea3747")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2f58a33f16f4162139b876fc1ce535e42d46d1f5")]
 [assembly: System.Reflection.AssemblyProductAttribute("DriverRewards")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DriverRewards")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

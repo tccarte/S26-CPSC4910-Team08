@@ -46,3 +46,153 @@ button.accept-policy {
   white-space: nowrap;
   line-height: 60px;
 }
+
+:root {
+  --dr-navy: #131921;
+  --dr-navy-deep: #0c1118;
+  --dr-gold: #f4b04a;
+  --dr-ice: #e9f4ff;
+  --dr-blue: #1b6ec2;
+  --dr-gray: #f2f4f7;
+  --dr-text: #1f2a37;
+  --dr-blue-dark: #1558a6;
+}
+
+.dr-nav {
+  background: var(--dr-blue);
+  color: #ffffff;
+  padding: 12px 16px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+}
+
+.dr-nav-inner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: "Poppins", "Segoe UI", sans-serif;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+
+.dr-logo {
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #ffffff;
+  letter-spacing: 0.02em;
+}
+
+.dr-link {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.dr-link-plain {
+  font-weight: 600;
+  padding: 8px 12px;
+}
+
+.dr-link:hover {
+  color: #ffffff;
+}
+
+.dr-nav-item {
+  border: 2px solid var(--dr-blue);
+  border-radius: 8px;
+  padding: 8px 12px;
+  box-sizing: border-box;
+}
+
+.dr-logo.dr-nav-item {
+  padding: 8px 14px;
+}
+
+.dr-search {
+  flex: 1 1 520px;
+  display: flex;
+  align-items: stretch;
+  min-width: 220px;
+  max-width: 560px;
+  margin: 0 12px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+  border: 2px solid var(--dr-blue);
+  height: 44px;
+  box-sizing: border-box;
+}
+
+.dr-search-wide {
+  flex: 1 1 520px;
+}
+
+.dr-search-input {
+  flex: 1;
+  border: none;
+  padding: 0 12px;
+  font-size: 0.95rem;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.dr-search-input:focus {
+  outline: none;
+}
+
+.dr-search-btn {
+  background: var(--dr-blue-dark);
+  color: #fff;
+  padding: 0 18px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  border: 0;
+  box-shadow: inset 0 0 0 2px var(--dr-blue-dark);
+  height: 100%;
+  margin: 0;
+  border-radius: 0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+}
+
+.dr-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex: 0 0 auto;
+}
+
+.dr-link-dark {
+  color: #000000;
+  font-weight: 800;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+  text-decoration-color: #000000;
+}
+
+.dr-link-dark:hover {
+  color: #000000;
+}
+
+@media (max-width: 991px) {
+  .dr-nav-inner {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .dr-search {
+    order: 3;
+    width: 100%;
+    max-width: none;
+  }
+
+  .dr-actions {
+    width: 100%;
+    justify-content: center;
+  }
+}

@@ -21,6 +21,10 @@ body {
   margin-bottom: 60px;
 }
 
+header {
+  background: #1b6ec2;
+}
+
 .login-shell {
   min-height: calc(100vh - 160px);
   display: flex;
@@ -73,6 +77,91 @@ body {
   text-align: center;
   margin-top: 20px;
   color: #5b627a;
+}
+
+/* Ensure top bar styling applies even without CSS isolation rebuilds */
+.dr-nav {
+  background: #1b6ec2;
+  color: #ffffff;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+}
+
+.dr-link,
+.dr-logo {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.dr-link:hover {
+  color: #ffffff;
+}
+
+.dr-nav .dr-link-dark {
+  color: #000000;
+  font-weight: 800;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+  text-decoration-color: #000000;
+}
+
+.dr-nav .dr-link-dark:hover {
+  color: #000000;
+}
+
+.dr-nav-item {
+  border: 2px solid #1b6ec2;
+}
+
+.dr-search {
+  border: 2px solid #1b6ec2;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: stretch !important;
+  gap: 0 !important;
+  height: 52px !important;
+}
+
+.dr-search-btn {
+  background: #0f4a95 !important;
+  border: 2px solid #0f4a95 !important;
+  color: #ffffff !important;
+  font-weight: 700;
+  display: inline-flex !important;
+  align-items: center !important;
+  height: 100% !important;
+  margin: 0 !important;
+}
+
+.dr-search-input {
+  flex: 1 1 auto !important;
+  height: 100% !important;
+}
+
+/* Force nav to stay on one line and keep search to the right */
+.dr-nav-inner {
+  flex-wrap: nowrap !important;
+}
+
+.dr-search {
+  max-width: 420px !important;
+  flex: 0 1 420px !important;
+}
+
+.dr-actions {
+  flex: 0 0 auto !important;
+}
+
+.dr-search-input {
+  font-weight: 600;
+}
+
+.dr-search-btn {
+  background: #0f4a95 !important;
+  border: 2px solid #0f4a95 !important;
+  color: #ffffff !important;
+  font-weight: 700;
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {

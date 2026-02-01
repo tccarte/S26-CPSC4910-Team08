@@ -18,6 +18,11 @@ public class LoginModel : PageModel
     public string Password { get; set; } = string.Empty;
 
     [BindProperty]
+    [Required]
+    [Display(Name = "Account type")]
+    public string Role { get; set; } = string.Empty;
+
+    [BindProperty]
     [Display(Name = "Remember me")]
     public bool RememberMe { get; set; }
 

@@ -11,25 +11,21 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">DriverRewards</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Login">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                        </li>
-                    </ul>
+        <nav class="dr-nav">
+            <div class="dr-nav-inner">
+                <a class="dr-logo dr-nav-item" asp-area="" asp-page="/Index">Driver Rewards</a>
+
+                <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Index">Home Page</a>
+
+                <form class="dr-search dr-search-wide dr-nav-item" method="get" asp-page="/Index">
+                    <input class="dr-search-input" type="search" name="q" placeholder="Search DriverRewards" aria-label="Search" />
+                    <button class="dr-search-btn" type="submit">Search</button>
+                </form>
+
+                <div class="dr-actions">
+                    <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Login">Account &amp; Login</a>
+                    <a class="dr-link dr-link-plain dr-nav-item dr-link-dark" href="#">Returns &amp; Orders</a>
+                    <a class="dr-link dr-link-plain dr-nav-item dr-link-dark" href="#">Cart</a>
                 </div>
             </div>
         </nav>
