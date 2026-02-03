@@ -30,6 +30,10 @@ public class LoginModel : PageModel
 
     public void OnGet()
     {
+        if (TempData["StatusMessage"] != null)
+        {
+            StatusMessage = TempData["StatusMessage"]?.ToString();
+        }
     }
 
     public void OnPost()

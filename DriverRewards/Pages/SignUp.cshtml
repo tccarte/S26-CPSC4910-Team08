@@ -1,0 +1,84 @@
+@page
+@model DriverRewards.Pages.SignUpModel
+@{
+    ViewData["Title"] = "Sign Up";
+}
+
+<div class="login-shell">
+    <div class="login-card">
+        <div class="login-header">
+            <div class="login-kicker">DriverRewards</div>
+            <h1 class="login-title">Create your account</h1>
+            <p class="login-subtitle">Join DriverRewards and start earning today.</p>
+        </div>
+
+        <form method="post" class="login-form">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label" asp-for="FirstName"></label>
+                    <input class="form-control" asp-for="FirstName" autocomplete="given-name" />
+                    <span class="text-danger small" asp-validation-for="FirstName"></span>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="form-label" asp-for="LastName"></label>
+                    <input class="form-control" asp-for="LastName" autocomplete="family-name" />
+                    <span class="text-danger small" asp-validation-for="LastName"></span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" asp-for="Username"></label>
+                <input class="form-control" asp-for="Username" autocomplete="username" />
+                <span class="text-danger small" asp-validation-for="Username"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" asp-for="Email"></label>
+                <input class="form-control" asp-for="Email" autocomplete="email" />
+                <span class="text-danger small" asp-validation-for="Email"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" asp-for="Password"></label>
+                <input class="form-control" asp-for="Password" autocomplete="new-password" />
+                <span class="text-danger small" asp-validation-for="Password"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" asp-for="ConfirmPassword"></label>
+                <input class="form-control" asp-for="ConfirmPassword" autocomplete="new-password" />
+                <span class="text-danger small" asp-validation-for="ConfirmPassword"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" asp-for="Sponsor"></label>
+                <input class="form-control" asp-for="Sponsor" />
+                <span class="text-danger small" asp-validation-for="Sponsor"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" asp-for="Phone"></label>
+                <input class="form-control" asp-for="Phone" autocomplete="tel" />
+                <span class="text-danger small" asp-validation-for="Phone"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Create Account</button>
+        </form>
+
+        @if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+        {
+            <div class="alert alert-info mt-3" role="alert">
+                @Model.StatusMessage
+            </div>
+        }
+
+        <div class="login-footer">
+            Already have an account? <a class="link-primary" asp-page="/Login">Log in</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
