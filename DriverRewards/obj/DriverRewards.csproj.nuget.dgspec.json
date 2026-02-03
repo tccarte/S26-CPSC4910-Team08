@@ -1,34 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Wwc20\\OneDrive\\Documents\\GitHub\\S26-CPSC4910-Team08\\DriverRewards\\DriverRewards.csproj": {}
+    "C:\\Users\\Carter's pc\\Desktop\\Senior Practicum Project\\S26-CPSC4910-Team08\\DriverRewards\\DriverRewards.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Wwc20\\OneDrive\\Documents\\GitHub\\S26-CPSC4910-Team08\\DriverRewards\\DriverRewards.csproj": {
+    "C:\\Users\\Carter's pc\\Desktop\\Senior Practicum Project\\S26-CPSC4910-Team08\\DriverRewards\\DriverRewards.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Wwc20\\OneDrive\\Documents\\GitHub\\S26-CPSC4910-Team08\\DriverRewards\\DriverRewards.csproj",
+        "projectUniqueName": "C:\\Users\\Carter's pc\\Desktop\\Senior Practicum Project\\S26-CPSC4910-Team08\\DriverRewards\\DriverRewards.csproj",
         "projectName": "DriverRewards",
-        "projectPath": "C:\\Users\\Wwc20\\OneDrive\\Documents\\GitHub\\S26-CPSC4910-Team08\\DriverRewards\\DriverRewards.csproj",
-        "packagesPath": "C:\\Users\\Wwc20\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Wwc20\\OneDrive\\Documents\\GitHub\\S26-CPSC4910-Team08\\DriverRewards\\obj\\",
+        "projectPath": "C:\\Users\\Carter's pc\\Desktop\\Senior Practicum Project\\S26-CPSC4910-Team08\\DriverRewards\\DriverRewards.csproj",
+        "packagesPath": "C:\\Users\\Carter's pc\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Carter's pc\\Desktop\\Senior Practicum Project\\S26-CPSC4910-Team08\\DriverRewards\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Wwc20\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\Carter's pc\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -47,11 +38,27 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.300"
+        "SdkAnalysisLevel": "10.0.100"
       },
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
+          "dependencies": {
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.0.3, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.*, )"
+            },
+            "Pomelo.EntityFrameworkCore.MySql": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -71,7 +78,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.309/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.102/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
