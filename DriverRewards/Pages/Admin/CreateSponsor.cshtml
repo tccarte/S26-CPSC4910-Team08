@@ -1,0 +1,55 @@
+@page
+@model DriverRewards.Pages.Admin.CreateSponsorModel
+@{
+    ViewData["Title"] = "Create Sponsor";
+}
+
+<div class="container mt-4">
+    <h2>Create New Sponsor Organization</h2>
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                
+                <div class="mb-3">
+                    <label asp-for="Input.Name" class="form-label"></label>
+                    <input asp-for="Input.Name" class="form-control" />
+                    <span asp-validation-for="Input.Name" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Input.Email" class="form-label"></label>
+                    <input asp-for="Input.Email" class="form-control" />
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Input.Password" class="form-label"></label>
+                    <input asp-for="Input.Password" class="form-control" />
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+                
+                <div class="mb-3">
+                    <label asp-for="Input.Phone" class="form-label"></label>
+                    <input asp-for="Input.Phone" class="form-control" />
+                    <span asp-validation-for="Input.Phone" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Input.DollarToPointRatio" class="form-label"></label>
+                    <input asp-for="Input.DollarToPointRatio" class="form-control" type="number" step="0.01" />
+                    <span asp-validation-for="Input.DollarToPointRatio" class="text-danger"></span>
+                    <div class="form-text">Default conversion rate for this sponsor (e.g., 0.01).</div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Create Sponsor</button>
+                <a asp-page="./ManageSponsors" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
