@@ -45,8 +45,15 @@ public class Driver
     [Column("phone")]
     public string? Phone { get; set; }
 
+    [StringLength(50)]
+    [Column("fedex_id")]
+    public string? FedexId { get; set; }
+
     [Column("created_at")]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    [Column("last_login_at")]
+    public DateTime? LastLoginAt { get; set; }
 
     [Column("num_points")]
     public int? NumPoints { get; set; }

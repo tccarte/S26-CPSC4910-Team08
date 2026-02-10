@@ -1,0 +1,78 @@
+@page
+@model DriverRewards.Pages.ProfileModel
+@{
+    ViewData["Title"] = "Edit Profile";
+}
+
+<div class="row g-4">
+    <div class="col-12">
+        <h1 class="h3 mb-1">Edit Profile</h1>
+        <p class="text-muted mb-0">Update your driver details and request sponsor changes.</p>
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+    {
+        <div class="col-12">
+            <div class="alert alert-info" role="alert">
+                @Model.StatusMessage
+            </div>
+        </div>
+    }
+
+    <div class="col-lg-7">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h2 class="h5">Profile Details</h2>
+                <form method="post" asp-page-handler="Profile">
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="Profile.Email"></label>
+                        <input class="form-control" asp-for="Profile.Email" />
+                        <span class="text-danger small" asp-validation-for="Profile.Email"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="Profile.Username"></label>
+                        <input class="form-control" asp-for="Profile.Username" />
+                        <span class="text-danger small" asp-validation-for="Profile.Username"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="Profile.FedexId"></label>
+                        <input class="form-control" asp-for="Profile.FedexId" />
+                        <span class="text-danger small" asp-validation-for="Profile.FedexId"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h2 class="h5">Sponsor Change Request</h2>
+                <p class="text-muted small">Current sponsor: <strong>@Model.CurrentSponsor</strong></p>
+                <form method="post" asp-page-handler="Sponsor">
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="SponsorRequest.RequestedSponsor"></label>
+                        <input class="form-control" asp-for="SponsorRequest.RequestedSponsor" />
+                        <span class="text-danger small" asp-validation-for="SponsorRequest.RequestedSponsor"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="SponsorRequest.Note"></label>
+                        <textarea class="form-control" rows="3" asp-for="SponsorRequest.Note"></textarea>
+                        <span class="text-danger small" asp-validation-for="SponsorRequest.Note"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-outline-primary">Submit Request</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
