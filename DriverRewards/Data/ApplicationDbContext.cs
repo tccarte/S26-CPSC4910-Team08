@@ -12,6 +12,7 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<Driver> Drivers { get; set; }
     public DbSet<Sponsor> Sponsors { get; set; }
+    public DbSet<SponsorChangeRequest> SponsorChangeRequests { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

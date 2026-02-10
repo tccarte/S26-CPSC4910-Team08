@@ -1,0 +1,59 @@
+@page
+@model DriverRewards.Pages.Driver.DashboardModel
+@{
+    ViewData["Title"] = "Driver Dashboard";
+}
+
+<div class="row g-4">
+    <div class="col-12">
+        <h1 class="h3 mb-1">Driver Dashboard</h1>
+        <p class="text-muted mb-0">Welcome back, @Model.DisplayName.</p>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <div class="text-uppercase text-muted small">Rewards Points</div>
+                <div class="display-6 fw-semibold">@Model.Points</div>
+                <div class="text-muted small">Keep driving to earn more.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h2 class="h5">Profile</h2>
+                <div class="row">
+                    <div class="col-sm-6 mb-3">
+                        <div class="text-muted small">Username</div>
+                        <div class="fw-semibold">@Model.Username</div>
+                    </div>
+                    <div class="col-sm-6 mb-3">
+                        <div class="text-muted small">Email</div>
+                        <div>@Model.Email</div>
+                    </div>
+                    <div class="col-sm-6 mb-3">
+                        <div class="text-muted small">Sponsor</div>
+                        <div>@Model.Sponsor</div>
+                    </div>
+                    <div class="col-sm-6 mb-3">
+                        <div class="text-muted small">Phone</div>
+                        <div>@(string.IsNullOrWhiteSpace(Model.Phone) ? "Not provided" : Model.Phone)</div>
+                    </div>
+                    <div class="col-sm-6 mb-3">
+                        <div class="text-muted small">Joined</div>
+                        <div>@Model.JoinedOn</div>
+                    </div>
+                    <div class="col-sm-6 mb-3">
+                        <div class="text-muted small">Last Login</div>
+                        <div>@Model.LastLoginAt</div>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <a class="btn btn-outline-primary" asp-page="/Profile">Edit Profile</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

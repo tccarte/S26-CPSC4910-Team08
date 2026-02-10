@@ -1,0 +1,215 @@
+@page
+@model DriverRewards.Pages.Admin.DashboardModel
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="row g-4">
+    <div class="col-12">
+        <h1 class="h3 mb-1">Admin Dashboard</h1>
+        <p class="text-muted mb-0">Review sponsor change requests and user lists.</p>
+    </div>
+
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h2 class="h5">Pending Sponsor Change Requests</h2>
+                @if (Model.PendingRequests.Count == 0)
+                {
+                    <p class="text-muted mb-0">No pending requests.</p>
+                }
+                else
+                {
+                    <div class="table-responsive">
+                        <table class="table table-sm align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Driver</th>
+                                    <th>Email</th>
+                                    <th>Current Sponsor</th>
+                                    <th>Requested Sponsor</th>
+                                    <th>Submitted</th>
+                                    <th>Note</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var request in Model.PendingRequests)
+                                {
+                                    <tr>
+                                        <td>@request.DriverName</td>
+                                        <td>@request.DriverEmail</td>
+                                        <td>@request.CurrentSponsor</td>
+                                        <td>@request.RequestedSponsor</td>
+                                        <td>@request.CreatedAt</td>
+                                        <td>@request.Note</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h2 class="h5">Pending Sponsor Approvals</h2>
+                @if (Model.PendingSponsors.Count == 0)
+                {
+                    <p class="text-muted mb-0">No pending sponsor accounts.</p>
+                }
+                else
+                {
+                    <div class="table-responsive">
+                        <table class="table table-sm align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Submitted</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var sponsor in Model.PendingSponsors)
+                                {
+                                    <tr>
+                                        <td>@sponsor.Name</td>
+                                        <td>@sponsor.Email</td>
+                                        <td>@sponsor.Phone</td>
+                                        <td>@sponsor.CreatedAt</td>
+                                        <td class="text-end">
+                                            <div class="d-inline-flex gap-2">
+                                                <form method="post" asp-page-handler="ApproveSponsor">
+                                                    <input type="hidden" name="sponsorId" value="@sponsor.SponsorId" />
+                                                    <button type="submit" class="btn btn-sm btn-success">Approve</button>
+                                                </form>
+                                                <form method="post" asp-page-handler="RejectSponsor">
+                                                    <input type="hidden" name="sponsorId" value="@sponsor.SponsorId" />
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger">Reject</button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h2 class="h5">Registered Drivers (@Model.Drivers.Count)</h2>
+                <div class="table-responsive">
+                    <table class="table table-sm align-middle">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Sponsor</th>
+                                <th>FedEx ID</th>
+                                <th>Created</th>
+                                <th>Last Login</th>
+                                <th>Points</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var driver in Model.Drivers)
+                            {
+                                <tr>
+                                    <td>@driver.Username</td>
+                                    <td>@driver.Email</td>
+                                    <td>@driver.Sponsor</td>
+                                    <td>@driver.FedexId</td>
+                                    <td>@driver.CreatedAt</td>
+                                    <td>@driver.LastLoginAt</td>
+                                    <td>@driver.Points</td>
+                                    <td class="text-end">
+                                        <div class="dropdown">
+                                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                &#x22EE;
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end">
+                                                <li>
+                                                    <a class="dropdown-item" asp-page="/Admin/EditDriver" asp-route-id="@driver.DriverId">Edit account</a>
+                                                </li>
+                                                <li>
+                                                    <form method="post" asp-page-handler="RemoveDriver">
+                                                        <input type="hidden" name="driverId" value="@driver.DriverId" />
+                                                        <button type="submit" class="dropdown-item text-danger">Remove account</button>
+                                                    </form>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h2 class="h5">Registered Sponsors (@Model.Sponsors.Count)</h2>
+                <div class="table-responsive">
+                    <table class="table table-sm align-middle">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Dollar/Point</th>
+                                <th>Created</th>
+                                <th>Last Login</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var sponsor in Model.Sponsors)
+                            {
+                                <tr>
+                                    <td>@sponsor.Name</td>
+                                    <td>@sponsor.Email</td>
+                                    <td>@sponsor.Phone</td>
+                                    <td>@sponsor.DollarToPointRatio</td>
+                                    <td>@sponsor.CreatedAt</td>
+                                    <td>@sponsor.LastLoginAt</td>
+                                    <td class="text-end">
+                                        <div class="dropdown">
+                                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                &#x22EE;
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end">
+                                                <li>
+                                                    <a class="dropdown-item" asp-page="/Admin/EditSponsor" asp-route-id="@sponsor.SponsorId">Edit account</a>
+                                                </li>
+                                                <li>
+                                                    <form method="post" asp-page-handler="RemoveSponsor">
+                                                        <input type="hidden" name="sponsorId" value="@sponsor.SponsorId" />
+                                                        <button type="submit" class="dropdown-item text-danger">Remove account</button>
+                                                    </form>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

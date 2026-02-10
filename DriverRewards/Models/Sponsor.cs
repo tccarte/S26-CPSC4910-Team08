@@ -42,6 +42,12 @@ public class Sponsor
     [Column("dollar_to_point_ratio", TypeName = "decimal(10,2)")]
     public decimal DollarToPointRatio { get; set; }
 
+    [Column("is_approved")]
+    public bool IsApproved { get; set; } = false;
+
     [Column("created_at")]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    [Column("last_login_at")]
+    public DateTime? LastLoginAt { get; set; }
 }

@@ -16,7 +16,15 @@
                 <a class="dr-logo dr-nav-item" asp-area="" asp-page="/Index">Driver Rewards</a>
 
                 <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Index">Home Page</a>
-                <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Admin/ManageSponsors">Manage Sponsors</a>
+                @if (User.IsInRole("Driver"))
+                {
+                    <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Driver/Dashboard">Dashboard</a>
+                }
+                @if (User.IsInRole("Admin"))
+                {
+                    <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Admin/Dashboard">Admin</a>
+                    <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Admin/ManageSponsors">Manage Sponsors</a>
+                }
 
                 <form class="dr-search dr-search-wide dr-nav-item" method="get" asp-page="/Index">
                     <input class="dr-search-input" type="search" name="q" placeholder="Search DriverRewards" aria-label="Search" />
@@ -24,7 +32,16 @@
                 </form>
 
                 <div class="dr-actions">
-                    <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Login">Account &amp; Login</a>
+                    @if (User.Identity?.IsAuthenticated ?? false)
+                    {
+                        <form class="d-inline" method="post" asp-page="/Logout">
+                            <button type="submit" class="dr-link dr-link-plain dr-nav-item">Logout</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Login">Account &amp; Login</a>
+                    }
                     <a class="dr-link dr-link-plain dr-nav-item dr-link-dark" href="#">Returns &amp; Orders</a>
                     <a class="dr-link dr-link-plain dr-nav-item dr-link-dark" href="#">Cart</a>
                 </div>
