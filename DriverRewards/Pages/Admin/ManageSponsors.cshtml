@@ -1,0 +1,35 @@
+@page
+@model DriverRewards.Pages.Admin.ManageSponsorsModel
+@{
+    ViewData["Title"] = "Manage Sponsors";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Manage Sponsors</h2>
+    </div>
+
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Points Ratio</th>
+                <th>Joined</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Sponsors)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Email</td>
+                    <td>@item.Phone</td>
+                    <td>@item.DollarToPointRatio</td>
+                    <td>@item.CreatedAt.ToShortDateString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
