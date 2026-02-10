@@ -27,7 +27,7 @@
                 <td>@item.Email</td>
                 <td>@item.Phone</td>
                 <td>
-                    <form method="post" asp-page-handler="Delete" asp-route-id="@item.SponsorId">
+                    <form method="post" asp-page-handler="Delete" asp-route-id="@item.SponsorId" onsubmit="return confirm('Are you sure you want to delete this sponsor?');">
                         <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                     </form>
                 </td>
