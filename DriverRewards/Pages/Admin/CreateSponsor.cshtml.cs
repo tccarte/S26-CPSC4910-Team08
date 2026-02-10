@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using DriverRewards.Data;
-using DriverRewards.Models;
+using SponsorEntity = DriverRewards.Models.Sponsor;
 
 namespace DriverRewards.Pages.Admin
 {
@@ -20,7 +20,7 @@ namespace DriverRewards.Pages.Admin
         }
 
         [BindProperty]
-        public Sponsor Sponsor { get; set; } = default!;
+        public SponsorEntity Sponsor { get; set; } = default!;
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -32,7 +32,7 @@ namespace DriverRewards.Pages.Admin
             _context.Sponsors.Add(Sponsor);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./ManageSponsors");
+            return RedirectToPage("/Admin/Dashboard");
         }
     }
 }
