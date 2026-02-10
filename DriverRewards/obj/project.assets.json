@@ -2839,24 +2839,35 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Carter's pc\\.nuget\\packages\\": {}
+    "C:\\Users\\Wwc20\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
+    "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Users\\Carter's pc\\Desktop\\Senior Practicum Project\\S26-CPSC4910-Team08\\DriverRewards\\DriverRewards.csproj",
+      "projectUniqueName": "C:\\Users\\Wwc20\\OneDrive\\Documents\\GitHub\\S26-CPSC4910-Team08\\DriverRewards\\DriverRewards.csproj",
       "projectName": "DriverRewards",
-      "projectPath": "c:\\Users\\Carter's pc\\Desktop\\Senior Practicum Project\\S26-CPSC4910-Team08\\DriverRewards\\DriverRewards.csproj",
-      "packagesPath": "C:\\Users\\Carter's pc\\.nuget\\packages\\",
-      "outputPath": "c:\\Users\\Carter's pc\\Desktop\\Senior Practicum Project\\S26-CPSC4910-Team08\\DriverRewards\\obj\\",
+      "projectPath": "C:\\Users\\Wwc20\\OneDrive\\Documents\\GitHub\\S26-CPSC4910-Team08\\DriverRewards\\DriverRewards.csproj",
+      "packagesPath": "C:\\Users\\Wwc20\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Wwc20\\OneDrive\\Documents\\GitHub\\S26-CPSC4910-Team08\\DriverRewards\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+        "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+      ],
       "configFilePaths": [
-        "C:\\Users\\Carter's pc\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Wwc20\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -2875,7 +2886,7 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "10.0.100"
+      "SdkAnalysisLevel": "9.0.300"
     },
     "frameworks": {
       "net9.0": {
@@ -2915,7 +2926,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.102/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.309/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

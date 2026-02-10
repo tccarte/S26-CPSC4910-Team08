@@ -1,8 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using DriverRewards.Data;
-using DriverRewards.Models;
+using DriverEntity = DriverRewards.Models.Driver;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace DriverRewards.Pages;
 
@@ -70,6 +71,10 @@ public class SignUpModel : PageModel
 
     public void OnGet()
     {
+        if (TempData["StatusMessage"] != null)
+        {
+            StatusMessage = TempData["StatusMessage"]?.ToString();
+        }
     }
 
     public async Task<IActionResult> OnPostAsync()
@@ -79,33 +84,33 @@ public class SignUpModel : PageModel
             return Page();
         }
 
-        // Check if username already exists
-        if (_context.Drivers.Any(d => d.Username == Username))
+        var usernameExists = await _context.Drivers.AsNoTracking()
+            .AnyAsync(d => d.Username == Username);
+        if (usernameExists)
         {
             ModelState.AddModelError("Username", "Username is already taken");
             return Page();
         }
 
-        // Check if email already exists
-        if (_context.Drivers.Any(d => d.Email == Email))
+        var emailExists = await _context.Drivers.AsNoTracking()
+            .AnyAsync(d => d.Email == Email);
+        if (emailExists)
         {
             ModelState.AddModelError("Email", "Email is already registered");
             return Page();
         }
 
-        // Hash the password (using BCrypt)
-        string passwordHash = BCrypt.Net.BCrypt.HashPassword(Password);
+        var passwordHash = BCrypt.Net.BCrypt.HashPassword(Password);
 
-        // Create new driver
-        var driver = new Driver
+        var driver = new DriverEntity
         {
-            Username = Username,
-            FirstName = FirstName,
-            LastName = LastName,
-            Email = Email,
+            Username = Username.Trim(),
+            FirstName = FirstName.Trim(),
+            LastName = LastName.Trim(),
+            Email = Email.Trim(),
             PasswordHash = passwordHash,
-            Sponsor = Sponsor,
-            Phone = Phone,
+            Sponsor = Sponsor.Trim(),
+            Phone = string.IsNullOrWhiteSpace(Phone) ? null : Phone.Trim(),
             CreatedAt = DateTime.UtcNow,
             NumPoints = 0
         };
@@ -113,8 +118,7 @@ public class SignUpModel : PageModel
         _context.Drivers.Add(driver);
         await _context.SaveChangesAsync();
 
-        // Redirect to login page with success message
-        TempData["StatusMessage"] = "Account created successfully! Please log in.";
+        TempData["StatusMessage"] = "Driver account created successfully! Please log in.";
         return RedirectToPage("/Login");
     }
 }

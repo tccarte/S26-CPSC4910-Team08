@@ -1,0 +1,70 @@
+@page "{id:int}"
+@model DriverRewards.Pages.Admin.EditSponsorModel
+@{
+    ViewData["Title"] = "Edit Sponsor";
+}
+
+<div class="row g-4">
+    <div class="col-12">
+        <h1 class="h3 mb-1">Edit Sponsor</h1>
+        <p class="text-muted mb-0">Update sponsor account information.</p>
+    </div>
+
+    <div class="col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form method="post">
+                    <input type="hidden" asp-for="SponsorId" />
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="Name"></label>
+                        <input class="form-control" asp-for="Name" />
+                        <span class="text-danger small" asp-validation-for="Name"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="Email"></label>
+                        <input class="form-control" asp-for="Email" />
+                        <span class="text-danger small" asp-validation-for="Email"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" asp-for="Phone"></label>
+                            <input class="form-control" asp-for="Phone" />
+                            <span class="text-danger small" asp-validation-for="Phone"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" asp-for="SupportPhone"></label>
+                            <input class="form-control" asp-for="SupportPhone" />
+                            <span class="text-danger small" asp-validation-for="SupportPhone"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="HeadquartersAddress"></label>
+                        <input class="form-control" asp-for="HeadquartersAddress" />
+                        <span class="text-danger small" asp-validation-for="HeadquartersAddress"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="DollarToPointRatio"></label>
+                        <input class="form-control" asp-for="DollarToPointRatio" step="0.01" />
+                        <span class="text-danger small" asp-validation-for="DollarToPointRatio"></span>
+                    </div>
+
+                    <div class="form-check mb-4">
+                        <input class="form-check-input" asp-for="IsApproved" />
+                        <label class="form-check-label" asp-for="IsApproved"></label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <a class="btn btn-outline-secondary ms-2" asp-page="/Admin/Dashboard">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
