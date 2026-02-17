@@ -1,0 +1,49 @@
+@page
+@model DriverRewards.Pages.Driver.BehaviorsModel
+@{
+    ViewData["Title"] = "Earning Behaviors";
+}
+
+<div class="row g-4">
+    <div class="col-12">
+        <h1 class="h3 mb-1">Earning Behaviors</h1>
+        <p class="text-muted mb-0">These are the behaviors that can earn you reward points.</p>
+    </div>
+
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                @if (Model.BehaviorList.Count == 0)
+                {
+                    <p class="text-muted mb-0">No behaviors have been added yet.</p>
+                }
+                else
+                {
+                    <div class="table-responsive">
+                        <table class="table table-sm align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Behavior</th>
+                                    <th>Description</th>
+                                    <th class="text-end">Points</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var behavior in Model.BehaviorList)
+                                {
+                                    <tr>
+                                        <td class="fw-semibold">@behavior.Name</td>
+                                        <td class="text-muted">@(behavior.Description ?? "—")</td>
+                                        <td class="text-end">
+                                            <span class="badge bg-success">+@behavior.Points</span>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

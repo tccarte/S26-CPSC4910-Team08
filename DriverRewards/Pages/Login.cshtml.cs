@@ -13,13 +13,11 @@ public class LoginModel : PageModel
 {
     private readonly ApplicationDbContext _context;
     private readonly ILogger<LoginModel> _logger;
-    private readonly IConfiguration _configuration;
 
-    public LoginModel(ApplicationDbContext context, ILogger<LoginModel> logger, IConfiguration configuration)
+    public LoginModel(ApplicationDbContext context, ILogger<LoginModel> logger)
     {
         _context = context;
         _logger = logger;
-        _configuration = configuration;
     }
 
     [BindProperty]
@@ -92,22 +90,20 @@ public class LoginModel : PageModel
 
         if (string.Equals(normalizedRole, "Admin", StringComparison.OrdinalIgnoreCase))
         {
-            var adminUsers = _configuration.GetSection("AdminUsers").Get<List<AdminUser>>() ?? new List<AdminUser>();
-            var admin = adminUsers.FirstOrDefault(a => string.Equals(a.Email, email, StringComparison.OrdinalIgnoreCase));
-            if (admin == null)
-            {
-                StatusMessage = "Admin login is not configured.";
-                return Page();
-            }
+            var admin = await _context.Admins
+                .FirstOrDefaultAsync(a => a.Email == email);
 
-            if (!BCrypt.Net.BCrypt.Verify(password, admin.PasswordHash))
+            if (admin == null || !BCrypt.Net.BCrypt.Verify(password, admin.PasswordHash))
             {
                 StatusMessage = "Invalid email or password.";
                 return Page();
             }
 
+            admin.LastLoginAt = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+
             var displayName = string.IsNullOrWhiteSpace(admin.DisplayName) ? "Admin" : admin.DisplayName;
-            await SignInAsync("Admin", admin.Email, displayName, admin.Email);
+            await SignInAsync("Admin", admin.AdminId.ToString(), displayName, admin.Email);
             return RedirectToPage("/Admin/Dashboard");
         }
 
@@ -158,10 +154,4 @@ public class LoginModel : PageModel
         _logger.LogInformation("{Role} signed in with email {Email}.", role, email);
     }
 
-    private sealed class AdminUser
-    {
-        public string Email { get; set; } = string.Empty;
-        public string PasswordHash { get; set; } = string.Empty;
-        public string? DisplayName { get; set; }
-    }
 }

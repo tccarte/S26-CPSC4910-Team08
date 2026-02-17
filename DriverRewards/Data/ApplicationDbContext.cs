@@ -10,6 +10,8 @@ public class ApplicationDbContext : DbContext
     {
     }
 
+    public DbSet<Admin> Admins { get; set; }
+    public DbSet<Behavior> Behaviors { get; set; }
     public DbSet<Driver> Drivers { get; set; }
     public DbSet<Sponsor> Sponsors { get; set; }
     public DbSet<SponsorChangeRequest> SponsorChangeRequests { get; set; }
