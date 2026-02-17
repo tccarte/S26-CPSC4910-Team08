@@ -1,0 +1,65 @@
+@page
+@model DriverRewards.Pages.Sponsor.ManagePointsModel
+@{
+    ViewData["Title"] = "Manage Driver Points";
+}
+
+<div class="row g-4">
+    <div class="col-12">
+        <h1 class="h3 mb-1">Manage Driver Points</h1>
+        <p class="text-muted mb-0">Add or subtract points for your drivers.</p>
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.StatusMessage))
+    {
+        <div class="col-12">
+            <div class="alert alert-success">@Model.StatusMessage</div>
+        </div>
+    }
+
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                @if (Model.Drivers.Count == 0)
+                {
+                    <p class="text-muted mb-0">No drivers are assigned to your organization.</p>
+                }
+                else
+                {
+                    <div class="table-responsive">
+                        <table class="table table-sm align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th class="text-end">Current Points</th>
+                                    <th>Points Change</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var driver in Model.Drivers)
+                                {
+                                    <tr>
+                                        <td class="fw-semibold">@driver.Username</td>
+                                        <td>@driver.Email</td>
+                                        <td class="text-end">
+                                            <span class="badge bg-primary">@driver.Points</span>
+                                        </td>
+                                        <td colspan="2">
+                                            <form method="post" class="d-flex align-items-center gap-2">
+                                                <input type="hidden" name="DriverId" value="@driver.DriverId" />
+                                                <input type="number" name="PointChange" class="form-control form-control-sm" style="width: 100px;" placeholder="e.g. 10" required />
+                                                <button type="submit" class="btn btn-sm btn-success">Add</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

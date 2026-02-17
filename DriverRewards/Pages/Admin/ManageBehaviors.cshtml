@@ -1,0 +1,94 @@
+@page
+@model DriverRewards.Pages.Admin.ManageBehaviorsModel
+@{
+    ViewData["Title"] = "Manage Behaviors";
+}
+
+<div class="row g-4">
+    <div class="col-12">
+        <h1 class="h3 mb-1">Manage Behaviors</h1>
+        <p class="text-muted mb-0">Add or remove behaviors that drivers can earn points for.</p>
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.StatusMessage))
+    {
+        <div class="col-12">
+            <div class="alert alert-success">@Model.StatusMessage</div>
+        </div>
+    }
+
+    <div class="col-md-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h2 class="h5">Add New Behavior</h2>
+                <form method="post" asp-page-handler="Add">
+                    <div class="form-group mb-3">
+                        <label asp-for="BehaviorName" class="control-label"></label>
+                        <input asp-for="BehaviorName" class="form-control" />
+                        <span asp-validation-for="BehaviorName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Description" class="control-label"></label>
+                        <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Points" class="control-label"></label>
+                        <input asp-for="Points" type="number" class="form-control" />
+                        <span asp-validation-for="Points" class="text-danger"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Behavior</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h2 class="h5">Current Behaviors</h2>
+                @if (Model.Behaviors.Count == 0)
+                {
+                    <p class="text-muted mb-0">No behaviors added yet.</p>
+                }
+                else
+                {
+                    <div class="table-responsive">
+                        <table class="table table-sm align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Behavior</th>
+                                    <th>Description</th>
+                                    <th class="text-end">Points</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var behavior in Model.Behaviors)
+                                {
+                                    <tr>
+                                        <td class="fw-semibold">@behavior.Name</td>
+                                        <td class="text-muted">@(behavior.Description ?? "—")</td>
+                                        <td class="text-end">
+                                            <span class="badge bg-success">+@behavior.Points</span>
+                                        </td>
+                                        <td class="text-end">
+                                            <form method="post" asp-page-handler="Delete">
+                                                <input type="hidden" name="behaviorId" value="@behavior.BehaviorId" />
+                                                <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

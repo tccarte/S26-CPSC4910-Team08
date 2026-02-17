@@ -20,11 +20,20 @@
                 {
                     <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Driver/Dashboard">Dashboard</a>
                     <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Driver/Behaviors">Earning Behaviors</a>
+                    <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Profile">Profile</a>
+                }
+                @if (User.IsInRole("Sponsor"))
+                {
+                    <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Sponsor/ManagePoints">Manage Points</a>
+                    <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Sponsor/ManageBehaviors">Manage Behaviors</a>
+                    <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Sponsor/Settings">Settings</a>
                 }
                 @if (User.IsInRole("Admin"))
                 {
                     <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Admin/Dashboard">Admin</a>
                     <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Admin/CreateAdmin">Create Admin</a>
+                    <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Admin/ManageBehaviors">Manage Behaviors</a>
+                    <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Admin/Settings">Settings</a>
                 }
 
                 <form class="dr-search dr-search-wide dr-nav-item" method="get" asp-page="/Index">

@@ -3,6 +3,8 @@ using System.Security.Claims;
 using DriverRewards.Data;
 using DriverEntity = DriverRewards.Models.Driver;
 using DriverRewards.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -119,6 +121,21 @@ public class ProfileModel : PageModel
         StatusMessage = "Sponsor change request submitted.";
         SponsorRequest = new SponsorRequestInput();
         return Page();
+    }
+
+    public async Task<IActionResult> OnPostDeleteAccountAsync()
+    {
+        var driver = await LoadDriverAsync();
+        if (driver == null)
+        {
+            return NotFound();
+        }
+
+        _context.Drivers.Remove(driver);
+        await _context.SaveChangesAsync();
+
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        return RedirectToPage("/Index");
     }
 
     private async Task<DriverEntity?> LoadDriverAsync()
