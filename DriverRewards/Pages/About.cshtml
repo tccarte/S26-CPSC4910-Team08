@@ -1,0 +1,54 @@
+@page
+@model AboutModel
+@{
+    ViewData["Title"] = "About";
+}
+
+<div class="container mt-4">
+    <h1>About Driver Rewards</h1>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Team Information</h5>
+            <ul class="list-unstyled mb-0">
+                <li><strong>Team:</strong> Group 8</li>
+                <li><strong>Course:</strong> CPSC 4910 - Senior Practicum</li>
+                <li><strong>Sprint:</strong> Sprint 4</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Technology Stack</h5>
+            <ul class="list-unstyled mb-0">
+                <li><strong>Framework:</strong> ASP.NET Core 9.0 (Razor Pages)</li>
+                <li><strong>Language:</strong> C#</li>
+                <li><strong>Database:</strong> MySQL (AWS RDS)</li>
+                <li><strong>ORM:</strong> Entity Framework Core (Pomelo MySQL Provider)</li>
+                <li><strong>Hosting:</strong> AWS EC2 (Amazon Linux)</li>
+                <li><strong>Frontend:</strong> Bootstrap 5, jQuery</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Database Connection Status</h5>
+            @if (Model.DatabaseConnected)
+            {
+                <p class="text-success"><strong>Connected successfully</strong> to cloud-hosted database (AWS RDS MySQL).</p>
+                <ul class="list-unstyled mb-0">
+                    <li><strong>Server:</strong> @Model.DatabaseServer</li>
+                    <li><strong>Database:</strong> @Model.DatabaseName</li>
+                    <li><strong>Driver Count:</strong> @Model.DriverCount</li>
+                    <li><strong>Sponsor Count:</strong> @Model.SponsorCount</li>
+                </ul>
+            }
+            else
+            {
+                <p class="text-danger"><strong>Connection failed:</strong> @Model.ConnectionError</p>
+            }
+        </div>
+    </div>
+</div>
