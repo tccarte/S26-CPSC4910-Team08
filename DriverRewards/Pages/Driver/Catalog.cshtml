@@ -1,0 +1,31 @@
+@page
+@model DriverRewards.Pages.Driver.CatalogModel
+@{
+    ViewData["Title"] = "Sponsor Catalog";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="container">
+    <div class="row">
+        @if (Model.Products != null && Model.Products.Any())
+        {
+            foreach (var product in Model.Products)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">@product.Name</h5>
+                            <p class="card-text">@product.Description</p>
+                            <p class="card-text"><strong>Cost: </strong> @product.PriceInPoints points</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <p>No products available in the catalog at this time.</p>
+        }
+    </div>
+</div>
