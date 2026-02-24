@@ -8,18 +8,30 @@ namespace DriverRewards.Models
         public int Id { get; set; } 
 
         [JsonPropertyName("title")]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         [JsonPropertyName("description")]
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
 
         [JsonPropertyName("price")]
         public decimal PriceInPoints { get; set; } 
 
         [JsonPropertyName("image")]
-        public string ImageUrl { get; set; }
+        public string ImageUrl { get; set; } = string.Empty;
 
         [JsonPropertyName("category")]
-        public string Category { get; set; }
+        public string Category { get; set; } = string.Empty;
+
+        [JsonPropertyName("rating")]
+        public ProductRating? Rating { get; set; }
+    }
+
+    public class ProductRating
+    {
+        [JsonPropertyName("rate")]
+        public decimal Rate { get; set; }
+
+        [JsonPropertyName("count")]
+        public int Count { get; set; }
     }
 }

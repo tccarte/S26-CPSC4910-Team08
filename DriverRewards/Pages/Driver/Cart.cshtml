@@ -1,0 +1,106 @@
+@page
+@model DriverRewards.Pages.Driver.CartModel
+@{
+    ViewData["Title"] = "Cart";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="mb-0">Cart</h1>
+    <a asp-page="/Driver/Catalog" class="btn btn-outline-secondary">Continue Shopping</a>
+</div>
+
+<div class="row g-3 mb-3">
+    <div class="col-md-4">
+        <div class="card border-success-subtle">
+            <div class="card-body">
+                <div class="text-muted small">Current Points</div>
+                <div class="fs-4 fw-bold text-success">@Model.CurrentPoints</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="text-muted small">Cart Total</div>
+                <div class="fs-4 fw-bold">@Model.TotalPoints</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card @(Model.RemainingPoints < 0 ? "border-danger-subtle" : "border-primary-subtle")">
+            <div class="card-body">
+                <div class="text-muted small">Balance After Cart</div>
+                <div class="fs-4 fw-bold @(Model.RemainingPoints < 0 ? "text-danger" : "text-primary")">
+                    @Model.RemainingPoints
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (!Model.Items.Any())
+{
+    <div class="alert alert-info">
+        Your cart is empty.
+    </div>
+}
+else
+{
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table mb-0 align-middle">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Category</th>
+                            <th>Quantity</th>
+                            <th>Points</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Items)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center gap-3">
+                                        @if (!string.IsNullOrWhiteSpace(item.ImageUrl))
+                                        {
+                                            <img src="@item.ImageUrl" alt="@item.Name" style="height: 64px; width: 64px; object-fit: contain;" />
+                                        }
+                                        <div>
+                                            <div class="fw-semibold">@item.Name</div>
+                                            <div class="text-muted small">@item.Description</div>
+                                            <a asp-page="/Driver/ProductDetails" asp-route-id="@item.ProductId" class="small">View product</a>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>@item.Category</td>
+                                <td>@item.Quantity</td>
+                                <td>@(item.PriceInPoints * item.Quantity)</td>
+                                <td class="text-end">
+                                    <form method="post" asp-page-handler="Remove" class="d-inline">
+                                        <input type="hidden" name="productId" value="@item.ProductId" />
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">Remove</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="3" class="text-end">Total</th>
+                            <th>@Model.TotalPoints points</th>
+                            <th class="text-end">
+                                <form method="post" asp-page-handler="Clear" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary">Clear Cart</button>
+                                </form>
+                            </th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+}

@@ -17,121 +17,129 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = DriverRewards
 build_property.RootNamespace = DriverRewards
-build_property.ProjectDir = /Users/ryanharvey/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/
+build_property.ProjectDir = C:\Users\Wwc20\OneDrive\Documents\GitHub\S26-CPSC4910-Team08\DriverRewards\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 9.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = /Users/ryanharvey/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards
+build_property.MSBuildProjectDirectory = C:\Users\Wwc20\OneDrive\Documents\GitHub\S26-CPSC4910-Team08\DriverRewards
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 9.0
 build_property.EnableCodeStyleSeverity = 
 
-[/Users/ryanharvey/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/About.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQWJvdXQuY3NodG1s
+[C:/Users/Wwc20/OneDrive/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/About.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWJvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ryanharvey/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Admin/CreateAdmin.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQWRtaW4vQ3JlYXRlQWRtaW4uY3NodG1s
+[C:/Users/Wwc20/OneDrive/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Admin/CreateAdmin.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cQ3JlYXRlQWRtaW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ryanharvey/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Admin/CreateSponsor.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQWRtaW4vQ3JlYXRlU3BvbnNvci5jc2h0bWw=
+[C:/Users/Wwc20/OneDrive/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Admin/CreateSponsor.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cQ3JlYXRlU3BvbnNvci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ryanharvey/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Admin/Dashboard.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQWRtaW4vRGFzaGJvYXJkLmNzaHRtbA==
+[C:/Users/Wwc20/OneDrive/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Admin/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cRGFzaGJvYXJkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ryanharvey/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Admin/EditDriver.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQWRtaW4vRWRpdERyaXZlci5jc2h0bWw=
+[C:/Users/Wwc20/OneDrive/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Admin/EditDriver.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cRWRpdERyaXZlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ryanharvey/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Admin/EditSponsor.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQWRtaW4vRWRpdFNwb25zb3IuY3NodG1s
+[C:/Users/Wwc20/OneDrive/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Admin/EditSponsor.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cRWRpdFNwb25zb3IuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ryanharvey/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Admin/ManageBehaviors.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQWRtaW4vTWFuYWdlQmVoYXZpb3JzLmNzaHRtbA==
+[C:/Users/Wwc20/OneDrive/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Admin/ManageBehaviors.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cTWFuYWdlQmVoYXZpb3JzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ryanharvey/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Admin/Settings.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQWRtaW4vU2V0dGluZ3MuY3NodG1s
+[C:/Users/Wwc20/OneDrive/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Admin/Settings.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cU2V0dGluZ3MuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ryanharvey/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/CreateAccount.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQ3JlYXRlQWNjb3VudC5jc2h0bWw=
+[C:/Users/Wwc20/OneDrive/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/CreateAccount.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3JlYXRlQWNjb3VudC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ryanharvey/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Driver/Behaviors.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvRHJpdmVyL0JlaGF2aW9ycy5jc2h0bWw=
+[C:/Users/Wwc20/OneDrive/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Driver/Behaviors.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRHJpdmVyXEJlaGF2aW9ycy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ryanharvey/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Driver/Catalog.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvRHJpdmVyL0NhdGFsb2cuY3NodG1s
+[C:/Users/Wwc20/OneDrive/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Driver/Cart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRHJpdmVyXENhcnQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ryanharvey/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Driver/Dashboard.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvRHJpdmVyL0Rhc2hib2FyZC5jc2h0bWw=
+[C:/Users/Wwc20/OneDrive/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Driver/Catalog.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRHJpdmVyXENhdGFsb2cuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ryanharvey/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Error.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvRXJyb3IuY3NodG1s
+[C:/Users/Wwc20/OneDrive/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Driver/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRHJpdmVyXERhc2hib2FyZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ryanharvey/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvSW5kZXguY3NodG1s
+[C:/Users/Wwc20/OneDrive/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Driver/ProductDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRHJpdmVyXFByb2R1Y3REZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ryanharvey/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Login.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvTG9naW4uY3NodG1s
+[C:/Users/Wwc20/OneDrive/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ryanharvey/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Logout.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvTG9nb3V0LmNzaHRtbA==
+[C:/Users/Wwc20/OneDrive/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ryanharvey/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Privacy.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvUHJpdmFjeS5jc2h0bWw=
+[C:/Users/Wwc20/OneDrive/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ryanharvey/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Profile.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvUHJvZmlsZS5jc2h0bWw=
+[C:/Users/Wwc20/OneDrive/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Logout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9nb3V0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ryanharvey/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Shared/_ValidationScriptsPartial.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2hhcmVkL19WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+[C:/Users/Wwc20/OneDrive/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJpdmFjeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ryanharvey/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/SignUp.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2lnblVwLmNzaHRtbA==
+[C:/Users/Wwc20/OneDrive/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Profile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZmlsZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ryanharvey/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Sponsor/ManageBehaviors.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU3BvbnNvci9NYW5hZ2VCZWhhdmlvcnMuY3NodG1s
+[C:/Users/Wwc20/OneDrive/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ryanharvey/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Sponsor/ManagePoints.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU3BvbnNvci9NYW5hZ2VQb2ludHMuY3NodG1s
+[C:/Users/Wwc20/OneDrive/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/SignUp.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2lnblVwLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ryanharvey/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Sponsor/Settings.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU3BvbnNvci9TZXR0aW5ncy5jc2h0bWw=
+[C:/Users/Wwc20/OneDrive/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Sponsor/ManageBehaviors.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3BvbnNvclxNYW5hZ2VCZWhhdmlvcnMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ryanharvey/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Sponsor/SignUp.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU3BvbnNvci9TaWduVXAuY3NodG1s
+[C:/Users/Wwc20/OneDrive/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Sponsor/ManagePoints.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3BvbnNvclxNYW5hZ2VQb2ludHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ryanharvey/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/_ViewImports.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+[C:/Users/Wwc20/OneDrive/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Sponsor/Settings.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3BvbnNvclxTZXR0aW5ncy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ryanharvey/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/_ViewStart.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvX1ZpZXdTdGFydC5jc2h0bWw=
+[C:/Users/Wwc20/OneDrive/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Sponsor/SignUp.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3BvbnNvclxTaWduVXAuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ryanharvey/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Shared/_Layout.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2hhcmVkL19MYXlvdXQuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = b-yn70649d1l
+[C:/Users/Wwc20/OneDrive/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Wwc20/OneDrive/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Wwc20/OneDrive/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-1swmir7qdk

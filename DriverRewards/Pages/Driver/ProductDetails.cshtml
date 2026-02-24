@@ -1,0 +1,58 @@
+@page "{id:int}"
+@model DriverRewards.Pages.Driver.ProductDetailsModel
+@{
+    ViewData["Title"] = Model.Product?.Name ?? "Product Details";
+}
+
+@if (Model.Product == null)
+{
+    <div class="alert alert-warning">Product not found.</div>
+}
+else
+{
+    <div class="mb-3">
+        <a asp-page="/Driver/Catalog" class="btn btn-link px-0">&larr; Back to Catalog</a>
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+    {
+        <div class="alert alert-success">@Model.StatusMessage</div>
+    }
+
+    <div class="card shadow-sm">
+        <div class="row g-0">
+            <div class="col-md-5 p-4 d-flex align-items-center justify-content-center">
+                @if (!string.IsNullOrWhiteSpace(Model.Product.ImageUrl))
+                {
+                    <img src="@Model.Product.ImageUrl"
+                         alt="@Model.Product.Name"
+                         style="max-height: 420px; width: 100%; object-fit: contain;" />
+                }
+            </div>
+            <div class="col-md-7">
+                <div class="card-body p-4">
+                    <p class="text-uppercase text-muted small mb-2">@Model.Product.Category</p>
+                    <h1 class="h3 mb-3">@Model.Product.Name</h1>
+
+                    @if (Model.Product.Rating != null)
+                    {
+                        <p class="mb-2">
+                            <strong>Rating:</strong> @Model.Product.Rating.Rate / 5
+                            <span class="text-muted">(@Model.Product.Rating.Count reviews)</span>
+                        </p>
+                    }
+
+                    <p class="fs-4 fw-bold mb-3">@Model.Product.PriceInPoints points</p>
+
+                    <p class="mb-4">@Model.Product.Description</p>
+
+                    <form method="post" asp-page-handler="AddToCart">
+                        <input type="hidden" name="id" value="@Model.Product.Id" />
+                        <button type="submit" class="btn btn-primary btn-lg">Add to Cart</button>
+                        <a asp-page="/Driver/Cart" class="btn btn-outline-secondary btn-lg ms-2">View Cart</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}

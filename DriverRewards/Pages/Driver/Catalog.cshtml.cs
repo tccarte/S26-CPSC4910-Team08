@@ -31,7 +31,7 @@ namespace DriverRewards.Pages.Driver
                     Products = JsonSerializer.Deserialize<List<Product>>(jsonString, new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
-                    });
+                    }) ?? new List<Product>();
                 }
             }
             catch

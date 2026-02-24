@@ -13,6 +13,7 @@
             foreach (var product in Model.Products)
             {
                 <div class="col-md-4 mb-4">
+                    <a asp-page="/Driver/ProductDetails" asp-route-id="@product.Id" class="text-decoration-none text-reset">
                     <div class="card h-100 shadow-sm">
                         
                         @if (!string.IsNullOrEmpty(product.ImageUrl))
@@ -29,9 +30,11 @@
                             
                             <div class="mt-auto">
                                 <p class="card-text fs-5"><strong>@product.PriceInPoints</strong> points</p>
+                                <span class="btn btn-outline-primary btn-sm">View details</span>
                             </div>
                         </div>
                     </div>
+                    </a>
                 </div>
             }
         }

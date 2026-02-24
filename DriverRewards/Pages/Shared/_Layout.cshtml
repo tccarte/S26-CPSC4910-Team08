@@ -1,4 +1,37 @@
 ﻿<!DOCTYPE html>
+@using System.Security.Claims
+@using DriverRewards.Data
+@using Microsoft.EntityFrameworkCore
+@inject ApplicationDbContext DbContext
+@{
+    var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
+    var showDriverBalanceWidget = false;
+    var driverBalancePoints = 0;
+
+    if ((User.Identity?.IsAuthenticated ?? false)
+        && User.IsInRole("Driver")
+        && !string.Equals(currentPage, "/Driver/Dashboard", StringComparison.OrdinalIgnoreCase))
+    {
+        var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!string.IsNullOrWhiteSpace(userIdClaim))
+        {
+            var parts = userIdClaim.Split(':', 2, StringSplitOptions.TrimEntries);
+            if (parts.Length == 2
+                && string.Equals(parts[0], "Driver", StringComparison.OrdinalIgnoreCase)
+                && int.TryParse(parts[1], out var driverId))
+            {
+                var driver = await DbContext.Drivers.AsNoTracking()
+                    .FirstOrDefaultAsync(d => d.DriverId == driverId);
+
+                if (driver != null)
+                {
+                    driverBalancePoints = driver.NumPoints ?? 0;
+                    showDriverBalanceWidget = true;
+                }
+            }
+        }
+    }
+}
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -55,7 +88,7 @@
                         <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Login">Account &amp; Login</a>
                     }
                     <a class="dr-link dr-link-plain dr-nav-item dr-link-dark" href="#">Returns &amp; Orders</a>
-                    <a class="dr-link dr-link-plain dr-nav-item dr-link-dark" href="#">Cart</a>
+                    <a class="dr-link dr-link-plain dr-nav-item dr-link-dark" asp-area="" asp-page="/Driver/Cart">Cart</a>
                 </div>
             </div>
         </nav>
@@ -75,6 +108,18 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @if (showDriverBalanceWidget)
+    {
+        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1080; max-width: 320px;">
+            <div class="card shadow-lg border-0">
+                <div class="card-body">
+                    <div class="text-muted small">Your Balance</div>
+                    <div class="fs-5 fw-bold text-success">@driverBalancePoints points</div>
+                </div>
+            </div>
+        </div>
+    }
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
