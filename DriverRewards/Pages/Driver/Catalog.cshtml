@@ -13,11 +13,23 @@
             foreach (var product in Model.Products)
             {
                 <div class="col-md-4 mb-4">
-                    <div class="card h-100">
-                        <div class="card-body">
+                    <div class="card h-100 shadow-sm">
+                        
+                        @if (!string.IsNullOrEmpty(product.ImageUrl))
+                        {
+                            <img src="@product.ImageUrl" class="card-img-top p-4" alt="@product.Name" style="height: 250px; object-fit: contain;">
+                        }
+                        
+                        <div class="card-body d-flex flex-column">
                             <h5 class="card-title">@product.Name</h5>
-                            <p class="card-text">@product.Description</p>
-                            <p class="card-text"><strong>Cost: </strong> @product.PriceInPoints points</p>
+                            
+                            <p class="card-text text-muted small" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                                @product.Description
+                            </p>
+                            
+                            <div class="mt-auto">
+                                <p class="card-text fs-5"><strong>@product.PriceInPoints</strong> points</p>
+                            </div>
                         </div>
                     </div>
                 </div>
