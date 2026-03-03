@@ -1,5 +1,8 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -18,6 +21,9 @@ namespace DriverRewards.Pages.Driver
 
         public List<Product> Products { get; set; } = new List<Product>();
 
+        [BindProperty(SupportsGet = true)]
+        public string SearchQuery { get; set; }
+
         public async Task OnGetAsync()
         {
             try
@@ -28,10 +34,20 @@ namespace DriverRewards.Pages.Driver
                 {
                     var jsonString = await response.Content.ReadAsStringAsync();
                     
-                    Products = JsonSerializer.Deserialize<List<Product>>(jsonString, new JsonSerializerOptions
+                    var allProducts = JsonSerializer.Deserialize<List<Product>>(jsonString, new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
                     }) ?? new List<Product>();
+
+                    var query = allProducts.AsQueryable();
+
+                    if (!string.IsNullOrEmpty(SearchQuery))
+                    {
+                        query = query.Where(p => p.Name.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase) || 
+                                                 p.Description.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase));
+                    }
+
+                    Products = query.ToList();
                 }
             }
             catch
