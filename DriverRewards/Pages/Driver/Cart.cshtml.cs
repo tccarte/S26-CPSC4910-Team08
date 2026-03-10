@@ -23,6 +23,9 @@ public class CartModel : PageModel
     public List<CartItem> Items { get; private set; } = new();
     public int CurrentPoints { get; private set; }
 
+    [TempData]
+    public string? StatusMessage { get; set; }
+
     public decimal TotalPoints => Items.Sum(i => i.PriceInPoints * i.Quantity);
     public decimal RemainingPoints => CurrentPoints - TotalPoints;
 

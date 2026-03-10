@@ -10,6 +10,13 @@
         <p class="text-muted mb-0">Review sponsor change requests and user lists.</p>
     </div>
 
+    @if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+    {
+        <div class="col-12">
+            <div class="alert alert-info mb-0">@Model.StatusMessage</div>
+        </div>
+    }
+
     <div class="col-12">
         <div class="card shadow-sm">
             <div class="card-body">
@@ -133,21 +140,28 @@
                                     <td>@driver.LastLoginAt</td>
                                     <td>@driver.Points</td>
                                     <td class="text-end">
-                                        <div class="dropdown">
-                                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                &#x22EE;
-                                            </button>
-                                            <ul class="dropdown-menu dropdown-menu-end">
-                                                <li>
-                                                    <a class="dropdown-item" asp-page="/Admin/EditDriver" asp-route-id="@driver.DriverId">Edit account</a>
-                                                </li>
-                                                <li>
-                                                    <form method="post" asp-page-handler="RemoveDriver">
-                                                        <input type="hidden" name="driverId" value="@driver.DriverId" />
-                                                        <button type="submit" class="dropdown-item text-danger">Remove account</button>
-                                                    </form>
-                                                </li>
-                                            </ul>
+                                        <div class="d-flex justify-content-end align-items-center gap-2">
+                                            <form method="post" asp-page-handler="AddDriverPoints" class="d-flex align-items-center gap-1">
+                                                <input type="hidden" name="driverId" value="@driver.DriverId" />
+                                                <input type="number" name="pointsToAdd" min="1" step="1" class="form-control form-control-sm" style="width: 90px;" placeholder="+Pts" />
+                                                <button type="submit" class="btn btn-sm btn-outline-success">Add</button>
+                                            </form>
+                                            <div class="dropdown">
+                                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    &#x22EE;
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-end">
+                                                    <li>
+                                                        <a class="dropdown-item" asp-page="/Admin/EditDriver" asp-route-id="@driver.DriverId">Edit account</a>
+                                                    </li>
+                                                    <li>
+                                                        <form method="post" asp-page-handler="RemoveDriver">
+                                                            <input type="hidden" name="driverId" value="@driver.DriverId" />
+                                                            <button type="submit" class="dropdown-item text-danger">Remove account</button>
+                                                        </form>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </td>
                                 </tr>

@@ -42,6 +42,13 @@ public class ProfileModel : PageModel
         Profile.Email = driver.Email;
         Profile.Username = driver.Username;
         Profile.FedexId = driver.FedexId;
+        Profile.ShippingFullName = driver.ShippingFullName;
+        Profile.ShippingAddressLine1 = driver.ShippingAddressLine1;
+        Profile.ShippingAddressLine2 = driver.ShippingAddressLine2;
+        Profile.ShippingCity = driver.ShippingCity;
+        Profile.ShippingState = driver.ShippingState;
+        Profile.ShippingPostalCode = driver.ShippingPostalCode;
+        Profile.ShippingCountry = driver.ShippingCountry;
         CurrentSponsor = driver.Sponsor;
         return Page();
     }
@@ -80,6 +87,13 @@ public class ProfileModel : PageModel
         driver.Username = Profile.Username.Trim();
         driver.Email = Profile.Email.Trim();
         driver.FedexId = string.IsNullOrWhiteSpace(Profile.FedexId) ? null : Profile.FedexId.Trim();
+        driver.ShippingFullName = string.IsNullOrWhiteSpace(Profile.ShippingFullName) ? null : Profile.ShippingFullName.Trim();
+        driver.ShippingAddressLine1 = string.IsNullOrWhiteSpace(Profile.ShippingAddressLine1) ? null : Profile.ShippingAddressLine1.Trim();
+        driver.ShippingAddressLine2 = string.IsNullOrWhiteSpace(Profile.ShippingAddressLine2) ? null : Profile.ShippingAddressLine2.Trim();
+        driver.ShippingCity = string.IsNullOrWhiteSpace(Profile.ShippingCity) ? null : Profile.ShippingCity.Trim();
+        driver.ShippingState = string.IsNullOrWhiteSpace(Profile.ShippingState) ? null : Profile.ShippingState.Trim();
+        driver.ShippingPostalCode = string.IsNullOrWhiteSpace(Profile.ShippingPostalCode) ? null : Profile.ShippingPostalCode.Trim();
+        driver.ShippingCountry = string.IsNullOrWhiteSpace(Profile.ShippingCountry) ? null : Profile.ShippingCountry.Trim();
 
         await _context.SaveChangesAsync();
 
@@ -98,6 +112,13 @@ public class ProfileModel : PageModel
         Profile.Email = driver.Email;
         Profile.Username = driver.Username;
         Profile.FedexId = driver.FedexId;
+        Profile.ShippingFullName = driver.ShippingFullName;
+        Profile.ShippingAddressLine1 = driver.ShippingAddressLine1;
+        Profile.ShippingAddressLine2 = driver.ShippingAddressLine2;
+        Profile.ShippingCity = driver.ShippingCity;
+        Profile.ShippingState = driver.ShippingState;
+        Profile.ShippingPostalCode = driver.ShippingPostalCode;
+        Profile.ShippingCountry = driver.ShippingCountry;
         CurrentSponsor = driver.Sponsor;
 
         if (!TryValidateModel(SponsorRequest, nameof(SponsorRequest)))
@@ -176,6 +197,34 @@ public class ProfileModel : PageModel
         [StringLength(50)]
         [Display(Name = "FedEx ID")]
         public string? FedexId { get; set; }
+
+        [StringLength(100)]
+        [Display(Name = "Shipping Full Name")]
+        public string? ShippingFullName { get; set; }
+
+        [StringLength(120)]
+        [Display(Name = "Shipping Address Line 1")]
+        public string? ShippingAddressLine1 { get; set; }
+
+        [StringLength(120)]
+        [Display(Name = "Shipping Address Line 2")]
+        public string? ShippingAddressLine2 { get; set; }
+
+        [StringLength(80)]
+        [Display(Name = "Shipping City")]
+        public string? ShippingCity { get; set; }
+
+        [StringLength(80)]
+        [Display(Name = "Shipping State/Province")]
+        public string? ShippingState { get; set; }
+
+        [StringLength(20)]
+        [Display(Name = "Shipping Postal Code")]
+        public string? ShippingPostalCode { get; set; }
+
+        [StringLength(80)]
+        [Display(Name = "Shipping Country")]
+        public string? ShippingCountry { get; set; }
     }
 
     public class SponsorRequestInput

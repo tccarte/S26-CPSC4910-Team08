@@ -49,6 +49,34 @@ public class Driver
     [Column("fedex_id")]
     public string? FedexId { get; set; }
 
+    [StringLength(100)]
+    [Column("shipping_full_name")]
+    public string? ShippingFullName { get; set; }
+
+    [StringLength(120)]
+    [Column("shipping_address_line1")]
+    public string? ShippingAddressLine1 { get; set; }
+
+    [StringLength(120)]
+    [Column("shipping_address_line2")]
+    public string? ShippingAddressLine2 { get; set; }
+
+    [StringLength(80)]
+    [Column("shipping_city")]
+    public string? ShippingCity { get; set; }
+
+    [StringLength(80)]
+    [Column("shipping_state")]
+    public string? ShippingState { get; set; }
+
+    [StringLength(20)]
+    [Column("shipping_postal_code")]
+    public string? ShippingPostalCode { get; set; }
+
+    [StringLength(80)]
+    [Column("shipping_country")]
+    public string? ShippingCountry { get; set; }
+
     [Column("created_at")]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 

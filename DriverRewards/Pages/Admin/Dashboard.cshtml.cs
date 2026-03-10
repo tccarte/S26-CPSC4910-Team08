@@ -22,6 +22,9 @@ public class DashboardModel : PageModel
     public List<RequestRow> PendingRequests { get; private set; } = new();
     public List<PendingSponsorRow> PendingSponsors { get; private set; } = new();
 
+    [TempData]
+    public string? StatusMessage { get; set; }
+
     public async Task OnGetAsync()
     {
         var drivers = await _context.Drivers.AsNoTracking()
@@ -170,6 +173,27 @@ public class DashboardModel : PageModel
 
         _context.Drivers.Remove(driver);
         await _context.SaveChangesAsync();
+        return RedirectToPage();
+    }
+
+    public async Task<IActionResult> OnPostAddDriverPointsAsync(int driverId, int pointsToAdd)
+    {
+        if (pointsToAdd <= 0)
+        {
+            StatusMessage = "Points to add must be greater than 0.";
+            return RedirectToPage();
+        }
+
+        var driver = await _context.Drivers.FirstOrDefaultAsync(d => d.DriverId == driverId);
+        if (driver == null)
+        {
+            return NotFound();
+        }
+
+        driver.NumPoints = (driver.NumPoints ?? 0) + pointsToAdd;
+        await _context.SaveChangesAsync();
+
+        StatusMessage = $"Added {pointsToAdd} points to {driver.Username}. New total: {driver.NumPoints}.";
         return RedirectToPage();
     }
 

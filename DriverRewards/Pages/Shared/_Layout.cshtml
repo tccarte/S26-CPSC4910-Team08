@@ -7,6 +7,13 @@
     var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
     var showDriverBalanceWidget = false;
     var driverBalancePoints = 0;
+    var searchActionPage = User.IsInRole("Driver") ? "/Driver/Catalog" : "/Index";
+    var searchQueryValue = Context.Request.Query["SearchQuery"].ToString();
+
+    if (string.IsNullOrWhiteSpace(searchQueryValue))
+    {
+        searchQueryValue = Context.Request.Query["q"].ToString();
+    }
 
     if ((User.Identity?.IsAuthenticated ?? false)
         && User.IsInRole("Driver")
@@ -46,49 +53,50 @@
     <header>
         <nav class="dr-nav">
             <div class="dr-nav-inner">
-                <a class="dr-logo dr-nav-item" asp-area="" asp-page="/Index">Driver Rewards</a>
-
-                <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Index">Home Page</a>
-                <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/About">About</a>
-                @if (User.IsInRole("Driver"))
-                {
-                    <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Driver/Dashboard">Dashboard</a>
-                    <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Driver/Behaviors">Earning Behaviors</a>
-                    <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Profile">Profile</a>
-                    <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Driver/Catalog">Catalog</a>
-                }
-                @if (User.IsInRole("Sponsor"))
-                {
-                    <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Sponsor/ManagePoints">Manage Points</a>
-                    <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Sponsor/ManageBehaviors">Manage Behaviors</a>
-                    <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Sponsor/Settings">Settings</a>
-                }
-                @if (User.IsInRole("Admin"))
-                {
-                    <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Admin/Dashboard">Admin</a>
-                    <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Admin/CreateAdmin">Create Admin</a>
-                    <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Admin/ManageBehaviors">Manage Behaviors</a>
-                    <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Admin/Settings">Settings</a>
-                }
-
-                <form class="dr-search dr-search-wide dr-nav-item" method="get" asp-page="/Index">
-                    <input class="dr-search-input" type="search" name="q" placeholder="Search DriverRewards" aria-label="Search" />
-                    <button class="dr-search-btn" type="submit">Search</button>
-                </form>
-
-                <div class="dr-actions">
-                    @if (User.Identity?.IsAuthenticated ?? false)
+                <div class="dr-nav-links">
+                    <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/About">About</a>
+                    @if (User.IsInRole("Driver"))
                     {
-                        <form class="d-inline" method="post" asp-page="/Logout">
-                            <button type="submit" class="dr-link dr-link-plain dr-nav-item">Logout</button>
-                        </form>
+                        <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Driver/Dashboard">Dashboard</a>
+                        <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Driver/Behaviors">Earning Behaviors</a>
+                        <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Profile">Profile</a>
+                        <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Driver/Catalog">Catalog</a>
                     }
-                    else
+                    @if (User.IsInRole("Sponsor"))
                     {
-                        <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Login">Account &amp; Login</a>
+                        <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Sponsor/ManagePoints">Manage Points</a>
+                        <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Sponsor/ManageBehaviors">Manage Behaviors</a>
+                        <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Sponsor/Settings">Settings</a>
                     }
-                    <a class="dr-link dr-link-plain dr-nav-item dr-link-dark" href="#">Returns &amp; Orders</a>
-                    <a class="dr-link dr-link-plain dr-nav-item dr-link-dark" asp-area="" asp-page="/Driver/Cart">Cart</a>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Admin/Dashboard">Admin</a>
+                        <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Admin/CreateAdmin">Create Admin</a>
+                        <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Admin/ManageBehaviors">Manage Behaviors</a>
+                        <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Admin/Settings">Settings</a>
+                    }
+                </div>
+
+                <div class="dr-nav-tools">
+                    <form class="dr-search dr-search-wide dr-nav-item" method="get" asp-page="@searchActionPage">
+                        <input class="dr-search-input" type="search" name="SearchQuery" value="@searchQueryValue" placeholder="Search DriverRewards" aria-label="Search" />
+                        <button class="dr-search-btn" type="submit">Search</button>
+                    </form>
+
+                    <div class="dr-actions">
+                        @if (User.Identity?.IsAuthenticated ?? false)
+                        {
+                            <form class="d-inline" method="post" asp-page="/Logout">
+                                <button type="submit" class="dr-link dr-link-plain dr-nav-item">Logout</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Login">Account &amp; Login</a>
+                        }
+                        <a class="dr-link dr-link-plain dr-nav-item dr-link-dark" href="#">Returns &amp; Orders</a>
+                        <a class="dr-link dr-link-plain dr-nav-item dr-link-dark" asp-area="" asp-page="/Driver/Cart">Cart</a>
+                    </div>
                 </div>
             </div>
         </nav>

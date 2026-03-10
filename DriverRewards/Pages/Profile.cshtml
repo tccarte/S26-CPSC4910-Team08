@@ -42,6 +42,51 @@
                         <span class="text-danger small" asp-validation-for="Profile.FedexId"></span>
                     </div>
 
+                    <hr />
+                    <h3 class="h6">Saved Shipping Address</h3>
+
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="Profile.ShippingFullName"></label>
+                        <input class="form-control" asp-for="Profile.ShippingFullName" />
+                        <span class="text-danger small" asp-validation-for="Profile.ShippingFullName"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="Profile.ShippingAddressLine1"></label>
+                        <input class="form-control" asp-for="Profile.ShippingAddressLine1" />
+                        <span class="text-danger small" asp-validation-for="Profile.ShippingAddressLine1"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="Profile.ShippingAddressLine2"></label>
+                        <input class="form-control" asp-for="Profile.ShippingAddressLine2" />
+                        <span class="text-danger small" asp-validation-for="Profile.ShippingAddressLine2"></span>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-5">
+                            <label class="form-label" asp-for="Profile.ShippingCity"></label>
+                            <input class="form-control" asp-for="Profile.ShippingCity" />
+                            <span class="text-danger small" asp-validation-for="Profile.ShippingCity"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label" asp-for="Profile.ShippingState"></label>
+                            <input class="form-control" asp-for="Profile.ShippingState" />
+                            <span class="text-danger small" asp-validation-for="Profile.ShippingState"></span>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label" asp-for="Profile.ShippingPostalCode"></label>
+                            <input class="form-control" asp-for="Profile.ShippingPostalCode" />
+                            <span class="text-danger small" asp-validation-for="Profile.ShippingPostalCode"></span>
+                        </div>
+                    </div>
+
+                    <div class="mt-3 mb-3">
+                        <label class="form-label" asp-for="Profile.ShippingCountry"></label>
+                        <input class="form-control" asp-for="Profile.ShippingCountry" />
+                        <span class="text-danger small" asp-validation-for="Profile.ShippingCountry"></span>
+                    </div>
+
                     <button type="submit" class="btn btn-primary">Save Changes</button>
                 </form>
             </div>

@@ -73,6 +73,41 @@ namespace DriverRewards.Migrations
                         .HasColumnType("varchar(20)")
                         .HasColumnName("phone");
 
+                    b.Property<string>("ShippingAddressLine1")
+                        .HasMaxLength(120)
+                        .HasColumnType("varchar(120)")
+                        .HasColumnName("shipping_address_line1");
+
+                    b.Property<string>("ShippingAddressLine2")
+                        .HasMaxLength(120)
+                        .HasColumnType("varchar(120)")
+                        .HasColumnName("shipping_address_line2");
+
+                    b.Property<string>("ShippingCity")
+                        .HasMaxLength(80)
+                        .HasColumnType("varchar(80)")
+                        .HasColumnName("shipping_city");
+
+                    b.Property<string>("ShippingCountry")
+                        .HasMaxLength(80)
+                        .HasColumnType("varchar(80)")
+                        .HasColumnName("shipping_country");
+
+                    b.Property<string>("ShippingFullName")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("shipping_full_name");
+
+                    b.Property<string>("ShippingPostalCode")
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("shipping_postal_code");
+
+                    b.Property<string>("ShippingState")
+                        .HasMaxLength(80)
+                        .HasColumnType("varchar(80)")
+                        .HasColumnName("shipping_state");
+
                     b.Property<string>("Sponsor")
                         .IsRequired()
                         .HasMaxLength(50)

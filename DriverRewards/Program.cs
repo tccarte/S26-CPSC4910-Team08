@@ -1,4 +1,5 @@
 using DriverRewards.Data;
+using DriverRewards.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,15 +34,33 @@ builder.Services.AddAuthorization();
 builder.Services.AddHttpClient();
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    var hasAnyAdmin = await dbContext.Admins.AnyAsync();
+
+    if (!hasAnyAdmin)
+    {
+        dbContext.Admins.Add(new Admin
+        {
+            DisplayName = "Default Admin",
+            Email = "admin@driverrewards.local",
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword("Admin123!"),
+            CreatedAt = DateTime.UtcNow
+        });
+
+        await dbContext.SaveChangesAsync();
+    }
+}
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
+    app.UseHttpsRedirection();
 }
-
-app.UseHttpsRedirection();
 
 app.UseRouting();
 app.UseSession();

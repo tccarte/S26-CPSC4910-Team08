@@ -68,12 +68,29 @@ button.accept-policy {
 .dr-nav-inner {
   display: flex;
   align-items: center;
-  gap: 16px;
   max-width: 1200px;
   margin: 0 auto;
   font-family: "Poppins", "Segoe UI", sans-serif;
-  justify-content: center;
+  justify-content: space-between;
+  gap: 20px;
   flex-wrap: nowrap;
+}
+
+.dr-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+.dr-nav-tools {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1 1 auto;
+  justify-content: flex-end;
+  min-width: 0;
 }
 
 .dr-logo {
@@ -89,6 +106,10 @@ button.accept-policy {
   text-decoration: none;
   font-size: 1.05rem;
   font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
 }
 
 .dr-link-plain {
@@ -105,6 +126,8 @@ button.accept-policy {
   border-radius: 8px;
   padding: 8px 12px;
   box-sizing: border-box;
+  flex: 0 0 auto;
+  white-space: nowrap;
 }
 
 .dr-logo.dr-nav-item {
@@ -112,12 +135,12 @@ button.accept-policy {
 }
 
 .dr-search {
-  flex: 1 1 520px;
+  flex: 1 1 420px;
   display: flex;
   align-items: stretch;
   min-width: 220px;
-  max-width: 560px;
-  margin: 0 12px;
+  max-width: 520px;
+  margin: 0;
   border-radius: 8px;
   overflow: hidden;
   background: #fff;
@@ -181,6 +204,18 @@ button.accept-policy {
 
 @media (max-width: 991px) {
   .dr-nav-inner {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .dr-nav-links {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .dr-nav-tools {
+    width: 100%;
     flex-wrap: wrap;
     justify-content: center;
   }

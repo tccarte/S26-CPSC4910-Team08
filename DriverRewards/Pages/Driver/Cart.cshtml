@@ -9,6 +9,11 @@
     <a asp-page="/Driver/Catalog" class="btn btn-outline-secondary">Continue Shopping</a>
 </div>
 
+@if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+{
+    <div class="alert alert-info">@Model.StatusMessage</div>
+}
+
 <div class="row g-3 mb-3">
     <div class="col-md-4">
         <div class="card border-success-subtle">
@@ -96,6 +101,10 @@ else
                                 <form method="post" asp-page-handler="Clear" class="d-inline">
                                     <button type="submit" class="btn btn-sm btn-outline-secondary">Clear Cart</button>
                                 </form>
+                                @if (Model.RemainingPoints >= 0)
+                                {
+                                    <a asp-page="/Driver/Checkout" class="btn btn-sm btn-primary ms-2">Proceed to Checkout</a>
+                                }
                             </th>
                         </tr>
                     </tfoot>
@@ -103,4 +112,11 @@ else
             </div>
         </div>
     </div>
+
+    @if (Model.RemainingPoints < 0)
+    {
+        <div class="alert alert-warning mt-3 mb-0">
+            You do not have enough points to checkout.
+        </div>
+    }
 }

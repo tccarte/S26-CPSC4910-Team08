@@ -1,25 +1,34 @@
 {
   "format": 1,
   "restore": {
-    "/Users/ryanharvey/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/DriverRewards.csproj": {}
+    "C:\\Users\\Wwc20\\OneDrive\\Documents\\GitHub\\S26-CPSC4910-Team08\\DriverRewards\\DriverRewards.csproj": {}
   },
   "projects": {
-    "/Users/ryanharvey/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/DriverRewards.csproj": {
+    "C:\\Users\\Wwc20\\OneDrive\\Documents\\GitHub\\S26-CPSC4910-Team08\\DriverRewards\\DriverRewards.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/ryanharvey/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/DriverRewards.csproj",
+        "projectUniqueName": "C:\\Users\\Wwc20\\OneDrive\\Documents\\GitHub\\S26-CPSC4910-Team08\\DriverRewards\\DriverRewards.csproj",
         "projectName": "DriverRewards",
-        "projectPath": "/Users/ryanharvey/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/DriverRewards.csproj",
-        "packagesPath": "/Users/ryanharvey/.nuget/packages/",
-        "outputPath": "/Users/ryanharvey/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/obj/",
+        "projectPath": "C:\\Users\\Wwc20\\OneDrive\\Documents\\GitHub\\S26-CPSC4910-Team08\\DriverRewards\\DriverRewards.csproj",
+        "packagesPath": "C:\\Users\\Wwc20\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Wwc20\\OneDrive\\Documents\\GitHub\\S26-CPSC4910-Team08\\DriverRewards\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+        ],
         "configFilePaths": [
-          "/Users/ryanharvey/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\Wwc20\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -94,7 +103,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.310/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.311/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

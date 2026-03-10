@@ -22,7 +22,7 @@ namespace DriverRewards.Pages.Driver
         public List<Product> Products { get; set; } = new List<Product>();
 
         [BindProperty(SupportsGet = true)]
-        public string SearchQuery { get; set; }
+        public string? SearchQuery { get; set; }
 
         public async Task OnGetAsync()
         {
