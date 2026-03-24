@@ -66,26 +66,71 @@
 
                     @if (!isAuthPage && User.IsInRole("Driver"))
                     {
-                        <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Driver/Dashboard">Dashboard</a>
-                        <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Driver/Behaviors">Earning Behaviors</a>
-                        <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Profile">Profile</a>
-                        <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Driver/Catalog">Catalog</a>
+                        <div class="dropdown dr-nav-item">
+                            <button class="btn dr-link dr-link-plain dropdown-toggle" type="button" id="driverMenuDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                Driver Menu
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="driverMenuDropdown">
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-page="/Driver/Dashboard">Dashboard</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-page="/Driver/Behaviors">Earning Behaviors</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-page="/Profile">Profile</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-page="/Driver/Catalog">Catalog</a>
+                                </li>
+                            </ul>
+                        </div>
                     }
 
                     @if (!isAuthPage && User.IsInRole("Sponsor"))
                     {
-                        <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Sponsor/ManagePoints">Manage Points</a>
-                        <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Sponsor/ManageBehaviors">Manage Behaviors</a>
-                        <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Sponsor/ManageCatalog">Manage Catalog</a>
-                        <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Sponsor/Settings">Settings</a>
+                        <div class="dropdown dr-nav-item">
+                            <button class="btn dr-link dr-link-plain dropdown-toggle" type="button" id="myOrganizationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                My Organization
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="myOrganizationDropdown">
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-page="/Sponsor/ManagePoints">Manage Points</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-page="/Sponsor/ManageBehaviors">Manage Behaviors</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-page="/Sponsor/ManageCatalog">Manage Catalog</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-page="/Sponsor/Settings">Settings</a>
+                                </li>
+                            </ul>
+                        </div>
                     }
 
                     @if (!isAuthPage && User.IsInRole("Admin"))
                     {
-                        <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Admin/Dashboard">Admin</a>
-                        <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Admin/CreateAdmin">Create Admin</a>
-                        <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Admin/ManageBehaviors">Manage Behaviors</a>
-                        <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Admin/Settings">Settings</a>
+                        <div class="dropdown dr-nav-item">
+                            <button class="btn dr-link dr-link-plain dropdown-toggle" type="button" id="systemAdminDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                System Admin
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="systemAdminDropdown">
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-page="/Admin/Dashboard">Dashboard</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-page="/Admin/CreateAdmin">Create Admin</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-page="/Admin/ManageBehaviors">Manage Behaviors</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-page="/Admin/Settings">Settings</a>
+                                </li>
+                            </ul>
+                        </div>
                     }
                 </div>
 
@@ -97,22 +142,6 @@
                             <button class="dr-search-btn" type="submit">Search</button>
                         </form>
 
-<<<<<<< HEAD
-                    <div class="dr-actions">
-                        @if (User.Identity?.IsAuthenticated ?? false)
-                        {
-                            <form class="d-inline" method="post" asp-page="/Logout">
-                                <button type="submit" class="dr-link dr-link-plain dr-nav-item">Logout</button>
-                            </form>
-                        }
-                        else
-                        {
-                            <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Login">Account &amp; Login</a>
-                        }
-                        <a class="dr-link dr-link-plain dr-nav-item dr-link-dark" asp-area="" asp-page="/Driver/Orders">Returns &amp; Orders</a>
-                        <a class="dr-link dr-link-plain dr-nav-item dr-link-dark" asp-area="" asp-page="/Driver/Cart">Cart</a>
-                    </div>
-=======
                         <div class="dr-actions">
                             @if (User.Identity?.IsAuthenticated ?? false)
                             {
@@ -129,7 +158,6 @@
                             <a class="dr-link dr-link-plain dr-nav-item dr-link-dark" asp-area="" asp-page="/Driver/Cart">Cart</a>
                         </div>
                     }
->>>>>>> origin/main
                 </div>
             </div>
         </nav>
@@ -166,4 +194,3 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
-
