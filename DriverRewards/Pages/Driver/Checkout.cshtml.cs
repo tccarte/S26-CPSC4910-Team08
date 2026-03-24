@@ -3,6 +3,7 @@ using System.Security.Claims;
 using DriverRewards.Data;
 using DriverRewards.Extensions;
 using DriverRewards.Models;
+using DriverRewards.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -15,10 +16,12 @@ public class CheckoutModel : PageModel
 {
     private const string CartSessionKey = "DriverCart";
     private readonly ApplicationDbContext _context;
+    private readonly ShippingTrackingService _shippingTrackingService;
 
-    public CheckoutModel(ApplicationDbContext context)
+    public CheckoutModel(ApplicationDbContext context, ShippingTrackingService shippingTrackingService)
     {
         _context = context;
+        _shippingTrackingService = shippingTrackingService;
     }
 
     public List<CartItem> Items { get; private set; } = new();
@@ -96,12 +99,57 @@ public class CheckoutModel : PageModel
         driver.ShippingPostalCode = Input.PostalCode.Trim();
         driver.ShippingCountry = Input.Country.Trim();
         driver.NumPoints = CurrentPoints - PointsToCharge;
+
+        var placedAtUtc = DateTime.UtcNow;
+        var address = _shippingTrackingService.BuildAddressLine(
+            driver.ShippingAddressLine1,
+            driver.ShippingAddressLine2,
+            driver.ShippingCity,
+            driver.ShippingState,
+            driver.ShippingPostalCode,
+            driver.ShippingCountry);
+
+        var geocodingResult = await _shippingTrackingService.GeocodeAsync(address);
+        var distanceMiles = geocodingResult is null
+            ? 850m
+            : _shippingTrackingService.CalculateDistanceMiles(geocodingResult.Latitude, geocodingResult.Longitude);
+        var estimatedDeliveryAt = _shippingTrackingService.EstimateDelivery(placedAtUtc, distanceMiles);
+
+        var order = new Order
+        {
+            DriverId = driver.DriverId,
+            TrackingNumber = _shippingTrackingService.BuildTrackingNumber(driver.DriverId),
+            ShippingFullName = driver.ShippingFullName,
+            ShippingAddressLine1 = driver.ShippingAddressLine1,
+            ShippingAddressLine2 = driver.ShippingAddressLine2,
+            ShippingCity = driver.ShippingCity,
+            ShippingState = driver.ShippingState,
+            ShippingPostalCode = driver.ShippingPostalCode,
+            ShippingCountry = driver.ShippingCountry,
+            Status = "Preparing shipment",
+            TotalPoints = PointsToCharge,
+            EstimatedDistanceMiles = distanceMiles,
+            DestinationLatitude = geocodingResult?.Latitude,
+            DestinationLongitude = geocodingResult?.Longitude,
+            PlacedAt = placedAtUtc,
+            EstimatedDeliveryAt = estimatedDeliveryAt,
+            Items = Items.Select(item => new OrderItem
+            {
+                ProductId = item.ProductId,
+                ProductName = item.Name,
+                Category = item.Category,
+                Quantity = item.Quantity,
+                PriceInPoints = item.PriceInPoints
+            }).ToList()
+        };
+
+        _context.Orders.Add(order);
         await _context.SaveChangesAsync();
 
         HttpContext.Session.Remove(CartSessionKey);
-        StatusMessage = $"Order placed successfully for {PointsToCharge} points. Shipping to {Input.FullName}.";
+        TempData["StatusMessage"] = $"Order {order.TrackingNumber} placed successfully for {PointsToCharge} points.";
 
-        return RedirectToPage("/Driver/Cart");
+        return RedirectToPage("/Driver/Orders");
     }
 
     private void LoadCart()

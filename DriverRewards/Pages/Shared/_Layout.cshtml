@@ -66,6 +66,7 @@
                     {
                         <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Sponsor/ManagePoints">Manage Points</a>
                         <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Sponsor/ManageBehaviors">Manage Behaviors</a>
+                        <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Sponsor/ManageCatalog">Manage Catalog</a>
                         <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Sponsor/Settings">Settings</a>
                     }
                     @if (User.IsInRole("Admin"))
@@ -94,7 +95,7 @@
                         {
                             <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Login">Account &amp; Login</a>
                         }
-                        <a class="dr-link dr-link-plain dr-nav-item dr-link-dark" href="#">Returns &amp; Orders</a>
+                        <a class="dr-link dr-link-plain dr-nav-item dr-link-dark" asp-area="" asp-page="/Driver/Orders">Returns &amp; Orders</a>
                         <a class="dr-link dr-link-plain dr-nav-item dr-link-dark" asp-area="" asp-page="/Driver/Cart">Cart</a>
                     </div>
                 </div>

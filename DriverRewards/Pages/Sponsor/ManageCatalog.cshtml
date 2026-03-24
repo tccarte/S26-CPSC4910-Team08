@@ -1,0 +1,73 @@
+@page
+@model DriverRewards.Pages.Sponsor.ManageCatalogModel
+@{
+    ViewData["Title"] = "Manage Catalog";
+}
+
+<div class="row g-4">
+    <div class="col-12">
+        <h1 class="h3 mb-1">Manage Catalog</h1>
+        <p class="text-muted mb-0">Choose which products drivers under <strong>@Model.SponsorName</strong> can see in their catalog.</p>
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+    {
+        <div class="col-12">
+            <div class="alert alert-success">@Model.StatusMessage</div>
+        </div>
+    }
+
+    <div class="col-12">
+        <form method="post" asp-page-handler="Save" class="card shadow-sm">
+            <div class="card-body">
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+                    <div class="text-muted small">@Model.SavedProductIds.Count product(s) currently visible to drivers out of @Model.Products.Count available.</div>
+                    <button type="submit" class="btn btn-primary">Save Catalog</button>
+                </div>
+
+                @if (Model.Products.Count == 0)
+                {
+                    <p class="text-muted mb-0">No products are available right now.</p>
+                }
+                else
+                {
+                    <div class="row g-3">
+                        @foreach (var product in Model.Products)
+                        {
+                            var isChecked = Model.SavedProductIds.Contains(product.Id);
+
+                            <div class="col-sm-6 col-lg-4">
+                                <label class="card h-100 shadow-sm border-@(isChecked ? "primary" : "light")">
+                                    <div class="card-body">
+                                        <div class="form-check mb-3">
+                                            <input class="form-check-input"
+                                                   type="checkbox"
+                                                   name="SelectedProductIds"
+                                                   value="@product.Id"
+                                                   @(isChecked ? "checked" : null) />
+                                            <span class="form-check-label fw-semibold">@product.Name</span>
+                                        </div>
+
+                                        @if (!string.IsNullOrWhiteSpace(product.ImageUrl))
+                                        {
+                                            <img src="@product.ImageUrl"
+                                                 alt="@product.Name"
+                                                 class="img-fluid d-block mx-auto mb-3"
+                                                 style="height: 180px; object-fit: contain;" />
+                                        }
+
+                                        <div class="text-muted small text-uppercase mb-2">@product.Category</div>
+                                        <p class="small text-muted mb-3" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                                            @product.Description
+                                        </p>
+                                        <div class="fw-semibold">@product.PriceInPoints points</div>
+                                    </div>
+                                </label>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </form>
+    </div>
+</div>

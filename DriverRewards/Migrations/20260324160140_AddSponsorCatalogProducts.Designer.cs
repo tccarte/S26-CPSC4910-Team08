@@ -4,6 +4,7 @@ using DriverRewards.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DriverRewards.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260324160140_AddSponsorCatalogProducts")]
+    partial class AddSponsorCatalogProducts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -202,147 +205,6 @@ namespace DriverRewards.Migrations
                     b.ToTable("team08_drivers");
                 });
 
-            modelBuilder.Entity("DriverRewards.Models.Order", b =>
-                {
-                    b.Property<int>("OrderId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("order_id");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("OrderId"));
-
-                    b.Property<decimal?>("DestinationLatitude")
-                        .HasColumnType("decimal(10,6)")
-                        .HasColumnName("destination_latitude");
-
-                    b.Property<decimal?>("DestinationLongitude")
-                        .HasColumnType("decimal(10,6)")
-                        .HasColumnName("destination_longitude");
-
-                    b.Property<int>("DriverId")
-                        .HasColumnType("int")
-                        .HasColumnName("driver_id");
-
-                    b.Property<DateTime>("EstimatedDeliveryAt")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("estimated_delivery_at");
-
-                    b.Property<decimal>("EstimatedDistanceMiles")
-                        .HasColumnType("decimal(10,2)")
-                        .HasColumnName("estimated_distance_miles");
-
-                    b.Property<DateTime>("PlacedAt")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("placed_at");
-
-                    b.Property<string>("ShippingAddressLine1")
-                        .IsRequired()
-                        .HasMaxLength(120)
-                        .HasColumnType("varchar(120)")
-                        .HasColumnName("shipping_address_line1");
-
-                    b.Property<string>("ShippingAddressLine2")
-                        .HasMaxLength(120)
-                        .HasColumnType("varchar(120)")
-                        .HasColumnName("shipping_address_line2");
-
-                    b.Property<string>("ShippingCity")
-                        .IsRequired()
-                        .HasMaxLength(80)
-                        .HasColumnType("varchar(80)")
-                        .HasColumnName("shipping_city");
-
-                    b.Property<string>("ShippingCountry")
-                        .IsRequired()
-                        .HasMaxLength(80)
-                        .HasColumnType("varchar(80)")
-                        .HasColumnName("shipping_country");
-
-                    b.Property<string>("ShippingFullName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("shipping_full_name");
-
-                    b.Property<string>("ShippingPostalCode")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)")
-                        .HasColumnName("shipping_postal_code");
-
-                    b.Property<string>("ShippingState")
-                        .IsRequired()
-                        .HasMaxLength(80)
-                        .HasColumnType("varchar(80)")
-                        .HasColumnName("shipping_state");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("varchar(30)")
-                        .HasColumnName("status");
-
-                    b.Property<int>("TotalPoints")
-                        .HasColumnType("int")
-                        .HasColumnName("total_points");
-
-                    b.Property<string>("TrackingNumber")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("tracking_number");
-
-                    b.HasKey("OrderId");
-
-                    b.HasIndex("DriverId");
-
-                    b.ToTable("team08_orders");
-                });
-
-            modelBuilder.Entity("DriverRewards.Models.OrderItem", b =>
-                {
-                    b.Property<int>("OrderItemId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("order_item_id");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("OrderItemId"));
-
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("category");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int")
-                        .HasColumnName("order_id");
-
-                    b.Property<decimal>("PriceInPoints")
-                        .HasColumnType("decimal(10,2)")
-                        .HasColumnName("price_in_points");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int")
-                        .HasColumnName("product_id");
-
-                    b.Property<string>("ProductName")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("varchar(200)")
-                        .HasColumnName("product_name");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int")
-                        .HasColumnName("quantity");
-
-                    b.HasKey("OrderItemId");
-
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("team08_order_items");
-                });
-
             modelBuilder.Entity("DriverRewards.Models.Sponsor", b =>
                 {
                     b.Property<int>("SponsorId")
@@ -480,28 +342,6 @@ namespace DriverRewards.Migrations
                     b.ToTable("team08_sponsor_change_requests");
                 });
 
-            modelBuilder.Entity("DriverRewards.Models.Order", b =>
-                {
-                    b.HasOne("DriverRewards.Models.Driver", "Driver")
-                        .WithMany()
-                        .HasForeignKey("DriverId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Driver");
-                });
-
-            modelBuilder.Entity("DriverRewards.Models.OrderItem", b =>
-                {
-                    b.HasOne("DriverRewards.Models.Order", "Order")
-                        .WithMany("Items")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-                });
-
             modelBuilder.Entity("DriverRewards.Models.SponsorCatalogProduct", b =>
                 {
                     b.HasOne("DriverRewards.Models.Sponsor", "Sponsor")
@@ -511,11 +351,6 @@ namespace DriverRewards.Migrations
                         .IsRequired();
 
                     b.Navigation("Sponsor");
-                });
-
-            modelBuilder.Entity("DriverRewards.Models.Order", b =>
-                {
-                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }

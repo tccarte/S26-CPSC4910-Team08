@@ -1,0 +1,205 @@
+@page
+@model DriverRewards.Pages.Driver.OrdersModel
+@{
+    ViewData["Title"] = "Returns & Orders";
+}
+
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+    <div>
+        <h1 class="mb-1">Returns &amp; Orders</h1>
+        <p class="text-muted mb-0">Track current shipments and review where each order is headed.</p>
+    </div>
+    <a asp-page="/Driver/Catalog" class="btn btn-outline-secondary">Continue Shopping</a>
+</div>
+
+@if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+{
+    <div class="alert alert-success">@Model.StatusMessage</div>
+}
+
+@if (!Model.Orders.Any())
+{
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h2 class="h5">No orders yet</h2>
+            <p class="text-muted mb-3">Once you check out, your shipment tracking simulation will show up here.</p>
+            <a asp-page="/Driver/Catalog" class="btn btn-primary">Browse Catalog</a>
+        </div>
+    </div>
+}
+else
+{
+    <div class="row g-4">
+        @foreach (var order in Model.Orders)
+        {
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-3">
+                            <div>
+                                <div class="text-muted small">Tracking Number</div>
+                                <div class="fw-semibold">@order.TrackingNumber</div>
+                            </div>
+                            <div class="text-md-end">
+                                <span class="badge text-bg-primary">@order.Status</span>
+                                <div class="text-muted small mt-2">Estimated delivery @order.EstimatedDeliveryAt.ToLocalTime().ToString("MMM dd, yyyy")</div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between small text-muted mb-1">
+                                <span>Shipment progress</span>
+                                <span>@order.ProgressPercent%</span>
+                            </div>
+                            <div class="progress" role="progressbar" aria-valuenow="@order.ProgressPercent" aria-valuemin="0" aria-valuemax="100" style="height: 10px;">
+                                <div class="progress-bar" style="width: @order.ProgressPercent%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="row g-4">
+                            <div class="col-xl-7">
+                                @if (order.CanRenderMap)
+                                {
+                                    <div class="border rounded overflow-hidden bg-light order-map"
+                                         id="order-map-@order.OrderId"
+                                         style="height: 320px;"
+                                         data-warehouse-lat="@order.WarehouseLatitude"
+                                         data-warehouse-lng="@order.WarehouseLongitude"
+                                         data-destination-lat="@order.DestinationLatitude"
+                                         data-destination-lng="@order.DestinationLongitude"
+                                         data-current-lat="@order.CurrentLatitude"
+                                         data-current-lng="@order.CurrentLongitude"></div>
+                                }
+                                else
+                                {
+                                    <div class="border rounded p-4 bg-light h-100 d-flex align-items-center">
+                                        <div>
+                                            <h2 class="h6">Map unavailable</h2>
+                                            <p class="text-muted mb-0">We could not geocode this destination, but the order is still being tracked with a simulated ETA.</p>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+
+                            <div class="col-xl-5">
+                                <div class="small text-muted mb-2">Shipping to</div>
+                                <div class="fw-semibold mb-3">@order.ShippingLabel</div>
+
+                                <ul class="list-group list-group-flush mb-3">
+                                    @foreach (var step in order.Timeline)
+                                    {
+                                        <li class="list-group-item px-0 d-flex justify-content-between align-items-center">
+                                            <span class="@(step.IsCurrent ? "fw-semibold" : null)">@step.Label</span>
+                                            @if (step.IsComplete)
+                                            {
+                                                <span class="badge text-bg-success">Complete</span>
+                                            }
+                                            else if (step.IsCurrent)
+                                            {
+                                                <span class="badge text-bg-primary">Current</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge text-bg-secondary">Pending</span>
+                                            }
+                                        </li>
+                                    }
+                                </ul>
+
+                                <div class="row row-cols-2 g-3">
+                                    <div class="col">
+                                        <div class="border rounded p-3 h-100">
+                                            <div class="text-muted small">Distance</div>
+                                            <div class="fw-semibold">@order.EstimatedDistanceMiles miles</div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="border rounded p-3 h-100">
+                                            <div class="text-muted small">Total Points</div>
+                                            <div class="fw-semibold">@order.TotalPoints</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        <div class="row g-4">
+                            <div class="col-lg-7">
+                                <h2 class="h6">Items</h2>
+                                <ul class="list-group list-group-flush">
+                                    @foreach (var item in order.Items)
+                                    {
+                                        <li class="list-group-item px-0 d-flex justify-content-between">
+                                            <span>@item.ProductName x @item.Quantity</span>
+                                            <span>@(item.PriceInPoints * item.Quantity) pts</span>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                            <div class="col-lg-5">
+                                <h2 class="h6">Destination</h2>
+                                <p class="text-muted mb-0">@order.ShippingAddress</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+    <script>
+        document.querySelectorAll(".order-map").forEach(function (element) {
+            if (!window.L) {
+                return;
+            }
+
+            const warehouse = [
+                Number(element.dataset.warehouseLat),
+                Number(element.dataset.warehouseLng)
+            ];
+            const destination = [
+                Number(element.dataset.destinationLat),
+                Number(element.dataset.destinationLng)
+            ];
+            const current = [
+                Number(element.dataset.currentLat),
+                Number(element.dataset.currentLng)
+            ];
+
+            const map = L.map(element, { scrollWheelZoom: false });
+            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                maxZoom: 18,
+                attribution: "&copy; OpenStreetMap contributors"
+            }).addTo(map);
+
+            const route = L.polyline([warehouse, destination], {
+                color: "#495057",
+                weight: 4,
+                opacity: 0.65,
+                dashArray: "8 10"
+            }).addTo(map);
+
+            L.marker(warehouse).addTo(map).bindPopup("Warehouse");
+            L.marker(destination).addTo(map).bindPopup("Destination");
+            L.circleMarker(current, {
+                radius: 8,
+                color: "#0d6efd",
+                fillColor: "#0d6efd",
+                fillOpacity: 0.9
+            }).addTo(map).bindPopup("Package");
+
+            map.fitBounds(route.getBounds(), { padding: [30, 30] });
+        });
+    </script>
+}

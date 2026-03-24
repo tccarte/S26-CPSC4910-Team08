@@ -1,5 +1,6 @@
 using DriverRewards.Data;
 using DriverRewards.Models;
+using DriverRewards.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,6 +33,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 builder.Services.AddAuthorization();
 
 builder.Services.AddHttpClient();
+builder.Services.AddHttpClient<ProductCatalogService>();
+builder.Services.AddHttpClient<ShippingTrackingService>();
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())

@@ -84,6 +84,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRHJpdmVyXERhc2hib2FyZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Wwc20/OneDrive/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Driver/Orders.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRHJpdmVyXE9yZGVycy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Wwc20/OneDrive/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Driver/ProductDetails.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRHJpdmVyXFByb2R1Y3REZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -122,6 +126,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/Wwc20/OneDrive/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Sponsor/ManageBehaviors.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3BvbnNvclxNYW5hZ2VCZWhhdmlvcnMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Wwc20/OneDrive/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Sponsor/ManageCatalog.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3BvbnNvclxNYW5hZ2VDYXRhbG9nLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Wwc20/OneDrive/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Sponsor/ManagePoints.cshtml]

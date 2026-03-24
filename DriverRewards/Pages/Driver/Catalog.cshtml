@@ -13,12 +13,24 @@
             <button type="submit" class="btn btn-primary">Search</button>
         </div>
     </form>
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+        <div class="text-muted">
+            @if (!string.IsNullOrWhiteSpace(Model.SponsorName))
+            {
+                <span>Showing catalog for <strong>@Model.SponsorName</strong>.</span>
+            }
+        </div>
+        @if (Model.TotalProducts > 0)
+        {
+            <div class="text-muted small">@Model.TotalProducts item(s), page @Model.PageNumber of @Model.TotalPages</div>
+        }
+    </div>
     <div class="row">
         @if (Model.Products != null && Model.Products.Any())
         {
             foreach (var product in Model.Products)
             {
-                <div class="col-md-4 mb-4">
+                <div class="col-sm-6 col-lg-3 mb-4">
                     <a asp-page="/Driver/ProductDetails" asp-route-id="@product.Id" class="text-decoration-none text-reset">
                     <div class="card h-100 shadow-sm">
                         
@@ -46,7 +58,38 @@
         }
         else
         {
-            <p>No products available in the catalog at this time.</p>
+            <p>No products are available in your sponsor catalog right now.</p>
         }
     </div>
+
+    @if (Model.TotalPages > 1)
+    {
+        <nav aria-label="Catalog pages">
+            <ul class="pagination justify-content-center">
+                <li class="page-item @(Model.HasPreviousPage ? string.Empty : "disabled")">
+                    <a class="page-link"
+                       asp-page="/Driver/Catalog"
+                       asp-route-CurrentPage="@(Model.PageNumber - 1)"
+                       asp-route-SearchQuery="@Model.SearchQuery">Previous</a>
+                </li>
+
+                @for (var pageIndex = 1; pageIndex <= Model.TotalPages; pageIndex++)
+                {
+                    <li class="page-item @(pageIndex == Model.PageNumber ? "active" : string.Empty)">
+                        <a class="page-link"
+                           asp-page="/Driver/Catalog"
+                           asp-route-CurrentPage="@pageIndex"
+                           asp-route-SearchQuery="@Model.SearchQuery">@pageIndex</a>
+                    </li>
+                }
+
+                <li class="page-item @(Model.HasNextPage ? string.Empty : "disabled")">
+                    <a class="page-link"
+                       asp-page="/Driver/Catalog"
+                       asp-route-CurrentPage="@(Model.PageNumber + 1)"
+                       asp-route-SearchQuery="@Model.SearchQuery">Next</a>
+                </li>
+            </ul>
+        </nav>
+    }
 </div>
