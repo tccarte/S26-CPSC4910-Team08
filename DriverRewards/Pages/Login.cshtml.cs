@@ -85,7 +85,7 @@ public class LoginModel : PageModel
             await _context.SaveChangesAsync();
 
             await SignInAsync("Driver", driver.DriverId.ToString(), driver.Username, driver.Email);
-            return RedirectToPage("/Index");
+            return RedirectToPage("/Driver/Dashboard");
         }
 
         if (string.Equals(normalizedRole, "Admin", StringComparison.OrdinalIgnoreCase))
@@ -126,7 +126,7 @@ public class LoginModel : PageModel
         await _context.SaveChangesAsync();
 
         await SignInAsync("Sponsor", sponsor.SponsorId.ToString(), sponsor.Name, sponsor.Email);
-        return RedirectToPage("/Index");
+        return RedirectToPage("/Sponsor/ManagePoints");
     }
 
     private async Task SignInAsync(string role, string id, string displayName, string email)
@@ -155,3 +155,4 @@ public class LoginModel : PageModel
     }
 
 }
+
