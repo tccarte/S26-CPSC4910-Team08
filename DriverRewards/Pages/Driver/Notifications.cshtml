@@ -1,0 +1,91 @@
+@page
+@model DriverRewards.Pages.Driver.NotificationsModel
+@{
+    ViewData["Title"] = "Notifications";
+}
+
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+    <div>
+        <h1 class="mb-1">Notifications</h1>
+        <p class="text-muted mb-0">Manage how you receive alerts and view your notification history.</p>
+    </div>
+</div>
+
+@if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+{
+    <div class="alert alert-success">@Model.StatusMessage</div>
+}
+
+<div class="row g-4">
+    <div class="col-lg-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h2 class="h5 mb-3">Notification Preferences</h2>
+                <form method="post">
+                    <p class="fw-semibold text-muted small text-uppercase mb-2">Points Updates</p>
+                    <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" id="notifyEmailPoints"
+                               name="NotifyEmailPoints" value="true"
+                               @(Model.NotifyEmailPoints ? "checked" : "") />
+                        <label class="form-check-label" for="notifyEmailPoints">Email me when points change</label>
+                    </div>
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input" type="checkbox" id="notifySmsPoints"
+                               name="NotifySmsPoints" value="true"
+                               @(Model.NotifySmsPoints ? "checked" : "") />
+                        <label class="form-check-label" for="notifySmsPoints">Text me when points change</label>
+                    </div>
+
+                    <p class="fw-semibold text-muted small text-uppercase mb-2">Order Confirmations</p>
+                    <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" id="notifyEmailOrder"
+                               name="NotifyEmailOrder" value="true"
+                               @(Model.NotifyEmailOrder ? "checked" : "") />
+                        <label class="form-check-label" for="notifyEmailOrder">Email me when I place an order</label>
+                    </div>
+                    <div class="form-check form-switch mb-4">
+                        <input class="form-check-input" type="checkbox" id="notifySmsOrder"
+                               name="NotifySmsOrder" value="true"
+                               @(Model.NotifySmsOrder ? "checked" : "") />
+                        <label class="form-check-label" for="notifySmsOrder">Text me when I place an order</label>
+                    </div>
+
+                    <p class="text-muted small">SMS notifications require a phone number on your profile.</p>
+
+                    <button type="submit" class="btn btn-primary w-100">Save Preferences</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h2 class="h5 mb-3">Notification History</h2>
+                @if (!Model.History.Any())
+                {
+                    <p class="text-muted mb-0">No notifications yet. You'll see activity here once points are updated or you place an order.</p>
+                }
+                else
+                {
+                    <ul class="list-group list-group-flush">
+                        @foreach (var n in Model.History)
+                        {
+                            <li class="list-group-item px-0">
+                                <div class="d-flex justify-content-between align-items-start gap-2">
+                                    <div>
+                                        <span class="badge @n.BadgeClass me-2">@n.TypeLabel</span>
+                                        <span>@n.Message</span>
+                                    </div>
+                                    <div class="text-muted small text-nowrap">
+                                        @n.CreatedAt.ToLocalTime().ToString("MM/dd/yyyy HH:mm")
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+        </div>
+    </div>
+</div>

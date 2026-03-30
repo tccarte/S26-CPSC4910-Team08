@@ -85,4 +85,16 @@ public class Driver
 
     [Column("num_points")]
     public int? NumPoints { get; set; }
+
+    [Column("notify_email_points")]
+    public bool NotifyEmailPoints { get; set; } = true;
+
+    [Column("notify_sms_points")]
+    public bool NotifySmsPoints { get; set; } = false;
+
+    [Column("notify_email_order")]
+    public bool NotifyEmailOrder { get; set; } = true;
+
+    [Column("notify_sms_order")]
+    public bool NotifySmsOrder { get; set; } = false;
 }

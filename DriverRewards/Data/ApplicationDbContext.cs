@@ -18,6 +18,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Sponsor> Sponsors { get; set; }
     public DbSet<SponsorCatalogProduct> SponsorCatalogProducts { get; set; }
     public DbSet<SponsorChangeRequest> SponsorChangeRequests { get; set; }
+    public DbSet<DriverNotification> DriverNotifications { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -43,6 +44,12 @@ public class ApplicationDbContext : DbContext
             .HasOne(o => o.Driver)
             .WithMany()
             .HasForeignKey(o => o.DriverId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<DriverNotification>()
+            .HasOne(n => n.Driver)
+            .WithMany()
+            .HasForeignKey(n => n.DriverId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

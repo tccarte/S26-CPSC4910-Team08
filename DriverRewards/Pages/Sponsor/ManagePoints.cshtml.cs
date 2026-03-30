@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using DriverRewards.Data;
+using DriverRewards.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -11,10 +12,12 @@ namespace DriverRewards.Pages.Sponsor;
 public class ManagePointsModel : PageModel
 {
     private readonly ApplicationDbContext _context;
+    private readonly NotificationService _notificationService;
 
-    public ManagePointsModel(ApplicationDbContext context)
+    public ManagePointsModel(ApplicationDbContext context, NotificationService notificationService)
     {
         _context = context;
+        _notificationService = notificationService;
     }
 
     public List<DriverRow> Drivers { get; set; } = new();
@@ -71,6 +74,8 @@ public class ManagePointsModel : PageModel
         driver.NumPoints = (driver.NumPoints ?? 0) + PointChange;
 
         await _context.SaveChangesAsync();
+
+        await _notificationService.NotifyPointsChangedAsync(driver, PointChange, _context);
 
         var action = PointChange >= 0 ? "Added" : "Subtracted";
         TempData["StatusMessage"] = $"{action} {Math.Abs(PointChange)} points for {driver.Username}. New total: {driver.NumPoints}.";

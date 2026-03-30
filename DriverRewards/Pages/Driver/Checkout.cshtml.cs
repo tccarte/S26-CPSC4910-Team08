@@ -17,11 +17,13 @@ public class CheckoutModel : PageModel
     private const string CartSessionKey = "DriverCart";
     private readonly ApplicationDbContext _context;
     private readonly ShippingTrackingService _shippingTrackingService;
+    private readonly NotificationService _notificationService;
 
-    public CheckoutModel(ApplicationDbContext context, ShippingTrackingService shippingTrackingService)
+    public CheckoutModel(ApplicationDbContext context, ShippingTrackingService shippingTrackingService, NotificationService notificationService)
     {
         _context = context;
         _shippingTrackingService = shippingTrackingService;
+        _notificationService = notificationService;
     }
 
     public List<CartItem> Items { get; private set; } = new();
@@ -145,6 +147,8 @@ public class CheckoutModel : PageModel
 
         _context.Orders.Add(order);
         await _context.SaveChangesAsync();
+
+        await _notificationService.NotifyOrderPlacedAsync(driver, order, _context);
 
         HttpContext.Session.Remove(CartSessionKey);
         TempData["StatusMessage"] = $"Order {order.TrackingNumber} placed successfully for {PointsToCharge} points.";

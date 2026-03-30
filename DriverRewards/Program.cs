@@ -35,6 +35,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddHttpClient();
 builder.Services.AddHttpClient<ProductCatalogService>();
 builder.Services.AddHttpClient<ShippingTrackingService>();
+builder.Services.AddScoped<DriverRewards.Services.NotificationService>();
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
