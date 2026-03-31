@@ -20,6 +20,68 @@
     <div class="col-12">
         <div class="card shadow-sm">
             <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start gap-3">
+                    <div>
+                        <h2 class="h5 mb-1">Audit Snapshot</h2>
+                        <p class="text-muted mb-0">Recent system activity across data changes, sign-ins, carts, orders, and notifications.</p>
+                    </div>
+                    <a class="btn btn-sm btn-outline-primary" asp-page="/Admin/Audit">Open Audit Center</a>
+                </div>
+
+                <div class="row g-3 mt-1">
+                    <div class="col-md-6 col-xl-3">
+                        <div class="border rounded p-3 h-100">
+                            <div class="text-muted small">Audit Entries (24h)</div>
+                            <div class="fs-4 fw-bold">@Model.AuditEntriesLast24Hours</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xl-3">
+                        <div class="border rounded p-3 h-100">
+                            <div class="text-muted small">Failures / Blocks (24h)</div>
+                            <div class="fs-4 fw-bold text-danger">@Model.FailedAuditEntriesLast24Hours</div>
+                        </div>
+                    </div>
+                </div>
+
+                @if (Model.RecentAuditEntries.Count == 0)
+                {
+                    <p class="text-muted mt-3 mb-0">No audit entries yet.</p>
+                }
+                else
+                {
+                    <div class="table-responsive mt-3">
+                        <table class="table table-sm align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th>When</th>
+                                    <th>Category</th>
+                                    <th>Action</th>
+                                    <th>Actor</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var audit in Model.RecentAuditEntries)
+                                {
+                                    <tr>
+                                        <td>@audit.OccurredAt</td>
+                                        <td>@audit.Category</td>
+                                        <td>@audit.Action</td>
+                                        <td>@audit.Actor</td>
+                                        <td>@audit.Description</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
                 <h2 class="h5">Pending Sponsor Change Requests</h2>
                 @if (Model.PendingRequests.Count == 0)
                 {

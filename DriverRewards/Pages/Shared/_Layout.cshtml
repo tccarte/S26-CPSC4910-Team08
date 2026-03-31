@@ -130,6 +130,9 @@
                                     <a class="dropdown-item" asp-area="" asp-page="/Admin/ManageBehaviors">Manage Behaviors</a>
                                 </li>
                                 <li>
+                                    <a class="dropdown-item" asp-area="" asp-page="/Admin/Audit">Audit Center</a>
+                                </li>
+                                <li>
                                     <a class="dropdown-item" asp-area="" asp-page="/Admin/Settings">Settings</a>
                                 </li>
                             </ul>
@@ -157,7 +160,7 @@
                                 <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/Login">Account &amp; Login</a>
                             }
 
-                            <a class="dr-link dr-link-plain dr-nav-item dr-link-dark" href="#">Returns &amp; Orders</a>
+                            <a class="dr-link dr-link-plain dr-nav-item dr-link-dark" asp-area="" asp-page="/Driver/Orders">Returns &amp; Orders</a>
                             <a class="dr-link dr-link-plain dr-nav-item dr-link-dark" asp-area="" asp-page="/Driver/Cart">Cart</a>
                         </div>
                     }

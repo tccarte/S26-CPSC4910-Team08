@@ -196,3 +196,10 @@ C:\Users\Wwc20\OneDrive\Documents\GitHub\S26-CPSC4910-Team08\DriverRewards\obj\D
 C:\Users\Wwc20\OneDrive\Documents\GitHub\S26-CPSC4910-Team08\DriverRewards\obj\Debug\net9.0\ref\DriverRewards.dll
 C:\Users\Wwc20\OneDrive\Documents\GitHub\S26-CPSC4910-Team08\DriverRewards\obj\Debug\net9.0\compressed\kbfwmze3y5-qm2hqorrtz.gz
 C:\Users\Wwc20\OneDrive\Documents\GitHub\S26-CPSC4910-Team08\DriverRewards\obj\Debug\net9.0\compressed\86yls0y489-qm2hqorrtz.gz
+C:\Users\Wwc20\OneDrive\Documents\GitHub\S26-CPSC4910-Team08\DriverRewards\bin\Debug\net9.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\Wwc20\OneDrive\Documents\GitHub\S26-CPSC4910-Team08\DriverRewards\bin\Debug\net9.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\Wwc20\OneDrive\Documents\GitHub\S26-CPSC4910-Team08\DriverRewards\bin\Debug\net9.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\Wwc20\OneDrive\Documents\GitHub\S26-CPSC4910-Team08\DriverRewards\bin\Debug\net9.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\Wwc20\OneDrive\Documents\GitHub\S26-CPSC4910-Team08\DriverRewards\bin\Debug\net9.0\Newtonsoft.Json.dll
+C:\Users\Wwc20\OneDrive\Documents\GitHub\S26-CPSC4910-Team08\DriverRewards\bin\Debug\net9.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\Wwc20\OneDrive\Documents\GitHub\S26-CPSC4910-Team08\DriverRewards\bin\Debug\net9.0\Twilio.dll

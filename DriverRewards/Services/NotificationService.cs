@@ -11,11 +11,13 @@ public class NotificationService
 {
     private readonly IConfiguration _config;
     private readonly ILogger<NotificationService> _logger;
+    private readonly AuditService _auditService;
 
-    public NotificationService(IConfiguration config, ILogger<NotificationService> logger)
+    public NotificationService(IConfiguration config, ILogger<NotificationService> logger, AuditService auditService)
     {
         _config = config;
         _logger = logger;
+        _auditService = auditService;
     }
 
     public async Task NotifyPointsChangedAsync(Driver driver, int pointChange, ApplicationDbContext context)
@@ -75,6 +77,11 @@ public class NotificationService
         if (string.IsNullOrWhiteSpace(host) || string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
         {
             _logger.LogWarning("SMTP not configured. Skipping email to {To}.", toAddress);
+            await _auditService.LogEventAsync(
+                category: "Notification",
+                action: "EmailSkipped",
+                description: $"Skipped email to {toAddress} because SMTP is not configured.",
+                metadata: new { Channel = "Email", Recipient = toAddress, Subject = subject });
             return;
         }
 
@@ -99,10 +106,20 @@ public class NotificationService
             mail.To.Add(toAddress);
 
             await client.SendMailAsync(mail);
+            await _auditService.LogEventAsync(
+                category: "Notification",
+                action: "EmailSent",
+                description: $"Sent email to {toAddress}.",
+                metadata: new { Channel = "Email", Recipient = toAddress, Subject = subject });
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to send email to {To}.", toAddress);
+            await _auditService.LogEventAsync(
+                category: "Notification",
+                action: "EmailFailed",
+                description: $"Email delivery failed for {toAddress}.",
+                metadata: new { Channel = "Email", Recipient = toAddress, Subject = subject, ex.Message });
         }
     }
 
@@ -117,6 +134,11 @@ public class NotificationService
             string.IsNullOrWhiteSpace(authToken) || string.IsNullOrWhiteSpace(fromPhone))
         {
             _logger.LogWarning("Twilio not configured. Skipping SMS to {To}.", toPhone);
+            await _auditService.LogEventAsync(
+                category: "Notification",
+                action: "SmsSkipped",
+                description: $"Skipped SMS to {toPhone} because Twilio is not configured.",
+                metadata: new { Channel = "Sms", Recipient = toPhone });
             return;
         }
 
@@ -128,10 +150,20 @@ public class NotificationService
                 from: new Twilio.Types.PhoneNumber(fromPhone),
                 to: new Twilio.Types.PhoneNumber(toPhone)
             );
+            await _auditService.LogEventAsync(
+                category: "Notification",
+                action: "SmsSent",
+                description: $"Sent SMS to {toPhone}.",
+                metadata: new { Channel = "Sms", Recipient = toPhone });
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to send SMS to {To}.", toPhone);
+            await _auditService.LogEventAsync(
+                category: "Notification",
+                action: "SmsFailed",
+                description: $"SMS delivery failed for {toPhone}.",
+                metadata: new { Channel = "Sms", Recipient = toPhone, ex.Message });
         }
     }
 }

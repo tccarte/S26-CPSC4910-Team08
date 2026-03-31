@@ -82,6 +82,10 @@
             "Pomelo.EntityFrameworkCore.MySql": {
               "target": "Package",
               "version": "[9.0.0, )"
+            },
+            "Twilio": {
+              "target": "Package",
+              "version": "[7.5.1, )"
             }
           },
           "imports": [

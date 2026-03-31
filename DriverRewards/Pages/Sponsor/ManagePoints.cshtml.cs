@@ -13,11 +13,13 @@ public class ManagePointsModel : PageModel
 {
     private readonly ApplicationDbContext _context;
     private readonly NotificationService _notificationService;
+    private readonly AuditService _auditService;
 
-    public ManagePointsModel(ApplicationDbContext context, NotificationService notificationService)
+    public ManagePointsModel(ApplicationDbContext context, NotificationService notificationService, AuditService auditService)
     {
         _context = context;
         _notificationService = notificationService;
+        _auditService = auditService;
     }
 
     public List<DriverRow> Drivers { get; set; } = new();
@@ -71,9 +73,27 @@ public class ManagePointsModel : PageModel
             return RedirectToPage();
         }
 
+        var previousPoints = driver.NumPoints ?? 0;
         driver.NumPoints = (driver.NumPoints ?? 0) + PointChange;
 
         await _context.SaveChangesAsync();
+        await _auditService.LogEventAsync(
+            category: "Points",
+            action: "SponsorAdjustment",
+            description: $"{sponsorName} adjusted {driver.Username} by {PointChange} points.",
+            entityType: "Driver",
+            entityId: driver.DriverId.ToString(),
+            changes: new
+            {
+                PreviousPoints = previousPoints,
+                NewPoints = driver.NumPoints ?? 0,
+                PointChange
+            },
+            metadata: new
+            {
+                Sponsor = sponsorName,
+                Reason = string.IsNullOrWhiteSpace(Reason) ? null : Reason.Trim()
+            });
 
         await _notificationService.NotifyPointsChangedAsync(driver, PointChange, _context);
 

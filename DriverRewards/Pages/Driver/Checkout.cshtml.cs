@@ -18,12 +18,18 @@ public class CheckoutModel : PageModel
     private readonly ApplicationDbContext _context;
     private readonly ShippingTrackingService _shippingTrackingService;
     private readonly NotificationService _notificationService;
+    private readonly AuditService _auditService;
 
-    public CheckoutModel(ApplicationDbContext context, ShippingTrackingService shippingTrackingService, NotificationService notificationService)
+    public CheckoutModel(
+        ApplicationDbContext context,
+        ShippingTrackingService shippingTrackingService,
+        NotificationService notificationService,
+        AuditService auditService)
     {
         _context = context;
         _shippingTrackingService = shippingTrackingService;
         _notificationService = notificationService;
+        _auditService = auditService;
     }
 
     public List<CartItem> Items { get; private set; } = new();
@@ -147,6 +153,19 @@ public class CheckoutModel : PageModel
 
         _context.Orders.Add(order);
         await _context.SaveChangesAsync();
+        await _auditService.LogEventAsync(
+            category: "Commerce",
+            action: "CheckoutCompleted",
+            description: $"Order {order.TrackingNumber} placed for {PointsToCharge} points.",
+            entityType: "Order",
+            entityId: order.OrderId.ToString(),
+            metadata: new
+            {
+                order.TrackingNumber,
+                order.TotalPoints,
+                ItemCount = order.Items.Sum(i => i.Quantity),
+                DriverId = driver.DriverId
+            });
 
         await _notificationService.NotifyOrderPlacedAsync(driver, order, _context);
 

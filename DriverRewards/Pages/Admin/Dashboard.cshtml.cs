@@ -1,5 +1,6 @@
 using DriverRewards.Data;
 using DriverRewards.Models;
+using DriverRewards.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -11,16 +12,21 @@ namespace DriverRewards.Pages.Admin;
 public class DashboardModel : PageModel
 {
     private readonly ApplicationDbContext _context;
+    private readonly AuditService _auditService;
 
-    public DashboardModel(ApplicationDbContext context)
+    public DashboardModel(ApplicationDbContext context, AuditService auditService)
     {
         _context = context;
+        _auditService = auditService;
     }
 
     public List<DriverRow> Drivers { get; private set; } = new();
     public List<SponsorRow> Sponsors { get; private set; } = new();
     public List<RequestRow> PendingRequests { get; private set; } = new();
     public List<PendingSponsorRow> PendingSponsors { get; private set; } = new();
+    public List<AuditPreviewRow> RecentAuditEntries { get; private set; } = new();
+    public int AuditEntriesLast24Hours { get; private set; }
+    public int FailedAuditEntriesLast24Hours { get; private set; }
 
     [TempData]
     public string? StatusMessage { get; set; }
@@ -44,6 +50,26 @@ public class DashboardModel : PageModel
         var requests = await _context.SponsorChangeRequests.AsNoTracking()
             .Where(r => r.Status == "Pending")
             .OrderByDescending(r => r.CreatedAt)
+            .ToListAsync();
+
+        var auditSince = DateTime.UtcNow.AddHours(-24);
+        AuditEntriesLast24Hours = await _context.AuditLogs.AsNoTracking()
+            .CountAsync(a => a.OccurredAt >= auditSince);
+        FailedAuditEntriesLast24Hours = await _context.AuditLogs.AsNoTracking()
+            .CountAsync(a => a.OccurredAt >= auditSince && (a.Action.Contains("Failed") || a.Action.Contains("Blocked")));
+        RecentAuditEntries = await _context.AuditLogs.AsNoTracking()
+            .OrderByDescending(a => a.OccurredAt)
+            .Take(8)
+            .Select(a => new AuditPreviewRow
+            {
+                OccurredAt = FormatDateTime(a.OccurredAt),
+                Category = a.Category,
+                Action = a.Action,
+                Actor = string.IsNullOrWhiteSpace(a.ActorType)
+                    ? "System"
+                    : $"{a.ActorType} {a.ActorName ?? a.ActorId ?? "Unknown"}",
+                Description = a.Description ?? string.Empty
+            })
             .ToListAsync();
 
         var driverLookup = drivers.ToDictionary(d => d.DriverId, d => d);
@@ -137,6 +163,15 @@ public class DashboardModel : PageModel
         public string Note { get; set; } = string.Empty;
     }
 
+    public class AuditPreviewRow
+    {
+        public string OccurredAt { get; set; } = string.Empty;
+        public string Category { get; set; } = string.Empty;
+        public string Action { get; set; } = string.Empty;
+        public string Actor { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+    }
+
     public async Task<IActionResult> OnPostApproveSponsorAsync(int sponsorId)
     {
         var sponsor = await _context.Sponsors.FirstOrDefaultAsync(s => s.SponsorId == sponsorId);
@@ -192,6 +227,17 @@ public class DashboardModel : PageModel
 
         driver.NumPoints = (driver.NumPoints ?? 0) + pointsToAdd;
         await _context.SaveChangesAsync();
+        await _auditService.LogEventAsync(
+            category: "Points",
+            action: "AdminAdjustment",
+            description: $"Admin added {pointsToAdd} points to {driver.Username}.",
+            entityType: "Driver",
+            entityId: driver.DriverId.ToString(),
+            changes: new
+            {
+                AddedPoints = pointsToAdd,
+                NewPoints = driver.NumPoints ?? 0
+            });
 
         StatusMessage = $"Added {pointsToAdd} points to {driver.Username}. New total: {driver.NumPoints}.";
         return RedirectToPage();

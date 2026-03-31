@@ -32,6 +32,10 @@ build_property.EnableCodeStyleSeverity =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWJvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Wwc20/OneDrive/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Admin/Audit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cQXVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Wwc20/OneDrive/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Admin/CreateAdmin.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cQ3JlYXRlQWRtaW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -82,6 +86,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/Wwc20/OneDrive/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Driver/Dashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRHJpdmVyXERhc2hib2FyZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Wwc20/OneDrive/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Driver/Notifications.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRHJpdmVyXE5vdGlmaWNhdGlvbnMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Wwc20/OneDrive/Documents/GitHub/S26-CPSC4910-Team08/DriverRewards/Pages/Driver/Orders.cshtml]

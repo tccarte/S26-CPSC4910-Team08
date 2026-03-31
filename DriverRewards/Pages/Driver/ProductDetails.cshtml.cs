@@ -16,11 +16,13 @@ public class ProductDetailsModel : PageModel
     private const string CartSessionKey = "DriverCart";
     private readonly ApplicationDbContext _context;
     private readonly ProductCatalogService _productCatalogService;
+    private readonly AuditService _auditService;
 
-    public ProductDetailsModel(ApplicationDbContext context, ProductCatalogService productCatalogService)
+    public ProductDetailsModel(ApplicationDbContext context, ProductCatalogService productCatalogService, AuditService auditService)
     {
         _context = context;
         _productCatalogService = productCatalogService;
+        _auditService = auditService;
     }
 
     public Product? Product { get; private set; }
@@ -79,6 +81,13 @@ public class ProductDetailsModel : PageModel
         }
 
         HttpContext.Session.SetJson(CartSessionKey, cart);
+        await _auditService.LogEventAsync(
+            category: "Cart",
+            action: "AddItem",
+            description: $"{product.Name} added to cart.",
+            entityType: "Product",
+            entityId: product.Id.ToString(),
+            metadata: new { product.Name, product.PriceInPoints, Quantity = existingItem?.Quantity ?? 1 });
         StatusMessage = $"{product.Name} added to cart.";
 
         return RedirectToPage(new { id });

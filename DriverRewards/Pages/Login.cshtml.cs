@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using DriverRewards.Data;
+using DriverRewards.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
@@ -13,11 +14,13 @@ public class LoginModel : PageModel
 {
     private readonly ApplicationDbContext _context;
     private readonly ILogger<LoginModel> _logger;
+    private readonly AuditService _auditService;
 
-    public LoginModel(ApplicationDbContext context, ILogger<LoginModel> logger)
+    public LoginModel(ApplicationDbContext context, ILogger<LoginModel> logger, AuditService auditService)
     {
         _context = context;
         _logger = logger;
+        _auditService = auditService;
     }
 
     [BindProperty]
@@ -77,12 +80,25 @@ public class LoginModel : PageModel
 
             if (driver == null || !BCrypt.Net.BCrypt.Verify(password, driver.PasswordHash))
             {
+                await _auditService.LogEventAsync(
+                    category: "Authentication",
+                    action: "LoginFailed",
+                    description: $"Failed driver login for {email}.",
+                    entityType: "Driver",
+                    changes: new { Email = email, Role = "Driver" });
                 StatusMessage = "Invalid email or password.";
                 return Page();
             }
 
             driver.LastLoginAt = DateTime.UtcNow;
             await _context.SaveChangesAsync();
+            await _auditService.LogEventAsync(
+                category: "Authentication",
+                action: "LoginSucceeded",
+                description: $"Driver {driver.Username} signed in.",
+                entityType: "Driver",
+                entityId: driver.DriverId.ToString(),
+                metadata: new { driver.Email });
 
             await SignInAsync("Driver", driver.DriverId.ToString(), driver.Username, driver.Email);
             return RedirectToPage("/Driver/Dashboard");
@@ -95,14 +111,27 @@ public class LoginModel : PageModel
 
             if (admin == null || !BCrypt.Net.BCrypt.Verify(password, admin.PasswordHash))
             {
+                await _auditService.LogEventAsync(
+                    category: "Authentication",
+                    action: "LoginFailed",
+                    description: $"Failed admin login for {email}.",
+                    entityType: "Admin",
+                    changes: new { Email = email, Role = "Admin" });
                 StatusMessage = "Invalid email or password.";
                 return Page();
             }
 
+            var displayName = string.IsNullOrWhiteSpace(admin.DisplayName) ? "Admin" : admin.DisplayName;
             admin.LastLoginAt = DateTime.UtcNow;
             await _context.SaveChangesAsync();
+            await _auditService.LogEventAsync(
+                category: "Authentication",
+                action: "LoginSucceeded",
+                description: $"Admin {displayName} signed in.",
+                entityType: "Admin",
+                entityId: admin.AdminId.ToString(),
+                metadata: new { admin.Email });
 
-            var displayName = string.IsNullOrWhiteSpace(admin.DisplayName) ? "Admin" : admin.DisplayName;
             await SignInAsync("Admin", admin.AdminId.ToString(), displayName, admin.Email);
             return RedirectToPage("/Admin/Dashboard");
         }
@@ -112,18 +141,38 @@ public class LoginModel : PageModel
 
         if (sponsor == null || !BCrypt.Net.BCrypt.Verify(password, sponsor.PasswordHash))
         {
+            await _auditService.LogEventAsync(
+                category: "Authentication",
+                action: "LoginFailed",
+                description: $"Failed sponsor login for {email}.",
+                entityType: "Sponsor",
+                changes: new { Email = email, Role = "Sponsor" });
             StatusMessage = "Invalid email or password.";
             return Page();
         }
 
         if (!sponsor.IsApproved)
         {
+            await _auditService.LogEventAsync(
+                category: "Authentication",
+                action: "LoginBlocked",
+                description: $"Unapproved sponsor login blocked for {sponsor.Name}.",
+                entityType: "Sponsor",
+                entityId: sponsor.SponsorId.ToString(),
+                metadata: new { sponsor.Email, sponsor.IsApproved });
             StatusMessage = "Your sponsor account is pending admin approval.";
             return Page();
         }
 
         sponsor.LastLoginAt = DateTime.UtcNow;
         await _context.SaveChangesAsync();
+        await _auditService.LogEventAsync(
+            category: "Authentication",
+            action: "LoginSucceeded",
+            description: $"Sponsor {sponsor.Name} signed in.",
+            entityType: "Sponsor",
+            entityId: sponsor.SponsorId.ToString(),
+            metadata: new { sponsor.Email });
 
         await SignInAsync("Sponsor", sponsor.SponsorId.ToString(), sponsor.Name, sponsor.Email);
         return RedirectToPage("/Sponsor/ManagePoints");

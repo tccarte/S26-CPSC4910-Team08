@@ -14,11 +14,13 @@ public class ManageCatalogModel : PageModel
 {
     private readonly ApplicationDbContext _context;
     private readonly ProductCatalogService _productCatalogService;
+    private readonly AuditService _auditService;
 
-    public ManageCatalogModel(ApplicationDbContext context, ProductCatalogService productCatalogService)
+    public ManageCatalogModel(ApplicationDbContext context, ProductCatalogService productCatalogService, AuditService auditService)
     {
         _context = context;
         _productCatalogService = productCatalogService;
+        _auditService = auditService;
     }
 
     public string SponsorName { get; private set; } = string.Empty;
@@ -72,6 +74,17 @@ public class ManageCatalogModel : PageModel
         }
 
         await _context.SaveChangesAsync();
+        await _auditService.LogEventAsync(
+            category: "Catalog",
+            action: "CatalogPublished",
+            description: $"{sponsor.Name} saved {distinctSelectedIds.Count} catalog product(s).",
+            entityType: "Sponsor",
+            entityId: sponsor.SponsorId.ToString(),
+            changes: new
+            {
+                PreviousProductIds = existingSelections.Select(s => s.ProductId).OrderBy(id => id).ToList(),
+                NewProductIds = distinctSelectedIds.OrderBy(id => id).ToList()
+            });
 
         TempData["StatusMessage"] = distinctSelectedIds.Count == 0
             ? "Your driver catalog is now empty."

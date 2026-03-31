@@ -1,0 +1,162 @@
+@page
+@model DriverRewards.Pages.Admin.AuditModel
+@{
+    ViewData["Title"] = "Audit Center";
+}
+
+<div class="row g-4">
+    <div class="col-12">
+        <h1 class="h3 mb-1">Audit Center</h1>
+        <p class="text-muted mb-0">Monitor account activity, data changes, cart activity, orders, and delivery attempts.</p>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <div class="text-muted small">Total Entries</div>
+                <div class="fs-3 fw-bold">@Model.TotalEntries</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <div class="text-muted small">Last 24 Hours</div>
+                <div class="fs-3 fw-bold">@Model.EntriesLast24Hours</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <div class="text-muted small">Data Changes (24h)</div>
+                <div class="fs-3 fw-bold">@Model.DataChangesLast24Hours</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <div class="text-muted small">Failures / Blocks (24h)</div>
+                <div class="fs-3 fw-bold text-danger">@Model.FailedEventsLast24Hours</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form method="get" class="row g-3 align-items-end">
+                    <div class="col-md-3">
+                        <label class="form-label" for="category">Category</label>
+                        <select class="form-select" id="category" name="Category">
+                            <option value="">All</option>
+                            @foreach (var category in Model.Categories)
+                            {
+                                if (Model.Category == category)
+                                {
+                                    <option value="@category" selected>@category</option>
+                                }
+                                else
+                                {
+                                    <option value="@category">@category</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label" for="actorType">Actor Type</label>
+                        <select class="form-select" id="actorType" name="ActorType">
+                            <option value="">All</option>
+                            @foreach (var actorType in Model.ActorTypes)
+                            {
+                                if (Model.ActorType == actorType)
+                                {
+                                    <option value="@actorType" selected>@actorType</option>
+                                }
+                                else
+                                {
+                                    <option value="@actorType">@actorType</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label" for="search">Search</label>
+                        <input class="form-control" id="search" name="Search" value="@Model.Search" placeholder="Actor, entity, action, or text" />
+                    </div>
+                    <div class="col-md-2 d-grid">
+                        <button type="submit" class="btn btn-primary">Filter</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="h5 mb-0">Recent Entries</h2>
+                    <span class="text-muted small">Showing up to 200 entries</span>
+                </div>
+
+                @if (Model.AuditEntries.Count == 0)
+                {
+                    <p class="text-muted mb-0">No audit entries match the current filters.</p>
+                }
+                else
+                {
+                    <div class="table-responsive">
+                        <table class="table table-sm align-middle">
+                            <thead>
+                                <tr>
+                                    <th>When</th>
+                                    <th>Category</th>
+                                    <th>Action</th>
+                                    <th>Actor</th>
+                                    <th>Entity</th>
+                                    <th>Description</th>
+                                    <th>Route</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var entry in Model.AuditEntries)
+                                {
+                                    <tr>
+                                        <td>@entry.OccurredAt.ToLocalTime().ToString("MM/dd/yyyy HH:mm:ss")</td>
+                                        <td>@entry.Category</td>
+                                        <td>@entry.Action</td>
+                                        <td>@entry.Actor</td>
+                                        <td>@entry.Entity</td>
+                                        <td>
+                                            <div>@entry.Description</div>
+                                            @if (!string.IsNullOrWhiteSpace(entry.ChangesJson))
+                                            {
+                                                <details class="mt-1">
+                                                    <summary>Changes</summary>
+                                                    <pre class="small mb-0">@entry.ChangesJson</pre>
+                                                </details>
+                                            }
+                                            @if (!string.IsNullOrWhiteSpace(entry.MetadataJson))
+                                            {
+                                                <details class="mt-1">
+                                                    <summary>Metadata</summary>
+                                                    <pre class="small mb-0">@entry.MetadataJson</pre>
+                                                </details>
+                                            }
+                                        </td>
+                                        <td>@entry.RequestPath</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

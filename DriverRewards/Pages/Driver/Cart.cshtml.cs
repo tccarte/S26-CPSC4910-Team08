@@ -2,6 +2,7 @@ using System.Security.Claims;
 using DriverRewards.Data;
 using DriverRewards.Extensions;
 using DriverRewards.Models;
+using DriverRewards.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -14,10 +15,12 @@ public class CartModel : PageModel
 {
     private const string CartSessionKey = "DriverCart";
     private readonly ApplicationDbContext _context;
+    private readonly AuditService _auditService;
 
-    public CartModel(ApplicationDbContext context)
+    public CartModel(ApplicationDbContext context, AuditService auditService)
     {
         _context = context;
+        _auditService = auditService;
     }
 
     public List<CartItem> Items { get; private set; } = new();
@@ -41,17 +44,34 @@ public class CartModel : PageModel
         return Page();
     }
 
-    public IActionResult OnPostRemove(int productId)
+    public async Task<IActionResult> OnPostRemove(int productId)
     {
         LoadCart();
+        var removedItem = Items.FirstOrDefault(i => i.ProductId == productId);
         Items.RemoveAll(i => i.ProductId == productId);
         HttpContext.Session.SetJson(CartSessionKey, Items);
+        if (removedItem != null)
+        {
+            await _auditService.LogEventAsync(
+                category: "Cart",
+                action: "RemoveItem",
+                description: $"Removed {removedItem.Name} from cart.",
+                entityType: "Product",
+                entityId: removedItem.ProductId.ToString(),
+                metadata: new { removedItem.Name, removedItem.Quantity, removedItem.PriceInPoints });
+        }
         return RedirectToPage();
     }
 
-    public IActionResult OnPostClear()
+    public async Task<IActionResult> OnPostClear()
     {
+        LoadCart();
         HttpContext.Session.Remove(CartSessionKey);
+        await _auditService.LogEventAsync(
+            category: "Cart",
+            action: "Clear",
+            description: $"Cleared cart with {Items.Count} item(s).",
+            metadata: new { ItemCount = Items.Count, TotalPoints });
         return RedirectToPage();
     }
 
