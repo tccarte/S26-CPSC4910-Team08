@@ -44,16 +44,22 @@ public class NotificationsModel : PageModel
         NotifyEmailOrder = driver.NotifyEmailOrder;
         NotifySmsOrder = driver.NotifySmsOrder;
 
-        History = await _context.DriverNotifications
+        var notifications = await _context.DriverNotifications
             .Where(n => n.DriverId == driver.DriverId)
             .OrderByDescending(n => n.CreatedAt)
-            .Select(n => new NotificationRow
-            {
-                Type = n.Type,
-                Message = n.Message,
-                CreatedAt = n.CreatedAt
-            })
             .ToListAsync();
+
+        foreach (var n in notifications.Where(n => !n.IsRead))
+            n.IsRead = true;
+
+        await _context.SaveChangesAsync();
+
+        History = notifications.Select(n => new NotificationRow
+        {
+            Type = n.Type,
+            Message = n.Message,
+            CreatedAt = n.CreatedAt
+        }).ToList();
 
         return Page();
     }
@@ -71,6 +77,22 @@ public class NotificationsModel : PageModel
         await _context.SaveChangesAsync();
 
         StatusMessage = "Notification preferences saved.";
+        return RedirectToPage();
+    }
+
+    public async Task<IActionResult> OnPostDeleteAllAsync()
+    {
+        var driver = await GetCurrentDriverAsync();
+        if (driver == null) return Challenge();
+
+        var notifications = await _context.DriverNotifications
+            .Where(n => n.DriverId == driver.DriverId)
+            .ToListAsync();
+
+        _context.DriverNotifications.RemoveRange(notifications);
+        await _context.SaveChangesAsync();
+
+        StatusMessage = "All notifications deleted.";
         return RedirectToPage();
     }
 

@@ -14,6 +14,7 @@
     var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
     var showDriverBalanceWidget = false;
     var driverBalancePoints = 0;
+    var unreadNotificationCount = 0;
     var searchActionPage = User.IsInRole("Driver") ? "/Driver/Catalog" : "/Index";
     var searchQueryValue = Context.Request.Query["SearchQuery"].ToString();
 
@@ -42,6 +43,9 @@
                 {
                     driverBalancePoints = driver.NumPoints ?? 0;
                     showDriverBalanceWidget = true;
+
+                    unreadNotificationCount = await DbContext.DriverNotifications
+                        .CountAsync(n => n.DriverId == driverId && !n.IsRead);
                 }
             }
         }
@@ -84,7 +88,13 @@
                                     <a class="dropdown-item" asp-area="" asp-page="/Driver/Catalog">Catalog</a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" asp-area="" asp-page="/Driver/Notifications">Notifications</a>
+                                    <a class="dropdown-item d-flex align-items-center gap-2" asp-area="" asp-page="/Driver/Notifications">
+                                        Notifications
+                                        @if (unreadNotificationCount > 0)
+                                        {
+                                            <span class="rounded-circle bg-danger" style="width:10px;height:10px;display:inline-block;flex-shrink:0;" title="@unreadNotificationCount unread"></span>
+                                        }
+                                    </a>
                                 </li>
                             </ul>
                         </div>

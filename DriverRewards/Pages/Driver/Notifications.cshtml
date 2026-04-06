@@ -61,7 +61,15 @@
     <div class="col-lg-8">
         <div class="card shadow-sm">
             <div class="card-body">
-                <h2 class="h5 mb-3">Notification History</h2>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="h5 mb-0">Notification History</h2>
+                    @if (Model.History.Any())
+                    {
+                        <form method="post" asp-page-handler="DeleteAll" onsubmit="return confirm('Delete all notifications?');">
+                            <button type="submit" class="btn btn-sm btn-outline-danger">Delete All</button>
+                        </form>
+                    }
+                </div>
                 @if (!Model.History.Any())
                 {
                     <p class="text-muted mb-0">No notifications yet. You'll see activity here once points are updated or you place an order.</p>

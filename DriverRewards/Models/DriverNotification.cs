@@ -26,5 +26,8 @@ public class DriverNotification
     [Column("created_at")]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
+    [Column("is_read")]
+    public bool IsRead { get; set; } = false;
+
     public Driver Driver { get; set; } = null!;
 }
