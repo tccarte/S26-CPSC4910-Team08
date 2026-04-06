@@ -1,0 +1,95 @@
+@page
+@model DriverRewards.Pages.Sponsor.HelpModel
+@{
+    ViewData["Title"] = "Sponsor Help";
+}
+
+<div class="mb-4">
+    <h1 class="mb-1">Sponsor Help Guide</h1>
+    <p class="text-muted">Everything you need to know about managing your DriverRewards organization.</p>
+</div>
+
+<div class="row g-4">
+
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h2 class="h5 mb-3">Getting Started</h2>
+                <p>As a sponsor, you manage a fleet of drivers and reward them with points for safe and consistent driving behaviors. Points can be redeemed by drivers in your product catalog. Use the <strong>My Organization</strong> menu in the navigation bar to access all sponsor tools.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h2 class="h5 mb-3">Managing Points</h2>
+                <p class="text-muted small">My Organization &rarr; Manage Points</p>
+                <ul class="mb-0">
+                    <li class="mb-2">Search for a driver by name or email to pull up their account.</li>
+                    <li class="mb-2">Enter a positive number to <strong>add</strong> points or a negative number to <strong>deduct</strong> points.</li>
+                    <li class="mb-2">Include a reason so the driver knows why their balance changed — this appears in their notification history.</li>
+                    <li>All point changes are logged in the audit trail.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h2 class="h5 mb-3">Managing Behaviors</h2>
+                <p class="text-muted small">My Organization &rarr; Manage Behaviors</p>
+                <ul class="mb-0">
+                    <li class="mb-2">Behaviors are driving actions that earn drivers points (e.g. "No speeding", "On-time delivery").</li>
+                    <li class="mb-2">Create a new behavior by giving it a name, description, and point value.</li>
+                    <li class="mb-2">Edit or delete existing behaviors at any time.</li>
+                    <li>Drivers can view your active behaviors on their Earning Behaviors page.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h2 class="h5 mb-3">Managing Your Catalog</h2>
+                <p class="text-muted small">My Organization &rarr; Manage Catalog</p>
+                <ul class="mb-0">
+                    <li class="mb-2">Your catalog is the list of products drivers can redeem their points for.</li>
+                    <li class="mb-2">Add products by entering a name, point cost, and description.</li>
+                    <li class="mb-2">Edit or remove products as your inventory changes.</li>
+                    <li>Drivers browse and order from your catalog using their point balance.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h2 class="h5 mb-3">Account Settings</h2>
+                <p class="text-muted small">My Organization &rarr; Settings</p>
+                <ul class="mb-0">
+                    <li class="mb-2">View your organization name and email address on file.</li>
+                    <li class="mb-2">Contact an admin if you need to update your account details.</li>
+                    <li>You can permanently delete your sponsor account from the Settings page — this cannot be undone.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card shadow-sm border-primary">
+            <div class="card-body">
+                <h2 class="h5 mb-3">Tips</h2>
+                <ul class="mb-0">
+                    <li class="mb-2">Drivers receive an in-app notification whenever their points are updated, so they stay informed without you needing to reach out manually.</li>
+                    <li class="mb-2">Keep behavior point values consistent so drivers can plan their redemptions.</li>
+                    <li>If a driver reports a missing point update, check the audit log under the admin panel for a full history of changes.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>

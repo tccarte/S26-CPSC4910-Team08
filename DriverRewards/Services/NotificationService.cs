@@ -20,6 +20,25 @@ public class NotificationService
         _auditService = auditService;
     }
 
+    public async Task SendBulkMessageAsync(Driver driver, string message, ApplicationDbContext context)
+    {
+        var notification = new DriverNotification
+        {
+            DriverId = driver.DriverId,
+            Type = "SponsorMessage",
+            Message = message,
+            CreatedAt = DateTime.UtcNow
+        };
+        context.DriverNotifications.Add(notification);
+        await context.SaveChangesAsync();
+
+        if (driver.NotifyEmailPoints)
+            await SendEmailAsync(driver.Email, "Message from your Sponsor", message);
+
+        if (driver.NotifySmsPoints && !string.IsNullOrWhiteSpace(driver.Phone))
+            await SendSmsAsync(driver.Phone, $"DriverRewards: {message}");
+    }
+
     public async Task NotifyPointsChangedAsync(Driver driver, int pointChange, ApplicationDbContext context)
     {
         var direction = pointChange >= 0 ? "added" : "removed";

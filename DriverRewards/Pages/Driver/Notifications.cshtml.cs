@@ -119,6 +119,7 @@ public class NotificationsModel : PageModel
         {
             "PointsChanged" => "Points Update",
             "OrderPlaced" => "Order Placed",
+            "SponsorMessage" => "Sponsor",
             _ => Type
         };
 
@@ -126,6 +127,7 @@ public class NotificationsModel : PageModel
         {
             "PointsChanged" => "text-bg-success",
             "OrderPlaced" => "text-bg-primary",
+            "SponsorMessage" => "text-bg-warning",
             _ => "text-bg-secondary"
         };
     }
