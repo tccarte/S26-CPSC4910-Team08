@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using DriverRewards.Data;
+using Microsoft.EntityFrameworkCore;
 using SponsorEntity = DriverRewards.Models.Sponsor;
 
 namespace DriverRewards.Pages.Admin
@@ -14,13 +15,13 @@ namespace DriverRewards.Pages.Admin
             _context = context;
         }
 
+        [BindProperty]
+        public SponsorEntity Sponsor { get; set; } = default!;
+
         public IActionResult OnGet()
         {
             return Page();
         }
-
-        [BindProperty]
-        public SponsorEntity Sponsor { get; set; } = default!;
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -28,6 +29,20 @@ namespace DriverRewards.Pages.Admin
             {
                 return Page();
             }
+
+            var normalizedName = Sponsor.Name.Trim().ToLower();
+
+            var nameExists = await _context.Sponsors
+                .AnyAsync(s => s.Name.ToLower() == normalizedName);
+
+            if (nameExists)
+            {
+                ModelState.AddModelError("Sponsor.Name", "A sponsor with this name already exists.");
+                return Page();
+            }
+
+            Sponsor.Name = Sponsor.Name.Trim();
+            Sponsor.Email = Sponsor.Email.Trim();
 
             _context.Sponsors.Add(Sponsor);
             await _context.SaveChangesAsync();
