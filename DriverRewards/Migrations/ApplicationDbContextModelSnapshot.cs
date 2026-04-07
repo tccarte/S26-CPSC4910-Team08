@@ -59,7 +59,7 @@ namespace DriverRewards.Migrations
 
                     b.HasKey("AdminId");
 
-                    b.ToTable("team08_admins");
+                    b.ToTable("team08_admins", (string)null);
                 });
 
             modelBuilder.Entity("DriverRewards.Models.Behavior", b =>
@@ -92,7 +92,7 @@ namespace DriverRewards.Migrations
 
                     b.HasKey("BehaviorId");
 
-                    b.ToTable("team08_behaviors");
+                    b.ToTable("team08_behaviors", (string)null);
                 });
 
             modelBuilder.Entity("DriverRewards.Models.Driver", b =>
@@ -199,7 +199,7 @@ namespace DriverRewards.Migrations
 
                     b.HasKey("DriverId");
 
-                    b.ToTable("team08_drivers");
+                    b.ToTable("team08_drivers", (string)null);
                 });
 
             modelBuilder.Entity("DriverRewards.Models.Order", b =>
@@ -296,7 +296,7 @@ namespace DriverRewards.Migrations
 
                     b.HasIndex("DriverId");
 
-                    b.ToTable("team08_orders");
+                    b.ToTable("team08_orders", (string)null);
                 });
 
             modelBuilder.Entity("DriverRewards.Models.OrderItem", b =>
@@ -340,7 +340,7 @@ namespace DriverRewards.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("team08_order_items");
+                    b.ToTable("team08_order_items", (string)null);
                 });
 
             modelBuilder.Entity("DriverRewards.Models.Sponsor", b =>
@@ -403,7 +403,7 @@ namespace DriverRewards.Migrations
 
                     b.HasKey("SponsorId");
 
-                    b.ToTable("team08_sponsors");
+                    b.ToTable("team08_sponsors", (string)null);
                 });
 
             modelBuilder.Entity("DriverRewards.Models.SponsorCatalogProduct", b =>
@@ -432,7 +432,7 @@ namespace DriverRewards.Migrations
                     b.HasIndex("SponsorId", "ProductId")
                         .IsUnique();
 
-                    b.ToTable("team08_sponsor_catalog_products");
+                    b.ToTable("team08_sponsor_catalog_products", (string)null);
                 });
 
             modelBuilder.Entity("DriverRewards.Models.SponsorChangeRequest", b =>
@@ -477,7 +477,7 @@ namespace DriverRewards.Migrations
 
                     b.HasKey("RequestId");
 
-                    b.ToTable("team08_sponsor_change_requests");
+                    b.ToTable("team08_sponsor_change_requests", (string)null);
                 });
 
             modelBuilder.Entity("DriverRewards.Models.Order", b =>
