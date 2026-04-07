@@ -100,6 +100,14 @@ public class SignUpModel : PageModel
             return Page();
         }
 
+        var sponsorExists = await _context.Sponsors.AsNoTracking()
+            .AnyAsync(s => s.Name == Sponsor.Trim() && s.IsApproved);
+        if (!sponsorExists)
+        {
+            ModelState.AddModelError("Sponsor", "No approved sponsor found with that name");
+            return Page();
+        }
+
         var passwordHash = BCrypt.Net.BCrypt.HashPassword(Password);
 
         var driver = new DriverEntity
