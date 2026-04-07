@@ -15,6 +15,7 @@
             <div class="card-body">
                 <form method="post">
                     <input type="hidden" asp-for="SponsorId" />
+
                     <div class="mb-3">
                         <label class="form-label" asp-for="Name"></label>
                         <input class="form-control" asp-for="Name" />
@@ -52,9 +53,14 @@
                         <span class="text-danger small" asp-validation-for="DollarToPointRatio"></span>
                     </div>
 
-                    <div class="form-check mb-4">
+                    <div class="form-check mb-2">
                         <input class="form-check-input" asp-for="IsApproved" />
                         <label class="form-check-label" asp-for="IsApproved"></label>
+                    </div>
+
+                    <div class="form-check mb-4">
+                        <input class="form-check-input" asp-for="IsDisabled" />
+                        <label class="form-check-label" asp-for="IsDisabled"></label>
                     </div>
 
                     <button type="submit" class="btn btn-primary">Save Changes</button>
