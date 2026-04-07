@@ -2,6 +2,12 @@ using System.Text.Json.Serialization;
 
 namespace DriverRewards.Models
 {
+
+    public class DummyJsonResponse
+    {
+        [JsonPropertyName("products")]
+        public List<Product> Products { get; set; } = new List<Product>();
+    }
     public class Product
     {
         [JsonPropertyName("id")]
@@ -16,14 +22,14 @@ namespace DriverRewards.Models
         [JsonPropertyName("price")]
         public decimal PriceInPoints { get; set; } 
 
-        [JsonPropertyName("image")]
+        [JsonPropertyName("thumbnail")]
         public string ImageUrl { get; set; } = string.Empty;
 
         [JsonPropertyName("category")]
         public string Category { get; set; } = string.Empty;
 
         [JsonPropertyName("rating")]
-        public ProductRating? Rating { get; set; }
+        public decimal Rating { get; set; }
     }
 
     public class ProductRating

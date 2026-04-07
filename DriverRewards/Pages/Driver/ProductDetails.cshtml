@@ -34,13 +34,9 @@ else
                     <p class="text-uppercase text-muted small mb-2">@Model.Product.Category</p>
                     <h1 class="h3 mb-3">@Model.Product.Name</h1>
 
-                    @if (Model.Product.Rating != null)
-                    {
-                        <p class="mb-2">
-                            <strong>Rating:</strong> @Model.Product.Rating.Rate / 5
-                            <span class="text-muted">(@Model.Product.Rating.Count reviews)</span>
-                        </p>
-                    }
+                    <p class="mb-2">
+                        <strong>Rating:</strong> @Model.Product.Rating / 5
+                    </p>
 
                     <p class="fs-4 fw-bold mb-3">@Model.Product.PriceInPoints points</p>
 

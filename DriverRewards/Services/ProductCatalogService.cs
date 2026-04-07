@@ -16,20 +16,23 @@ public class ProductCatalogService
     {
         try
         {
-            var response = await _httpClient.GetAsync("https://fakestoreapi.com/products");
+            var response = await _httpClient.GetAsync("https://dummyjson.com/products?limit=100");
             if (!response.IsSuccessStatusCode)
             {
                 return new List<Product>();
             }
 
-            var jsonString = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<List<Product>>(jsonString, new JsonSerializerOptions
+        var jsonString = await response.Content.ReadAsStringAsync();        
+        var result = JsonSerializer.Deserialize<DummyJsonResponse>(jsonString, new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
-            }) ?? new List<Product>();
+            });
+
+            return result?.Products ?? new List<Product>();
         }
-        catch
+        catch (Exception ex)
         {
+            Console.WriteLine($"API Error: {ex.Message}");
             return new List<Product>();
         }
     }
@@ -38,7 +41,7 @@ public class ProductCatalogService
     {
         try
         {
-            var response = await _httpClient.GetAsync($"https://fakestoreapi.com/products/{id}");
+            var response = await _httpClient.GetAsync($"https://dummyjson.com/products/{id}");
             if (!response.IsSuccessStatusCode)
             {
                 return null;
