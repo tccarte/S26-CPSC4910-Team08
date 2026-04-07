@@ -152,39 +152,39 @@ using (var scope = app.Services.CreateScope())
             INDEX IX_team08_user_sessions_role_user_active (role, user_id, is_revoked, expires_at_utc)
         ) CHARACTER SET utf8mb4;
         """);
-    var ensureColumnStatements = new[]
+    var ensureColumns = new (string TableName, string ColumnName, string ColumnDefinition)[]
     {
-        "ALTER TABLE team08_admins ADD COLUMN last_login_ip varchar(45) NULL;",
-        "ALTER TABLE team08_admins ADD COLUMN last_failed_login_ip varchar(45) NULL;",
-        "ALTER TABLE team08_admins ADD COLUMN failed_login_attempts int NOT NULL DEFAULT 0;",
-        "ALTER TABLE team08_admins ADD COLUMN lockout_end_utc datetime(6) NULL;",
-        "ALTER TABLE team08_admins ADD COLUMN must_reset_password tinyint(1) NOT NULL DEFAULT 0;",
-        "ALTER TABLE team08_admins ADD COLUMN is_suspended tinyint(1) NOT NULL DEFAULT 0;",
-        "ALTER TABLE team08_admins ADD COLUMN suspended_at_utc datetime(6) NULL;",
-        "ALTER TABLE team08_admins ADD COLUMN suspension_reason varchar(255) NULL;",
+        ("team08_admins", "last_login_ip", "last_login_ip varchar(45) NULL"),
+        ("team08_admins", "last_failed_login_ip", "last_failed_login_ip varchar(45) NULL"),
+        ("team08_admins", "failed_login_attempts", "failed_login_attempts int NOT NULL DEFAULT 0"),
+        ("team08_admins", "lockout_end_utc", "lockout_end_utc datetime(6) NULL"),
+        ("team08_admins", "must_reset_password", "must_reset_password tinyint(1) NOT NULL DEFAULT 0"),
+        ("team08_admins", "is_suspended", "is_suspended tinyint(1) NOT NULL DEFAULT 0"),
+        ("team08_admins", "suspended_at_utc", "suspended_at_utc datetime(6) NULL"),
+        ("team08_admins", "suspension_reason", "suspension_reason varchar(255) NULL"),
 
-        "ALTER TABLE team08_drivers ADD COLUMN last_login_ip varchar(45) NULL;",
-        "ALTER TABLE team08_drivers ADD COLUMN last_failed_login_ip varchar(45) NULL;",
-        "ALTER TABLE team08_drivers ADD COLUMN failed_login_attempts int NOT NULL DEFAULT 0;",
-        "ALTER TABLE team08_drivers ADD COLUMN lockout_end_utc datetime(6) NULL;",
-        "ALTER TABLE team08_drivers ADD COLUMN must_reset_password tinyint(1) NOT NULL DEFAULT 0;",
-        "ALTER TABLE team08_drivers ADD COLUMN is_suspended tinyint(1) NOT NULL DEFAULT 0;",
-        "ALTER TABLE team08_drivers ADD COLUMN suspended_at_utc datetime(6) NULL;",
-        "ALTER TABLE team08_drivers ADD COLUMN suspension_reason varchar(255) NULL;",
+        ("team08_drivers", "last_login_ip", "last_login_ip varchar(45) NULL"),
+        ("team08_drivers", "last_failed_login_ip", "last_failed_login_ip varchar(45) NULL"),
+        ("team08_drivers", "failed_login_attempts", "failed_login_attempts int NOT NULL DEFAULT 0"),
+        ("team08_drivers", "lockout_end_utc", "lockout_end_utc datetime(6) NULL"),
+        ("team08_drivers", "must_reset_password", "must_reset_password tinyint(1) NOT NULL DEFAULT 0"),
+        ("team08_drivers", "is_suspended", "is_suspended tinyint(1) NOT NULL DEFAULT 0"),
+        ("team08_drivers", "suspended_at_utc", "suspended_at_utc datetime(6) NULL"),
+        ("team08_drivers", "suspension_reason", "suspension_reason varchar(255) NULL"),
 
-        "ALTER TABLE team08_sponsors ADD COLUMN last_login_ip varchar(45) NULL;",
-        "ALTER TABLE team08_sponsors ADD COLUMN last_failed_login_ip varchar(45) NULL;",
-        "ALTER TABLE team08_sponsors ADD COLUMN failed_login_attempts int NOT NULL DEFAULT 0;",
-        "ALTER TABLE team08_sponsors ADD COLUMN lockout_end_utc datetime(6) NULL;",
-        "ALTER TABLE team08_sponsors ADD COLUMN must_reset_password tinyint(1) NOT NULL DEFAULT 0;",
-        "ALTER TABLE team08_sponsors ADD COLUMN is_suspended tinyint(1) NOT NULL DEFAULT 0;",
-        "ALTER TABLE team08_sponsors ADD COLUMN suspended_at_utc datetime(6) NULL;",
-        "ALTER TABLE team08_sponsors ADD COLUMN suspension_reason varchar(255) NULL;"
+        ("team08_sponsors", "last_login_ip", "last_login_ip varchar(45) NULL"),
+        ("team08_sponsors", "last_failed_login_ip", "last_failed_login_ip varchar(45) NULL"),
+        ("team08_sponsors", "failed_login_attempts", "failed_login_attempts int NOT NULL DEFAULT 0"),
+        ("team08_sponsors", "lockout_end_utc", "lockout_end_utc datetime(6) NULL"),
+        ("team08_sponsors", "must_reset_password", "must_reset_password tinyint(1) NOT NULL DEFAULT 0"),
+        ("team08_sponsors", "is_suspended", "is_suspended tinyint(1) NOT NULL DEFAULT 0"),
+        ("team08_sponsors", "suspended_at_utc", "suspended_at_utc datetime(6) NULL"),
+        ("team08_sponsors", "suspension_reason", "suspension_reason varchar(255) NULL")
     };
 
-    foreach (var statement in ensureColumnStatements)
+    foreach (var column in ensureColumns)
     {
-        await EnsureColumnAsync(dbContext, statement);
+        await EnsureColumnAsync(dbContext, column.TableName, column.ColumnName, column.ColumnDefinition);
     }
     var hasAnyAdmin = await dbContext.Admins.AnyAsync();
 
@@ -284,14 +284,35 @@ static bool TryParseRoleAndUserId(ClaimsPrincipal user, out string role, out int
     return !string.IsNullOrWhiteSpace(role);
 }
 
-static async Task EnsureColumnAsync(ApplicationDbContext dbContext, string alterStatement)
+static async Task EnsureColumnAsync(
+    ApplicationDbContext dbContext,
+    string tableName,
+    string columnName,
+    string columnDefinition)
 {
-    try
+    var connection = (MySqlConnection)dbContext.Database.GetDbConnection();
+    if (connection.State != System.Data.ConnectionState.Open)
     {
-        await dbContext.Database.ExecuteSqlRawAsync(alterStatement);
+        await connection.OpenAsync();
     }
-    catch (MySqlException ex) when (ex.Number == 1060)
+
+    await using var existsCommand = connection.CreateCommand();
+    existsCommand.CommandText = """
+        SELECT COUNT(*)
+        FROM INFORMATION_SCHEMA.COLUMNS
+        WHERE TABLE_SCHEMA = DATABASE()
+          AND TABLE_NAME = @tableName
+          AND COLUMN_NAME = @columnName;
+        """;
+    existsCommand.Parameters.AddWithValue("@tableName", tableName);
+    existsCommand.Parameters.AddWithValue("@columnName", columnName);
+    var exists = Convert.ToInt32(await existsCommand.ExecuteScalarAsync()) > 0;
+    if (exists)
     {
-        // Duplicate column name; safe to ignore for idempotent startup schema patching.
+        return;
     }
+
+    await using var alterCommand = connection.CreateCommand();
+    alterCommand.CommandText = $"ALTER TABLE {tableName} ADD COLUMN {columnDefinition};";
+    await alterCommand.ExecuteNonQueryAsync();
 }

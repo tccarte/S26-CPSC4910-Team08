@@ -8,23 +8,35 @@ using Microsoft.EntityFrameworkCore;
 namespace DriverRewards.Pages.Admin;
 
 [Authorize(Roles = "Admin")]
-public class EditSponsorModel : PageModel
+public class EditDriverModel : PageModel
 {
     private readonly ApplicationDbContext _context;
 
-    public EditSponsorModel(ApplicationDbContext context)
+    public EditDriverModel(ApplicationDbContext context)
     {
         _context = context;
     }
 
     [BindProperty]
-    public int SponsorId { get; set; }
+    public int DriverId { get; set; }
 
     [BindProperty]
     [Required]
     [StringLength(50)]
-    [Display(Name = "Company Name")]
-    public string Name { get; set; } = string.Empty;
+    [Display(Name = "First Name")]
+    public string FirstName { get; set; } = string.Empty;
+
+    [BindProperty]
+    [Required]
+    [StringLength(50)]
+    [Display(Name = "Last Name")]
+    public string LastName { get; set; } = string.Empty;
+
+    [BindProperty]
+    [Required]
+    [StringLength(50)]
+    [Display(Name = "Username")]
+    public string Username { get; set; } = string.Empty;
 
     [BindProperty]
     [Required]
@@ -34,54 +46,45 @@ public class EditSponsorModel : PageModel
     public string Email { get; set; } = string.Empty;
 
     [BindProperty]
+    [Required]
+    [StringLength(50)]
+    [Display(Name = "Sponsor")]
+    public string Sponsor { get; set; } = string.Empty;
+
+    [BindProperty]
     [Phone]
     [StringLength(20)]
     [Display(Name = "Phone")]
     public string? Phone { get; set; }
 
     [BindProperty]
-    [Phone]
-    [StringLength(20)]
-    [Display(Name = "Support Phone")]
-    public string? SupportPhone { get; set; }
+    [StringLength(50)]
+    [Display(Name = "FedEx ID")]
+    public string? FedexId { get; set; }
 
     [BindProperty]
-    [StringLength(255)]
-    [Display(Name = "Headquarters Address")]
-    public string? HeadquartersAddress { get; set; }
-
-    [BindProperty]
-    [Range(0.01, 100000)]
-    [Display(Name = "Dollar-to-Point Ratio")]
-    public decimal DollarToPointRatio { get; set; }
-
-    [BindProperty]
-    [Display(Name = "Approved")]
-    public bool IsApproved { get; set; }
-
-    [BindProperty]
-    [Display(Name = "Disabled")]
-    public bool IsDisabled { get; set; }
+    [Range(0, int.MaxValue)]
+    [Display(Name = "Points")]
+    public int Points { get; set; }
 
     public async Task<IActionResult> OnGetAsync(int id)
     {
-        var sponsor = await _context.Sponsors.AsNoTracking()
-            .FirstOrDefaultAsync(s => s.SponsorId == id);
-
-        if (sponsor == null)
+        var driver = await _context.Drivers.AsNoTracking()
+            .FirstOrDefaultAsync(d => d.DriverId == id);
+        if (driver == null)
         {
             return NotFound();
         }
 
-        SponsorId = sponsor.SponsorId;
-        Name = sponsor.Name;
-        Email = sponsor.Email;
-        Phone = sponsor.Phone;
-        SupportPhone = sponsor.SupportPhone;
-        HeadquartersAddress = sponsor.HeadquartersAddress;
-        DollarToPointRatio = sponsor.DollarToPointRatio;
-        IsApproved = sponsor.IsApproved;
-        IsDisabled = sponsor.IsDisabled;
+        DriverId = driver.DriverId;
+        FirstName = driver.FirstName;
+        LastName = driver.LastName;
+        Username = driver.Username;
+        Email = driver.Email;
+        Sponsor = driver.Sponsor;
+        Phone = driver.Phone;
+        FedexId = driver.FedexId;
+        Points = driver.NumPoints ?? 0;
 
         return Page();
     }
@@ -93,41 +96,36 @@ public class EditSponsorModel : PageModel
             return Page();
         }
 
-        var sponsor = await _context.Sponsors.FirstOrDefaultAsync(s => s.SponsorId == SponsorId);
-        if (sponsor == null)
+        var driver = await _context.Drivers.FirstOrDefaultAsync(d => d.DriverId == DriverId);
+        if (driver == null)
         {
             return NotFound();
         }
 
-        var normalizedName = Name.Trim().ToLower();
-        var normalizedEmail = Email.Trim().ToLower();
-
-        var nameTaken = await _context.Sponsors.AsNoTracking()
-            .AnyAsync(s => s.Name.ToLower() == normalizedName && s.SponsorId != SponsorId);
-
-        if (nameTaken)
+        var usernameTaken = await _context.Drivers.AsNoTracking()
+            .AnyAsync(d => d.Username == Username && d.DriverId != DriverId);
+        if (usernameTaken)
         {
-            ModelState.AddModelError("Name", "A sponsor with this name already exists.");
+            ModelState.AddModelError("Username", "Username is already taken.");
             return Page();
         }
 
-        var emailTaken = await _context.Sponsors.AsNoTracking()
-            .AnyAsync(s => s.Email.ToLower() == normalizedEmail && s.SponsorId != SponsorId);
-
+        var emailTaken = await _context.Drivers.AsNoTracking()
+            .AnyAsync(d => d.Email == Email && d.DriverId != DriverId);
         if (emailTaken)
         {
             ModelState.AddModelError("Email", "Email is already registered.");
             return Page();
         }
 
-        sponsor.Name = Name.Trim();
-        sponsor.Email = Email.Trim();
-        sponsor.Phone = string.IsNullOrWhiteSpace(Phone) ? null : Phone.Trim();
-        sponsor.SupportPhone = string.IsNullOrWhiteSpace(SupportPhone) ? null : SupportPhone.Trim();
-        sponsor.HeadquartersAddress = string.IsNullOrWhiteSpace(HeadquartersAddress) ? null : HeadquartersAddress.Trim();
-        sponsor.DollarToPointRatio = DollarToPointRatio;
-        sponsor.IsApproved = IsApproved;
-        sponsor.IsDisabled = IsDisabled;
+        driver.FirstName = FirstName.Trim();
+        driver.LastName = LastName.Trim();
+        driver.Username = Username.Trim();
+        driver.Email = Email.Trim();
+        driver.Sponsor = Sponsor.Trim();
+        driver.Phone = string.IsNullOrWhiteSpace(Phone) ? null : Phone.Trim();
+        driver.FedexId = string.IsNullOrWhiteSpace(FedexId) ? null : FedexId.Trim();
+        driver.NumPoints = Points;
 
         await _context.SaveChangesAsync();
         return RedirectToPage("/Admin/Dashboard");
