@@ -78,7 +78,8 @@ public class AuditModel : PageModel
                 (a.EntityId != null && a.EntityId.Contains(search)) ||
                 (a.ActorName != null && a.ActorName.Contains(search)) ||
                 (a.ActorId != null && a.ActorId.Contains(search)) ||
-                (a.Action != null && a.Action.Contains(search)));
+                (a.Action != null && a.Action.Contains(search)) ||
+                (a.IpAddress != null && a.IpAddress.Contains(search)));
         }
 
         AuditEntries = await query
@@ -97,6 +98,7 @@ public class AuditModel : PageModel
                     : $"{a.EntityType} {a.EntityId ?? string.Empty}".Trim(),
                 Description = a.Description ?? string.Empty,
                 RequestPath = a.RequestPath ?? string.Empty,
+                IpAddress = a.IpAddress ?? string.Empty,
                 ChangesJson = a.ChangesJson,
                 MetadataJson = a.MetadataJson
             })
@@ -112,6 +114,7 @@ public class AuditModel : PageModel
         public string Entity { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public string RequestPath { get; set; } = string.Empty;
+        public string IpAddress { get; set; } = string.Empty;
         public string? ChangesJson { get; set; }
         public string? MetadataJson { get; set; }
     }

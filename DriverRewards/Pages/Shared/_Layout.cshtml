@@ -173,6 +173,7 @@
                         <div class="dr-actions">
                             @if (User.Identity?.IsAuthenticated ?? false)
                             {
+                                <a class="dr-link dr-link-plain dr-nav-item" asp-area="" asp-page="/ChangePassword">Change Password</a>
                                 <form class="d-inline" method="post" asp-page="/Logout">
                                     <button type="submit" class="dr-link dr-link-plain dr-nav-item">Logout</button>
                                 </form>

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using DriverRewards.Services;
 
 namespace DriverRewards.Pages.Admin;
 
@@ -13,10 +14,12 @@ namespace DriverRewards.Pages.Admin;
 public class SettingsModel : PageModel
 {
     private readonly ApplicationDbContext _context;
+    private readonly SessionService _sessionService;
 
-    public SettingsModel(ApplicationDbContext context)
+    public SettingsModel(ApplicationDbContext context, SessionService sessionService)
     {
         _context = context;
+        _sessionService = sessionService;
     }
 
     public string DisplayName { get; set; } = string.Empty;
@@ -39,6 +42,7 @@ public class SettingsModel : PageModel
 
         _context.Admins.Remove(admin);
         await _context.SaveChangesAsync();
+        await _sessionService.RevokeAllSessionsAsync("Admin", admin.AdminId, "Admin account deleted.");
 
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         return RedirectToPage("/Index");

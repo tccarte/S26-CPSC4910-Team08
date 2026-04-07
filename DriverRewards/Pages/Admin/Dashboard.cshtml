@@ -41,6 +41,18 @@
                             <div class="fs-4 fw-bold text-danger">@Model.FailedAuditEntriesLast24Hours</div>
                         </div>
                     </div>
+                    <div class="col-md-6 col-xl-3">
+                        <div class="border rounded p-3 h-100">
+                            <div class="text-muted small">New-IP Logins (24h)</div>
+                            <div class="fs-4 fw-bold text-warning">@Model.NewIpEventsLast24Hours</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xl-3">
+                        <div class="border rounded p-3 h-100">
+                            <div class="text-muted small">Locked Accounts</div>
+                            <div class="fs-4 fw-bold">@Model.LockedAccountCount</div>
+                        </div>
+                    </div>
                 </div>
 
                 @if (Model.RecentAuditEntries.Count == 0)
@@ -58,6 +70,7 @@
                                     <th>Action</th>
                                     <th>Actor</th>
                                     <th>Description</th>
+                                    <th>IP</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -69,6 +82,7 @@
                                         <td>@audit.Action</td>
                                         <td>@audit.Actor</td>
                                         <td>@audit.Description</td>
+                                        <td>@audit.IpAddress</td>
                                     </tr>
                                 }
                             </tbody>
@@ -186,6 +200,11 @@
                                 <th>FedEx ID</th>
                                 <th>Created</th>
                                 <th>Last Login</th>
+                                <th>Last Login IP</th>
+                                <th>Last Failed IP</th>
+                                <th>Failed Attempts</th>
+                                <th>Lockout Ends</th>
+                                <th>Status</th>
                                 <th>Points</th>
                                 <th></th>
                             </tr>
@@ -200,6 +219,24 @@
                                     <td>@driver.FedexId</td>
                                     <td>@driver.CreatedAt</td>
                                     <td>@driver.LastLoginAt</td>
+                                    <td>@driver.LastLoginIp</td>
+                                    <td>@driver.LastFailedLoginIp</td>
+                                    <td>@driver.FailedLoginAttempts</td>
+                                    <td>@driver.LockoutEndAt</td>
+                                    <td>
+                                        @if (driver.IsSuspended)
+                                        {
+                                            <span class="badge bg-danger">Suspended</span>
+                                        }
+                                        else if (driver.MustResetPassword)
+                                        {
+                                            <span class="badge bg-warning text-dark">Reset Required</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-success">Active</span>
+                                        }
+                                    </td>
                                     <td>@driver.Points</td>
                                     <td class="text-end">
                                         <div class="d-flex justify-content-end align-items-center gap-2">
@@ -215,6 +252,35 @@
                                                 <ul class="dropdown-menu dropdown-menu-end">
                                                     <li>
                                                         <a class="dropdown-item" asp-page="/Admin/EditDriver" asp-route-id="@driver.DriverId">Edit account</a>
+                                                    </li>
+                                                    <li>
+                                                        <form method="post" asp-page-handler="ForceDriverReset">
+                                                            <input type="hidden" name="driverId" value="@driver.DriverId" />
+                                                            <button type="submit" class="dropdown-item">Require password reset</button>
+                                                        </form>
+                                                    </li>
+                                                    <li>
+                                                        <form method="post" asp-page-handler="RevokeSessions">
+                                                            <input type="hidden" name="role" value="Driver" />
+                                                            <input type="hidden" name="userId" value="@driver.DriverId" />
+                                                            <button type="submit" class="dropdown-item">Revoke active sessions</button>
+                                                        </form>
+                                                    </li>
+                                                    <li>
+                                                        @if (driver.IsSuspended)
+                                                        {
+                                                            <form method="post" asp-page-handler="UnsuspendDriver">
+                                                                <input type="hidden" name="driverId" value="@driver.DriverId" />
+                                                                <button type="submit" class="dropdown-item text-success">Unsuspend account</button>
+                                                            </form>
+                                                        }
+                                                        else
+                                                        {
+                                                            <form method="post" asp-page-handler="SuspendDriver">
+                                                                <input type="hidden" name="driverId" value="@driver.DriverId" />
+                                                                <button type="submit" class="dropdown-item text-warning">Suspend account</button>
+                                                            </form>
+                                                        }
                                                     </li>
                                                     <li>
                                                         <form method="post" asp-page-handler="RemoveDriver">
@@ -249,6 +315,11 @@
                                 <th>Dollar/Point</th>
                                 <th>Created</th>
                                 <th>Last Login</th>
+                                <th>Last Login IP</th>
+                                <th>Last Failed IP</th>
+                                <th>Failed Attempts</th>
+                                <th>Lockout Ends</th>
+                                <th>Status</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -262,6 +333,24 @@
                                     <td>@sponsor.DollarToPointRatio</td>
                                     <td>@sponsor.CreatedAt</td>
                                     <td>@sponsor.LastLoginAt</td>
+                                    <td>@sponsor.LastLoginIp</td>
+                                    <td>@sponsor.LastFailedLoginIp</td>
+                                    <td>@sponsor.FailedLoginAttempts</td>
+                                    <td>@sponsor.LockoutEndAt</td>
+                                    <td>
+                                        @if (sponsor.IsSuspended)
+                                        {
+                                            <span class="badge bg-danger">Suspended</span>
+                                        }
+                                        else if (sponsor.MustResetPassword)
+                                        {
+                                            <span class="badge bg-warning text-dark">Reset Required</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-success">Active</span>
+                                        }
+                                    </td>
                                     <td class="text-end">
                                         <div class="dropdown">
                                             <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -270,6 +359,35 @@
                                             <ul class="dropdown-menu dropdown-menu-end">
                                                 <li>
                                                     <a class="dropdown-item" asp-page="/Admin/EditSponsor" asp-route-id="@sponsor.SponsorId">Edit account</a>
+                                                </li>
+                                                <li>
+                                                    <form method="post" asp-page-handler="ForceSponsorReset">
+                                                        <input type="hidden" name="sponsorId" value="@sponsor.SponsorId" />
+                                                        <button type="submit" class="dropdown-item">Require password reset</button>
+                                                    </form>
+                                                </li>
+                                                <li>
+                                                    <form method="post" asp-page-handler="RevokeSessions">
+                                                        <input type="hidden" name="role" value="Sponsor" />
+                                                        <input type="hidden" name="userId" value="@sponsor.SponsorId" />
+                                                        <button type="submit" class="dropdown-item">Revoke active sessions</button>
+                                                    </form>
+                                                </li>
+                                                <li>
+                                                    @if (sponsor.IsSuspended)
+                                                    {
+                                                        <form method="post" asp-page-handler="UnsuspendSponsor">
+                                                            <input type="hidden" name="sponsorId" value="@sponsor.SponsorId" />
+                                                            <button type="submit" class="dropdown-item text-success">Unsuspend account</button>
+                                                        </form>
+                                                    }
+                                                    else
+                                                    {
+                                                        <form method="post" asp-page-handler="SuspendSponsor">
+                                                            <input type="hidden" name="sponsorId" value="@sponsor.SponsorId" />
+                                                            <button type="submit" class="dropdown-item text-warning">Suspend account</button>
+                                                        </form>
+                                                    }
                                                 </li>
                                                 <li>
                                                     <form method="post" asp-page-handler="RemoveSponsor">
@@ -285,6 +403,153 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h2 class="h5">Admin Accounts (@Model.Admins.Count)</h2>
+                <div class="table-responsive">
+                    <table class="table table-sm align-middle">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Created</th>
+                                <th>Last Login</th>
+                                <th>Last Login IP</th>
+                                <th>Last Failed IP</th>
+                                <th>Failed Attempts</th>
+                                <th>Lockout Ends</th>
+                                <th>Status</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var admin in Model.Admins)
+                            {
+                                <tr>
+                                    <td>@admin.DisplayName</td>
+                                    <td>@admin.Email</td>
+                                    <td>@admin.CreatedAt</td>
+                                    <td>@admin.LastLoginAt</td>
+                                    <td>@admin.LastLoginIp</td>
+                                    <td>@admin.LastFailedLoginIp</td>
+                                    <td>@admin.FailedLoginAttempts</td>
+                                    <td>@admin.LockoutEndAt</td>
+                                    <td>
+                                        @if (admin.IsSuspended)
+                                        {
+                                            <span class="badge bg-danger">Suspended</span>
+                                        }
+                                        else if (admin.MustResetPassword)
+                                        {
+                                            <span class="badge bg-warning text-dark">Reset Required</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-success">Active</span>
+                                        }
+                                    </td>
+                                    <td class="text-end">
+                                        @if (admin.IsCurrentAdmin)
+                                        {
+                                            <span class="text-muted small">Current account</span>
+                                        }
+                                        else
+                                        {
+                                            <div class="dropdown">
+                                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    &#x22EE;
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-end">
+                                                    <li>
+                                                        <form method="post" asp-page-handler="ForceAdminReset">
+                                                            <input type="hidden" name="adminId" value="@admin.AdminId" />
+                                                            <button type="submit" class="dropdown-item">Require password reset</button>
+                                                        </form>
+                                                    </li>
+                                                    <li>
+                                                        <form method="post" asp-page-handler="RevokeSessions">
+                                                            <input type="hidden" name="role" value="Admin" />
+                                                            <input type="hidden" name="userId" value="@admin.AdminId" />
+                                                            <button type="submit" class="dropdown-item">Revoke active sessions</button>
+                                                        </form>
+                                                    </li>
+                                                    <li>
+                                                        @if (admin.IsSuspended)
+                                                        {
+                                                            <form method="post" asp-page-handler="UnsuspendAdmin">
+                                                                <input type="hidden" name="adminId" value="@admin.AdminId" />
+                                                                <button type="submit" class="dropdown-item text-success">Unsuspend account</button>
+                                                            </form>
+                                                        }
+                                                        else
+                                                        {
+                                                            <form method="post" asp-page-handler="SuspendAdmin">
+                                                                <input type="hidden" name="adminId" value="@admin.AdminId" />
+                                                                <button type="submit" class="dropdown-item text-warning">Suspend account</button>
+                                                            </form>
+                                                        }
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2 class="h5 mb-0">Active Sessions</h2>
+                    <span class="text-muted small">Showing up to 100 currently active sessions</span>
+                </div>
+                @if (Model.ActiveSessions.Count == 0)
+                {
+                    <p class="text-muted mb-0 mt-3">No active sessions found.</p>
+                }
+                else
+                {
+                    <div class="table-responsive mt-3">
+                        <table class="table table-sm align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Role</th>
+                                    <th>User Id</th>
+                                    <th>IP</th>
+                                    <th>User Agent</th>
+                                    <th>Created</th>
+                                    <th>Last Seen</th>
+                                    <th>Expires</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var session in Model.ActiveSessions)
+                                {
+                                    <tr>
+                                        <td>@session.Role</td>
+                                        <td>@session.UserId</td>
+                                        <td>@session.IpAddress</td>
+                                        <td class="small">@session.UserAgent</td>
+                                        <td>@session.CreatedAt</td>
+                                        <td>@session.LastSeenAt</td>
+                                        <td>@session.ExpiresAt</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
             </div>
         </div>
     </div>

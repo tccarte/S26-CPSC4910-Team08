@@ -30,6 +30,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<SponsorCatalogProduct> SponsorCatalogProducts { get; set; }
     public DbSet<SponsorChangeRequest> SponsorChangeRequests { get; set; }
     public DbSet<DriverNotification> DriverNotifications { get; set; }
+    public DbSet<UserSession> UserSessions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -43,6 +44,13 @@ public class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<AuditLog>()
             .HasIndex(a => new { a.ActorType, a.OccurredAt });
+
+        modelBuilder.Entity<UserSession>()
+            .HasIndex(s => s.SessionId)
+            .IsUnique();
+
+        modelBuilder.Entity<UserSession>()
+            .HasIndex(s => new { s.Role, s.UserId, s.IsRevoked, s.ExpiresAtUtc });
 
         modelBuilder.Entity<SponsorCatalogProduct>()
             .HasIndex(scp => new { scp.SponsorId, scp.ProductId })

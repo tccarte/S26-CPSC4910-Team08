@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Authorization;
 using DriverRewards.Data;
 using Microsoft.EntityFrameworkCore;
 using SponsorEntity = DriverRewards.Models.Sponsor;
 
 namespace DriverRewards.Pages.Admin
 {
+    [Authorize(Roles = "Admin")]
     public class CreateSponsorModel : PageModel
     {
         private readonly ApplicationDbContext _context;
