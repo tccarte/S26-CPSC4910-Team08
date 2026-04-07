@@ -1,0 +1,65 @@
+@page
+@model DriverRewards.Pages.Admin.SchemaModel
+@{
+    ViewData["Title"] = "Database Schema";
+}
+
+<div class="mb-4">
+    <h1 class="h3 mb-1">Database Schema</h1>
+    <p class="text-muted mb-0">@Model.Tables.Count tables — derived from the EF Core model.</p>
+</div>
+
+<div class="row g-4">
+    @foreach (var table in Model.Tables)
+    {
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header d-flex align-items-center gap-2">
+                    <code class="fw-bold fs-6">@table.TableName</code>
+                    <span class="text-muted small">@table.Columns.Count column@(table.Columns.Count == 1 ? "" : "s")</span>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-sm align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Column</th>
+                                <th>Type</th>
+                                <th>Nullable</th>
+                                <th>Max Length</th>
+                                <th>Key</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var col in table.Columns)
+                            {
+                                <tr>
+                                    <td>
+                                        <code>@col.ColumnName</code>
+                                    </td>
+                                    <td class="text-muted small">@col.ClrType</td>
+                                    <td>
+                                        @if (col.IsNullable)
+                                        {
+                                            <span class="text-muted">yes</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="fw-semibold">no</span>
+                                        }
+                                    </td>
+                                    <td class="text-muted small">@(col.MaxLength?.ToString() ?? "—")</td>
+                                    <td>
+                                        @if (col.IsPrimaryKey)
+                                        {
+                                            <span class="badge text-bg-warning">PK</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+</div>
