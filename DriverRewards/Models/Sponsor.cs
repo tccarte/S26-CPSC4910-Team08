@@ -45,6 +45,9 @@ public class Sponsor
     [Column("is_approved")]
     public bool IsApproved { get; set; } = false;
 
+    [Column("is_disabled")]
+    public bool IsDisabled { get; set; } = false;
+
     [Column("created_at")]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
