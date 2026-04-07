@@ -63,6 +63,7 @@ public class EditSponsorModel : PageModel
     {
         var sponsor = await _context.Sponsors.AsNoTracking()
             .FirstOrDefaultAsync(s => s.SponsorId == id);
+
         if (sponsor == null)
         {
             return NotFound();
@@ -93,8 +94,21 @@ public class EditSponsorModel : PageModel
             return NotFound();
         }
 
+        var normalizedName = Name.Trim().ToLower();
+        var normalizedEmail = Email.Trim().ToLower();
+
+        var nameTaken = await _context.Sponsors.AsNoTracking()
+            .AnyAsync(s => s.Name.ToLower() == normalizedName && s.SponsorId != SponsorId);
+
+        if (nameTaken)
+        {
+            ModelState.AddModelError("Name", "A sponsor with this name already exists.");
+            return Page();
+        }
+
         var emailTaken = await _context.Sponsors.AsNoTracking()
-            .AnyAsync(s => s.Email == Email && s.SponsorId != SponsorId);
+            .AnyAsync(s => s.Email.ToLower() == normalizedEmail && s.SponsorId != SponsorId);
+
         if (emailTaken)
         {
             ModelState.AddModelError("Email", "Email is already registered.");
@@ -110,6 +124,7 @@ public class EditSponsorModel : PageModel
         sponsor.IsApproved = IsApproved;
 
         await _context.SaveChangesAsync();
+
         return RedirectToPage("/Admin/Dashboard");
     }
 }
