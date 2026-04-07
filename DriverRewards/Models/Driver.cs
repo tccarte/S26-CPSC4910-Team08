@@ -77,6 +77,9 @@ public class Driver
     [Column("shipping_country")]
     public string? ShippingCountry { get; set; }
 
+    [Column("is_approved")]
+    public bool IsApproved { get; set; } = true;
+
     [Column("created_at")]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 

@@ -90,6 +90,19 @@ public class LoginModel : PageModel
                 return Page();
             }
 
+            if (!driver.IsApproved)
+            {
+                await _auditService.LogEventAsync(
+                    category: "Authentication",
+                    action: "LoginBlocked",
+                    description: $"Unapproved driver login blocked for {driver.Username}.",
+                    entityType: "Driver",
+                    entityId: driver.DriverId.ToString(),
+                    metadata: new { driver.Email });
+                StatusMessage = "Your account is pending approval from your sponsor.";
+                return Page();
+            }
+
             driver.LastLoginAt = DateTime.UtcNow;
             await _context.SaveChangesAsync();
             await _auditService.LogEventAsync(

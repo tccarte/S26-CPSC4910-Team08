@@ -120,13 +120,14 @@ public class SignUpModel : PageModel
             Sponsor = Sponsor.Trim(),
             Phone = string.IsNullOrWhiteSpace(Phone) ? null : Phone.Trim(),
             CreatedAt = DateTime.UtcNow,
-            NumPoints = 0
+            NumPoints = 0,
+            IsApproved = false
         };
 
         _context.Drivers.Add(driver);
         await _context.SaveChangesAsync();
 
-        TempData["StatusMessage"] = "Driver account created successfully! Please log in.";
+        TempData["StatusMessage"] = "Account created! Your sponsor must approve your account before you can log in.";
         return RedirectToPage("/Login");
     }
 }

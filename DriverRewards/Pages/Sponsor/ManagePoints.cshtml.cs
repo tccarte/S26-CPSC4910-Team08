@@ -23,6 +23,7 @@ public class ManagePointsModel : PageModel
     }
 
     public List<DriverRow> Drivers { get; set; } = new();
+    public List<DriverRow> PendingDrivers { get; set; } = new();
     public string? StatusMessage { get; set; }
 
     [BindProperty]
@@ -41,7 +42,7 @@ public class ManagePointsModel : PageModel
             return Challenge();
 
         Drivers = await _context.Drivers.AsNoTracking()
-            .Where(d => d.Sponsor == sponsorName)
+            .Where(d => d.Sponsor == sponsorName && d.IsApproved)
             .OrderBy(d => d.Username)
             .Select(d => new DriverRow
             {
@@ -49,6 +50,18 @@ public class ManagePointsModel : PageModel
                 Username = d.Username,
                 Email = d.Email,
                 Points = d.NumPoints ?? 0
+            })
+            .ToListAsync();
+
+        PendingDrivers = await _context.Drivers.AsNoTracking()
+            .Where(d => d.Sponsor == sponsorName && !d.IsApproved)
+            .OrderBy(d => d.CreatedAt)
+            .Select(d => new DriverRow
+            {
+                DriverId = d.DriverId,
+                Username = d.Username,
+                Email = d.Email,
+                Points = 0
             })
             .ToListAsync();
 
@@ -99,6 +112,38 @@ public class ManagePointsModel : PageModel
 
         var action = PointChange >= 0 ? "Added" : "Subtracted";
         TempData["StatusMessage"] = $"{action} {Math.Abs(PointChange)} points for {driver.Username}. New total: {driver.NumPoints}.";
+        return RedirectToPage();
+    }
+
+    public async Task<IActionResult> OnPostApproveDriverAsync(int driverId)
+    {
+        var sponsorName = User.FindFirstValue(ClaimTypes.Name);
+        if (string.IsNullOrWhiteSpace(sponsorName)) return Challenge();
+
+        var driver = await _context.Drivers
+            .FirstOrDefaultAsync(d => d.DriverId == driverId && d.Sponsor == sponsorName && !d.IsApproved);
+        if (driver == null) return RedirectToPage();
+
+        driver.IsApproved = true;
+        await _context.SaveChangesAsync();
+
+        TempData["StatusMessage"] = $"{driver.Username}'s account has been approved.";
+        return RedirectToPage();
+    }
+
+    public async Task<IActionResult> OnPostRejectDriverAsync(int driverId)
+    {
+        var sponsorName = User.FindFirstValue(ClaimTypes.Name);
+        if (string.IsNullOrWhiteSpace(sponsorName)) return Challenge();
+
+        var driver = await _context.Drivers
+            .FirstOrDefaultAsync(d => d.DriverId == driverId && d.Sponsor == sponsorName && !d.IsApproved);
+        if (driver == null) return RedirectToPage();
+
+        _context.Drivers.Remove(driver);
+        await _context.SaveChangesAsync();
+
+        TempData["StatusMessage"] = $"{driver.Username}'s account has been rejected and removed.";
         return RedirectToPage();
     }
 
