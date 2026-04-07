@@ -177,6 +177,19 @@ public class LoginModel : PageModel
             return Page();
         }
 
+        if (sponsor.IsDisabled)
+        {
+            await _auditService.LogEventAsync(
+                category: "Authentication",
+                action: "LoginBlocked",
+                description: $"Disabled sponsor login blocked for {sponsor.Name}.",
+                entityType: "Sponsor",
+                entityId: sponsor.SponsorId.ToString(),
+                metadata: new { sponsor.Email, sponsor.IsDisabled });
+            StatusMessage = "Your sponsor organization has been disabled. Please contact an administrator.";
+            return Page();
+        }
+
         sponsor.LastLoginAt = DateTime.UtcNow;
         await _context.SaveChangesAsync();
         await _auditService.LogEventAsync(
@@ -215,6 +228,4 @@ public class LoginModel : PageModel
 
         _logger.LogInformation("{Role} signed in with email {Email}.", role, email);
     }
-
 }
-
