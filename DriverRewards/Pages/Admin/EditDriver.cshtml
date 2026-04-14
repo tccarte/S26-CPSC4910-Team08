@@ -42,7 +42,9 @@
 
                     <div class="mb-3">
                         <label class="form-label" asp-for="Sponsor"></label>
-                        <input class="form-control" asp-for="Sponsor" />
+                        <select class="form-select" asp-for="Sponsor" asp-items="Model.SponsorOptions">
+                            <option value="">Select a sponsor</option>
+                        </select>
                         <span class="text-danger small" asp-validation-for="Sponsor"></span>
                     </div>
 

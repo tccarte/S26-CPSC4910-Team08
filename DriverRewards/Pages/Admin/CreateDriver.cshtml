@@ -1,0 +1,103 @@
+@page
+@model DriverRewards.Pages.Admin.CreateDriverModel
+@{
+    ViewData["Title"] = "Create Driver Account";
+}
+
+<div class="row g-4">
+    <div class="col-12">
+        <h1 class="h3 mb-1">Create Driver Account</h1>
+        <p class="text-muted mb-0">Create a driver and assign them to an approved sponsor.</p>
+    </div>
+
+    <div class="col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form method="post">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" asp-for="Input.FirstName"></label>
+                            <input class="form-control" asp-for="Input.FirstName" />
+                            <span class="text-danger small" asp-validation-for="Input.FirstName"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" asp-for="Input.LastName"></label>
+                            <input class="form-control" asp-for="Input.LastName" />
+                            <span class="text-danger small" asp-validation-for="Input.LastName"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" asp-for="Input.Username"></label>
+                            <input class="form-control" asp-for="Input.Username" />
+                            <span class="text-danger small" asp-validation-for="Input.Username"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" asp-for="Input.Email"></label>
+                            <input class="form-control" asp-for="Input.Email" />
+                            <span class="text-danger small" asp-validation-for="Input.Email"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="Input.Sponsor"></label>
+                        <select class="form-select" asp-for="Input.Sponsor" asp-items="Model.SponsorOptions">
+                            <option value="">Select a sponsor</option>
+                        </select>
+                        <span class="text-danger small" asp-validation-for="Input.Sponsor"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" asp-for="Input.Phone"></label>
+                            <input class="form-control" asp-for="Input.Phone" />
+                            <span class="text-danger small" asp-validation-for="Input.Phone"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" asp-for="Input.FedexId"></label>
+                            <input class="form-control" asp-for="Input.FedexId" />
+                            <span class="text-danger small" asp-validation-for="Input.FedexId"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="Input.Points"></label>
+                        <input class="form-control" asp-for="Input.Points" />
+                        <span class="text-danger small" asp-validation-for="Input.Points"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" asp-for="Input.Password"></label>
+                            <input class="form-control" asp-for="Input.Password" />
+                            <span class="text-danger small" asp-validation-for="Input.Password"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" asp-for="Input.ConfirmPassword"></label>
+                            <input class="form-control" asp-for="Input.ConfirmPassword" />
+                            <span class="text-danger small" asp-validation-for="Input.ConfirmPassword"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" asp-for="Input.ApproveImmediately" />
+                        <label class="form-check-label" asp-for="Input.ApproveImmediately"></label>
+                    </div>
+
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" asp-for="Input.RequirePasswordReset" />
+                        <label class="form-check-label" asp-for="Input.RequirePasswordReset"></label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Create Driver Account</button>
+                    <a class="btn btn-outline-secondary ms-2" asp-page="/Admin/Dashboard">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,43 +1,79 @@
 @page
 @model DriverRewards.Pages.Admin.CreateSponsorModel
 @{
-    ViewData["Title"] = "Create Sponsor";
+    ViewData["Title"] = "Create Sponsor Account";
 }
 
-<h1>Create Sponsor</h1>
+<div class="row g-4">
+    <div class="col-12">
+        <h1 class="h3 mb-1">Create Sponsor Account</h1>
+        <p class="text-muted mb-0">Create an approved sponsor account directly from the admin area.</p>
+    </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div class="form-group mb-3">
-                <label asp-for="Sponsor.Name" class="control-label"></label>
-                <input asp-for="Sponsor.Name" class="form-control" />
-                <span asp-validation-for="Sponsor.Name" class="text-danger"></span>
-            </div>
+    <div class="col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form method="post">
+                    <div class="mb-3">
+                        <label asp-for="Sponsor.Name" class="form-label"></label>
+                        <input asp-for="Sponsor.Name" class="form-control" />
+                        <span asp-validation-for="Sponsor.Name" class="text-danger small"></span>
+                    </div>
 
-            <div class="form-group mb-3">
-                <label asp-for="Sponsor.Email" class="control-label"></label>
-                <input asp-for="Sponsor.Email" class="form-control" />
-                <span asp-validation-for="Sponsor.Email" class="text-danger"></span>
-            </div>
+                    <div class="mb-3">
+                        <label asp-for="Sponsor.Email" class="form-label"></label>
+                        <input asp-for="Sponsor.Email" class="form-control" />
+                        <span asp-validation-for="Sponsor.Email" class="text-danger small"></span>
+                    </div>
 
-            <div class="form-group mb-3">
-                <label asp-for="Sponsor.Phone" class="control-label"></label>
-                <input asp-for="Sponsor.Phone" class="form-control" />
-                <span asp-validation-for="Sponsor.Phone" class="text-danger"></span>
-            </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Sponsor.Phone" class="form-label"></label>
+                            <input asp-for="Sponsor.Phone" class="form-control" />
+                            <span asp-validation-for="Sponsor.Phone" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Sponsor.SupportPhone" class="form-label"></label>
+                            <input asp-for="Sponsor.SupportPhone" class="form-control" />
+                            <span asp-validation-for="Sponsor.SupportPhone" class="text-danger small"></span>
+                        </div>
+                    </div>
 
-            <div class="form-group mb-3">
-                <label class="control-label">Password</label>
-                <input asp-for="Sponsor.PasswordHash" type="password" class="form-control" />
-                <span asp-validation-for="Sponsor.PasswordHash" class="text-danger"></span>
-            </div>
+                    <div class="mb-3">
+                        <label asp-for="Sponsor.HeadquartersAddress" class="form-label"></label>
+                        <input asp-for="Sponsor.HeadquartersAddress" class="form-control" />
+                        <span asp-validation-for="Sponsor.HeadquartersAddress" class="text-danger small"></span>
+                    </div>
 
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-                <a asp-page="/Admin/Dashboard" class="btn btn-secondary">Back to Dashboard</a>
+                    <div class="mb-3">
+                        <label asp-for="Sponsor.DollarToPointRatio" class="form-label"></label>
+                        <input asp-for="Sponsor.DollarToPointRatio" class="form-control" step="0.01" />
+                        <span asp-validation-for="Sponsor.DollarToPointRatio" class="text-danger small"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Sponsor.Password" class="form-label"></label>
+                            <input asp-for="Sponsor.Password" class="form-control" />
+                            <span asp-validation-for="Sponsor.Password" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Sponsor.ConfirmPassword" class="form-label"></label>
+                            <input asp-for="Sponsor.ConfirmPassword" class="form-control" />
+                            <span asp-validation-for="Sponsor.ConfirmPassword" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-check mb-3">
+                        <input asp-for="Sponsor.RequirePasswordReset" class="form-check-input" />
+                        <label asp-for="Sponsor.RequirePasswordReset" class="form-check-label"></label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Create Sponsor Account</button>
+                    <a asp-page="/Admin/Dashboard" class="btn btn-outline-secondary ms-2">Cancel</a>
+                </form>
             </div>
-        </form>
+        </div>
     </div>
 </div>
 

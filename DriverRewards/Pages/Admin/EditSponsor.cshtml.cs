@@ -115,13 +115,45 @@ public class EditSponsorModel : PageModel
             return Page();
         }
 
-        sponsor.Name = Name.Trim();
+        var newName = Name.Trim();
+        var previousName = sponsor.Name;
+
+        sponsor.Name = newName;
         sponsor.Email = Email.Trim();
         sponsor.Phone = string.IsNullOrWhiteSpace(Phone) ? null : Phone.Trim();
         sponsor.SupportPhone = string.IsNullOrWhiteSpace(SupportPhone) ? null : SupportPhone.Trim();
         sponsor.HeadquartersAddress = string.IsNullOrWhiteSpace(HeadquartersAddress) ? null : HeadquartersAddress.Trim();
         sponsor.DollarToPointRatio = DollarToPointRatio;
         sponsor.IsApproved = IsApproved;
+
+        if (!string.Equals(previousName, newName, StringComparison.Ordinal))
+        {
+            var drivers = await _context.Drivers
+                .Where(d => d.Sponsor == previousName)
+                .ToListAsync();
+
+            foreach (var driver in drivers)
+            {
+                driver.Sponsor = newName;
+            }
+
+            var requests = await _context.SponsorChangeRequests
+                .Where(r => r.CurrentSponsor == previousName || r.RequestedSponsor == previousName)
+                .ToListAsync();
+
+            foreach (var request in requests)
+            {
+                if (request.CurrentSponsor == previousName)
+                {
+                    request.CurrentSponsor = newName;
+                }
+
+                if (request.RequestedSponsor == previousName)
+                {
+                    request.RequestedSponsor = newName;
+                }
+            }
+        }
 
         await _context.SaveChangesAsync();
 

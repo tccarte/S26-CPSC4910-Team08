@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DriverRewards.Pages.Admin;
 
@@ -16,6 +17,8 @@ public class EditDriverModel : PageModel
     {
         _context = context;
     }
+
+    public List<SelectListItem> SponsorOptions { get; private set; } = new();
 
     [BindProperty]
     public int DriverId { get; set; }
@@ -69,6 +72,8 @@ public class EditDriverModel : PageModel
 
     public async Task<IActionResult> OnGetAsync(int id)
     {
+        await LoadSponsorOptionsAsync();
+
         var driver = await _context.Drivers.AsNoTracking()
             .FirstOrDefaultAsync(d => d.DriverId == id);
         if (driver == null)
@@ -93,6 +98,7 @@ public class EditDriverModel : PageModel
     {
         if (!ModelState.IsValid)
         {
+            await LoadSponsorOptionsAsync();
             return Page();
         }
 
@@ -107,6 +113,7 @@ public class EditDriverModel : PageModel
         if (usernameTaken)
         {
             ModelState.AddModelError("Username", "Username is already taken.");
+            await LoadSponsorOptionsAsync();
             return Page();
         }
 
@@ -115,6 +122,17 @@ public class EditDriverModel : PageModel
         if (emailTaken)
         {
             ModelState.AddModelError("Email", "Email is already registered.");
+            await LoadSponsorOptionsAsync();
+            return Page();
+        }
+
+        var sponsorName = Sponsor.Trim();
+        var sponsorExists = await _context.Sponsors.AsNoTracking()
+            .AnyAsync(s => s.IsApproved && s.Name == sponsorName);
+        if (!sponsorExists)
+        {
+            ModelState.AddModelError("Sponsor", "Select an approved sponsor.");
+            await LoadSponsorOptionsAsync();
             return Page();
         }
 
@@ -122,12 +140,25 @@ public class EditDriverModel : PageModel
         driver.LastName = LastName.Trim();
         driver.Username = Username.Trim();
         driver.Email = Email.Trim();
-        driver.Sponsor = Sponsor.Trim();
+        driver.Sponsor = sponsorName;
         driver.Phone = string.IsNullOrWhiteSpace(Phone) ? null : Phone.Trim();
         driver.FedexId = string.IsNullOrWhiteSpace(FedexId) ? null : FedexId.Trim();
         driver.NumPoints = Points;
 
         await _context.SaveChangesAsync();
         return RedirectToPage("/Admin/Dashboard");
+    }
+
+    private async Task LoadSponsorOptionsAsync()
+    {
+        SponsorOptions = await _context.Sponsors.AsNoTracking()
+            .Where(s => s.IsApproved)
+            .OrderBy(s => s.Name)
+            .Select(s => new SelectListItem
+            {
+                Value = s.Name,
+                Text = s.Name
+            })
+            .ToListAsync();
     }
 }
