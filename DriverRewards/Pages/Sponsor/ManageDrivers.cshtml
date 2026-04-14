@@ -1,0 +1,129 @@
+@page
+@model DriverRewards.Pages.Sponsor.ManageDriversModel
+@{
+    ViewData["Title"] = "Manage Drivers";
+}
+
+<div class="row g-4">
+    <div class="col-12">
+        <h1 class="h3 mb-1">Manage Drivers</h1>
+        <p class="text-muted mb-0">Create and manage drivers in your organization.</p>
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+    {
+        <div class="col-12">
+            <div class="alert alert-info mb-0" role="alert">
+                @Model.StatusMessage
+            </div>
+        </div>
+    }
+
+    <div class="col-lg-5">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h2 class="h5 mb-3">Add Driver</h2>
+
+                <form method="post" asp-page-handler="Add">
+                    <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="Username"></label>
+                        <input class="form-control" asp-for="Username" />
+                        <span class="text-danger small" asp-validation-for="Username"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" asp-for="FirstName"></label>
+                            <input class="form-control" asp-for="FirstName" />
+                            <span class="text-danger small" asp-validation-for="FirstName"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" asp-for="LastName"></label>
+                            <input class="form-control" asp-for="LastName" />
+                            <span class="text-danger small" asp-validation-for="LastName"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="Email"></label>
+                        <input class="form-control" asp-for="Email" autocomplete="email" />
+                        <span class="text-danger small" asp-validation-for="Email"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="Password"></label>
+                        <input class="form-control" asp-for="Password" autocomplete="new-password" />
+                        <span class="text-danger small" asp-validation-for="Password"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" asp-for="Phone"></label>
+                            <input class="form-control" asp-for="Phone" />
+                            <span class="text-danger small" asp-validation-for="Phone"></span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Add Driver</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-7">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h2 class="h5 mb-3">Current Drivers</h2>
+
+                @if (Model.Drivers.Count == 0)
+                {
+                    <p class="text-muted mb-0">No drivers found for your organization.</p>
+                }
+                else
+                {
+                    <div class="table-responsive">
+                        <table class="table align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Points</th>
+                                    <th class="text-end">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var driver in Model.Drivers)
+                                {
+                                    <tr>
+                                        <td>@driver.FirstName @driver.LastName</td>
+                                        <td>@driver.Username</td>
+                                        <td>@driver.Email</td>
+                                        <td>@(string.IsNullOrWhiteSpace(driver.Phone) ? "-" : driver.Phone)</td>
+                                        <td>@(driver.NumPoints ?? 0)</td>
+                                        <td class="text-end">
+                                            <form method="post"
+                                                  asp-page-handler="Delete"
+                                                  asp-route-driverId="@driver.DriverId"
+                                                  class="d-inline"
+                                                  onsubmit="return confirm('Delete this driver?');">
+                                                <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
