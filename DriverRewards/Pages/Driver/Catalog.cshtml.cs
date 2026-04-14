@@ -32,6 +32,14 @@ namespace DriverRewards.Pages.Driver
         public string? SearchQuery { get; set; }
 
         [BindProperty(SupportsGet = true)]
+
+        public List<string> Categories { get; set; } = new();
+
+        [BindProperty(SupportsGet = true)]
+        public string? CategoryFilter { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string? SortOrder { get; set; }
         public int CurrentPage { get; set; } = 1;
 
         public bool HasPreviousPage => PageNumber > 1;
@@ -71,9 +79,16 @@ namespace DriverRewards.Pages.Driver
             }
 
             var allProducts = await _productCatalogService.GetAllProductsAsync();
+            var sponsorProducts = allProducts.Where(p => selectedProductIds.Contains(p.Id)).ToList();
+            
+            Categories = sponsorProducts
+                .Select(p => p.Category)
+                .Where(c => !string.IsNullOrWhiteSpace(c))
+                .Distinct()
+                .OrderBy(c => c)
+                .ToList();
 
-            var query = allProducts
-                .Where(p => selectedProductIds.Contains(p.Id));
+            var query = sponsorProducts.AsEnumerable();
 
             if (!string.IsNullOrWhiteSpace(SearchQuery))
             {
@@ -83,9 +98,20 @@ namespace DriverRewards.Pages.Driver
                     p.Category.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase));
             }
 
-            var filteredProducts = query
-                .OrderBy(p => p.Name)
-                .ToList();
+            if (!string.IsNullOrWhiteSpace(CategoryFilter))
+            {
+                query = query.Where(p => p.Category.Equals(CategoryFilter, StringComparison.OrdinalIgnoreCase));
+            }
+
+            query = SortOrder switch
+            {
+                "price_asc" => query.OrderBy(p => p.PriceInPoints),
+                "price_desc" => query.OrderByDescending(p => p.PriceInPoints),
+                "name_desc" => query.OrderByDescending(p => p.Name),
+                _ => query.OrderBy(p => p.Name), 
+            };
+
+            var filteredProducts = query.ToList();
 
             TotalProducts = filteredProducts.Count;
             TotalPages = TotalProducts == 0 ? 0 : (int)Math.Ceiling(TotalProducts / (double)PageSize);

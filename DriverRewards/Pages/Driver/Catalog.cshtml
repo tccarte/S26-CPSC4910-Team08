@@ -8,9 +8,33 @@
 
 <div class="container">
     <form method="get" class="mb-4">
-        <div class="input-group">
-            <input type="text" asp-for="SearchQuery" class="form-control" placeholder="Search products by name or description...">
-            <button type="submit" class="btn btn-primary">Search</button>
+        <div class="row g-2">
+            <div class="col-md-5">
+                <input type="text" asp-for="SearchQuery" class="form-control" placeholder="Search products by name or description...">
+            </div>
+            <div class="col-md-3">
+                <select asp-for="CategoryFilter" class="form-select">
+                    <option value="">All Categories</option>
+                    @if (Model.Categories != null)
+                    {
+                        foreach (var cat in Model.Categories)
+                        {
+                            <option value="@cat">@cat</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select asp-for="SortOrder" class="form-select">
+                    <option value="name_asc">Name (A - Z)</option>
+                    <option value="name_desc">Name (Z - A)</option>
+                    <option value="price_asc">Price (Low to High)</option>
+                    <option value="price_desc">Price (High to Low)</option>
+                </select>
+            </div>
+            <div class="col-md-1">
+                <button type="submit" class="btn btn-primary w-100">Apply</button>
+            </div>
         </div>
     </form>
     <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
@@ -70,7 +94,9 @@
                     <a class="page-link"
                        asp-page="/Driver/Catalog"
                        asp-route-CurrentPage="@(Model.PageNumber - 1)"
-                       asp-route-SearchQuery="@Model.SearchQuery">Previous</a>
+                       asp-route-SearchQuery="@Model.SearchQuery"
+                       asp-route-CategoryFilter="@Model.CategoryFilter" 
+                       asp-route-SortOrder="@Model.SortOrder">Previous</a>
                 </li>
 
                 @for (var pageIndex = 1; pageIndex <= Model.TotalPages; pageIndex++)
@@ -79,7 +105,9 @@
                         <a class="page-link"
                            asp-page="/Driver/Catalog"
                            asp-route-CurrentPage="@pageIndex"
-                           asp-route-SearchQuery="@Model.SearchQuery">@pageIndex</a>
+                           asp-route-SearchQuery="@Model.SearchQuery"
+                           asp-route-CategoryFilter="@Model.CategoryFilter" 
+                           asp-route-SortOrder="@Model.SortOrder">@pageIndex</a>
                     </li>
                 }
 
@@ -87,7 +115,9 @@
                     <a class="page-link"
                        asp-page="/Driver/Catalog"
                        asp-route-CurrentPage="@(Model.PageNumber + 1)"
-                       asp-route-SearchQuery="@Model.SearchQuery">Next</a>
+                       asp-route-SearchQuery="@Model.SearchQuery"
+                       asp-route-CategoryFilter="@Model.CategoryFilter" 
+                       asp-route-SortOrder="@Model.SortOrder">Next</a>
                 </li>
             </ul>
         </nav>
