@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace DriverRewards.Pages.Driver;
 
@@ -20,7 +21,7 @@ public class DashboardModel : PageModel
     public string DisplayName { get; private set; } = string.Empty;
     public string Username { get; private set; } = string.Empty;
     public string Email { get; private set; } = string.Empty;
-    public string Sponsor { get; private set; } = string.Empty;
+    public List<string> Sponsors { get; private set; } = new();
     public string? Phone { get; private set; }
     public string JoinedOn { get; private set; } = string.Empty;
     public string LastLoginAt { get; private set; } = string.Empty;
@@ -58,7 +59,11 @@ public class DashboardModel : PageModel
             : driver.FirstName;
         Username = driver.Username;
         Email = driver.Email;
-        Sponsor = driver.Sponsor;
+        Sponsors = await _context.DriverSponsors.AsNoTracking()
+            .Where(ds => ds.DriverId == driverId && ds.IsApproved)
+            .Select(ds => ds.SponsorName)
+            .OrderBy(n => n)
+            .ToListAsync();
         Phone = driver.Phone;
         JoinedOn = driver.CreatedAt.ToLocalTime().ToString("MM/dd/yyyy");
         LastLoginAt = driver.LastLoginAt == null

@@ -53,20 +53,36 @@ namespace DriverRewards.Pages.Driver
                 return Challenge();
             }
 
-            SponsorName = driver.Sponsor;
             PageNumber = CurrentPage < 1 ? 1 : CurrentPage;
 
-            var sponsor = await _context.Sponsors.AsNoTracking()
-                .FirstOrDefaultAsync(s => s.Name == driver.Sponsor);
+            var sponsorNames = await _context.DriverSponsors.AsNoTracking()
+                .Where(ds => ds.DriverId == driver.DriverId && ds.IsApproved)
+                .Select(ds => ds.SponsorName)
+                .ToListAsync();
 
-            if (sponsor is null)
+            SponsorName = sponsorNames.Count == 1
+                ? sponsorNames[0]
+                : sponsorNames.Count > 1 ? "Multiple Sponsors" : string.Empty;
+
+            if (sponsorNames.Count == 0)
+            {
+                Products = new List<Product>();
+                return Page();
+            }
+
+            var sponsorIds = await _context.Sponsors.AsNoTracking()
+                .Where(s => sponsorNames.Contains(s.Name))
+                .Select(s => s.SponsorId)
+                .ToListAsync();
+
+            if (sponsorIds.Count == 0)
             {
                 Products = new List<Product>();
                 return Page();
             }
 
             var selectedProductIds = await _context.SponsorCatalogProducts.AsNoTracking()
-                .Where(scp => scp.SponsorId == sponsor.SponsorId)
+                .Where(scp => sponsorIds.Contains(scp.SponsorId))
                 .Select(scp => scp.ProductId)
                 .ToHashSetAsync();
 

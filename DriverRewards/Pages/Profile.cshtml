@@ -97,7 +97,7 @@
         <div class="card shadow-sm">
             <div class="card-body">
                 <h2 class="h5">Sponsor Change Request</h2>
-                <p class="text-muted small">Current sponsor: <strong>@Model.CurrentSponsor</strong></p>
+                <p class="text-muted small">Current sponsor(s): <strong>@(Model.CurrentSponsors.Count > 0 ? string.Join(", ", Model.CurrentSponsors) : "None")</strong></p>
                 <form method="post" asp-page-handler="Sponsor">
                     <div class="mb-3">
                         <label class="form-label" asp-for="SponsorRequest.RequestedSponsor"></label>

@@ -480,6 +480,41 @@ namespace DriverRewards.Migrations
                     b.ToTable("team08_sponsor_change_requests", (string)null);
                 });
 
+            modelBuilder.Entity("DriverRewards.Models.DriverSponsor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("DriverId")
+                        .HasColumnType("int")
+                        .HasColumnName("driver_id");
+
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("is_approved");
+
+                    b.Property<DateTime>("JoinedAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("joined_at");
+
+                    b.Property<string>("SponsorName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("sponsor_name");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DriverId", "SponsorName")
+                        .IsUnique();
+
+                    b.ToTable("team08_driver_sponsors", (string)null);
+                });
+
             modelBuilder.Entity("DriverRewards.Models.Order", b =>
                 {
                     b.HasOne("DriverRewards.Models.Driver", "Driver")
@@ -500,6 +535,17 @@ namespace DriverRewards.Migrations
                         .IsRequired();
 
                     b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("DriverRewards.Models.DriverSponsor", b =>
+                {
+                    b.HasOne("DriverRewards.Models.Driver", "Driver")
+                        .WithMany()
+                        .HasForeignKey("DriverId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Driver");
                 });
 
             modelBuilder.Entity("DriverRewards.Models.SponsorCatalogProduct", b =>

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using DriverRewards.Data;
 using DriverEntity = DriverRewards.Models.Driver;
+using DriverRewards.Models;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 
@@ -125,6 +126,15 @@ public class SignUpModel : PageModel
         };
 
         _context.Drivers.Add(driver);
+        await _context.SaveChangesAsync();
+
+        _context.DriverSponsors.Add(new DriverSponsor
+        {
+            DriverId = driver.DriverId,
+            SponsorName = driver.Sponsor,
+            IsApproved = false,
+            JoinedAt = driver.CreatedAt
+        });
         await _context.SaveChangesAsync();
 
         TempData["StatusMessage"] = "Account created! Your sponsor must approve your account before you can log in.";

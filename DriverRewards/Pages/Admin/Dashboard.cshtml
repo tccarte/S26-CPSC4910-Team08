@@ -222,7 +222,7 @@
                                 <tr>
                                     <td>@driver.Username</td>
                                     <td>@driver.Email</td>
-                                    <td>@driver.Sponsor</td>
+                                    <td>@(driver.Sponsors.Count > 0 ? string.Join(", ", driver.Sponsors) : driver.Sponsor)</td>
                                     <td>@driver.FedexId</td>
                                     <td>@driver.CreatedAt</td>
                                     <td>@driver.LastLoginAt</td>

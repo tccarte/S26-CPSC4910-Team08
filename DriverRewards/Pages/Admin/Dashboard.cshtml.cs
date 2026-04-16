@@ -91,12 +91,19 @@ public class DashboardModel : PageModel
 
         var driverLookup = drivers.ToDictionary(d => d.DriverId, d => d);
 
+        var driverIds = drivers.Select(d => d.DriverId).ToList();
+        var sponsorsByDriver = await _context.DriverSponsors.AsNoTracking()
+            .Where(ds => driverIds.Contains(ds.DriverId) && ds.IsApproved)
+            .GroupBy(ds => ds.DriverId)
+            .ToDictionaryAsync(g => g.Key, g => g.Select(ds => ds.SponsorName).OrderBy(n => n).ToList());
+
         Drivers = drivers.Select(d => new DriverRow
         {
             DriverId = d.DriverId,
             Username = d.Username,
             Email = d.Email,
             Sponsor = d.Sponsor,
+            Sponsors = sponsorsByDriver.TryGetValue(d.DriverId, out var s) ? s : new List<string>(),
             FedexId = d.FedexId,
             CreatedAt = FormatDateTime(d.CreatedAt),
             LastLoginAt = FormatDateTime(d.LastLoginAt),
@@ -189,6 +196,7 @@ public class DashboardModel : PageModel
         public string Username { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string Sponsor { get; set; } = string.Empty;
+        public List<string> Sponsors { get; set; } = new();
         public string? FedexId { get; set; }
         public string CreatedAt { get; set; } = string.Empty;
         public string LastLoginAt { get; set; } = string.Empty;

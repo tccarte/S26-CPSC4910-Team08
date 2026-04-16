@@ -28,7 +28,7 @@ public class ProfileModel : PageModel
     [BindProperty]
     public SponsorRequestInput SponsorRequest { get; set; } = new();
 
-    public string CurrentSponsor { get; private set; } = string.Empty;
+    public List<string> CurrentSponsors { get; private set; } = new();
     public string? StatusMessage { get; private set; }
 
     public async Task<IActionResult> OnGetAsync()
@@ -49,7 +49,11 @@ public class ProfileModel : PageModel
         Profile.ShippingState = driver.ShippingState;
         Profile.ShippingPostalCode = driver.ShippingPostalCode;
         Profile.ShippingCountry = driver.ShippingCountry;
-        CurrentSponsor = driver.Sponsor;
+        CurrentSponsors = await _context.DriverSponsors.AsNoTracking()
+            .Where(ds => ds.DriverId == driver.DriverId && ds.IsApproved)
+            .Select(ds => ds.SponsorName)
+            .OrderBy(n => n)
+            .ToListAsync();
         return Page();
     }
 
@@ -61,7 +65,11 @@ public class ProfileModel : PageModel
             return NotFound();
         }
 
-        CurrentSponsor = driver.Sponsor;
+        CurrentSponsors = await _context.DriverSponsors.AsNoTracking()
+            .Where(ds => ds.DriverId == driver.DriverId && ds.IsApproved)
+            .Select(ds => ds.SponsorName)
+            .OrderBy(n => n)
+            .ToListAsync();
 
         if (!TryValidateModel(Profile, nameof(Profile)))
         {
@@ -119,7 +127,11 @@ public class ProfileModel : PageModel
         Profile.ShippingState = driver.ShippingState;
         Profile.ShippingPostalCode = driver.ShippingPostalCode;
         Profile.ShippingCountry = driver.ShippingCountry;
-        CurrentSponsor = driver.Sponsor;
+        CurrentSponsors = await _context.DriverSponsors.AsNoTracking()
+            .Where(ds => ds.DriverId == driver.DriverId && ds.IsApproved)
+            .Select(ds => ds.SponsorName)
+            .OrderBy(n => n)
+            .ToListAsync();
 
         if (!TryValidateModel(SponsorRequest, nameof(SponsorRequest)))
         {

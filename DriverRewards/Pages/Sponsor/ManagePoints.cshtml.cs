@@ -41,26 +41,26 @@ public class ManagePointsModel : PageModel
         if (string.IsNullOrWhiteSpace(sponsorName))
             return Challenge();
 
-        Drivers = await _context.Drivers.AsNoTracking()
-            .Where(d => d.Sponsor == sponsorName && d.IsApproved)
-            .OrderBy(d => d.Username)
-            .Select(d => new DriverRow
+        Drivers = await _context.DriverSponsors.AsNoTracking()
+            .Where(ds => ds.SponsorName == sponsorName && ds.IsApproved)
+            .OrderBy(ds => ds.Driver.Username)
+            .Select(ds => new DriverRow
             {
-                DriverId = d.DriverId,
-                Username = d.Username,
-                Email = d.Email,
-                Points = d.NumPoints ?? 0
+                DriverId = ds.Driver.DriverId,
+                Username = ds.Driver.Username,
+                Email = ds.Driver.Email,
+                Points = ds.Driver.NumPoints ?? 0
             })
             .ToListAsync();
 
-        PendingDrivers = await _context.Drivers.AsNoTracking()
-            .Where(d => d.Sponsor == sponsorName && !d.IsApproved)
-            .OrderBy(d => d.CreatedAt)
-            .Select(d => new DriverRow
+        PendingDrivers = await _context.DriverSponsors.AsNoTracking()
+            .Where(ds => ds.SponsorName == sponsorName && !ds.IsApproved)
+            .OrderBy(ds => ds.JoinedAt)
+            .Select(ds => new DriverRow
             {
-                DriverId = d.DriverId,
-                Username = d.Username,
-                Email = d.Email,
+                DriverId = ds.Driver.DriverId,
+                Username = ds.Driver.Username,
+                Email = ds.Driver.Email,
                 Points = 0
             })
             .ToListAsync();
@@ -77,15 +77,17 @@ public class ManagePointsModel : PageModel
         if (string.IsNullOrWhiteSpace(sponsorName))
             return Challenge();
 
-        var driver = await _context.Drivers
-            .FirstOrDefaultAsync(d => d.DriverId == DriverId && d.Sponsor == sponsorName);
+        var driverSponsor = await _context.DriverSponsors
+            .Include(ds => ds.Driver)
+            .FirstOrDefaultAsync(ds => ds.DriverId == DriverId && ds.SponsorName == sponsorName && ds.IsApproved);
 
-        if (driver == null)
+        if (driverSponsor == null)
         {
             TempData["StatusMessage"] = "Driver not found.";
             return RedirectToPage();
         }
 
+        var driver = driverSponsor.Driver;
         var previousPoints = driver.NumPoints ?? 0;
         driver.NumPoints = (driver.NumPoints ?? 0) + PointChange;
 
@@ -120,14 +122,20 @@ public class ManagePointsModel : PageModel
         var sponsorName = User.FindFirstValue(ClaimTypes.Name);
         if (string.IsNullOrWhiteSpace(sponsorName)) return Challenge();
 
-        var driver = await _context.Drivers
-            .FirstOrDefaultAsync(d => d.DriverId == driverId && d.Sponsor == sponsorName && !d.IsApproved);
-        if (driver == null) return RedirectToPage();
+        var driverSponsor = await _context.DriverSponsors
+            .Include(ds => ds.Driver)
+            .FirstOrDefaultAsync(ds => ds.DriverId == driverId && ds.SponsorName == sponsorName && !ds.IsApproved);
+        if (driverSponsor == null) return RedirectToPage();
 
-        driver.IsApproved = true;
+        driverSponsor.IsApproved = true;
+
+        // Activate the driver account if this is their first approval
+        if (!driverSponsor.Driver.IsApproved)
+            driverSponsor.Driver.IsApproved = true;
+
         await _context.SaveChangesAsync();
 
-        TempData["StatusMessage"] = $"{driver.Username}'s account has been approved.";
+        TempData["StatusMessage"] = $"{driverSponsor.Driver.Username}'s account has been approved.";
         return RedirectToPage();
     }
 
@@ -136,11 +144,20 @@ public class ManagePointsModel : PageModel
         var sponsorName = User.FindFirstValue(ClaimTypes.Name);
         if (string.IsNullOrWhiteSpace(sponsorName)) return Challenge();
 
-        var driver = await _context.Drivers
-            .FirstOrDefaultAsync(d => d.DriverId == driverId && d.Sponsor == sponsorName && !d.IsApproved);
-        if (driver == null) return RedirectToPage();
+        var driverSponsor = await _context.DriverSponsors
+            .Include(ds => ds.Driver)
+            .FirstOrDefaultAsync(ds => ds.DriverId == driverId && ds.SponsorName == sponsorName && !ds.IsApproved);
+        if (driverSponsor == null) return RedirectToPage();
 
-        _context.Drivers.Remove(driver);
+        var driver = driverSponsor.Driver;
+        _context.DriverSponsors.Remove(driverSponsor);
+
+        // Only remove the driver account entirely if they have no other sponsor relationships
+        var hasOtherSponsors = await _context.DriverSponsors
+            .AnyAsync(ds => ds.DriverId == driverId && ds.Id != driverSponsor.Id);
+        if (!hasOtherSponsors)
+            _context.Drivers.Remove(driver);
+
         await _context.SaveChangesAsync();
 
         TempData["StatusMessage"] = $"{driver.Username}'s account has been rejected and removed.";

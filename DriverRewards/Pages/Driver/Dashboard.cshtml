@@ -34,8 +34,8 @@
                         <div>@Model.Email</div>
                     </div>
                     <div class="col-sm-6 mb-3">
-                        <div class="text-muted small">Sponsor</div>
-                        <div>@Model.Sponsor</div>
+                        <div class="text-muted small">Sponsor(s)</div>
+                        <div>@(Model.Sponsors.Count > 0 ? string.Join(", ", Model.Sponsors) : "None")</div>
                     </div>
                     <div class="col-sm-6 mb-3">
                         <div class="text-muted small">Phone</div>

@@ -106,18 +106,24 @@ public class ProductDetailsModel : PageModel
             return false;
         }
 
-        var sponsorId = await _context.Sponsors.AsNoTracking()
-            .Where(s => s.Name == driver.Sponsor)
-            .Select(s => (int?)s.SponsorId)
-            .FirstOrDefaultAsync();
+        var sponsorNames = await _context.DriverSponsors.AsNoTracking()
+            .Where(ds => ds.DriverId == driver.DriverId && ds.IsApproved)
+            .Select(ds => ds.SponsorName)
+            .ToListAsync();
 
-        if (!sponsorId.HasValue)
-        {
+        if (sponsorNames.Count == 0)
             return false;
-        }
+
+        var sponsorIds = await _context.Sponsors.AsNoTracking()
+            .Where(s => sponsorNames.Contains(s.Name))
+            .Select(s => s.SponsorId)
+            .ToListAsync();
+
+        if (sponsorIds.Count == 0)
+            return false;
 
         return await _context.SponsorCatalogProducts.AsNoTracking()
-            .AnyAsync(scp => scp.SponsorId == sponsorId.Value && scp.ProductId == productId);
+            .AnyAsync(scp => sponsorIds.Contains(scp.SponsorId) && scp.ProductId == productId);
     }
 
     private async Task<Models.Driver?> LoadDriverAsync()
