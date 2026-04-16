@@ -92,10 +92,21 @@
                                             <span class="badge bg-primary">@driver.Points</span>
                                         </td>
                                         <td colspan="2">
-                                            <form method="post" class="d-flex align-items-center gap-2">
+                                            <form method="post" class="d-flex align-items-center gap-2 point-adjust-form">
                                                 <input type="hidden" name="DriverId" value="@driver.DriverId" />
-                                                <input type="number" name="PointChange" class="form-control form-control-sm" style="width: 100px;" placeholder="e.g. 10" required />
-                                                <button type="submit" class="btn btn-sm btn-success">Add</button>
+                                                <input type="hidden" name="Reason" class="reason-hidden-input" />
+                                                <input type="number"
+                                                       name="PointChange"
+                                                       class="form-control form-control-sm point-change-input"
+                                                       style="width: 100px;"
+                                                       placeholder="e.g. 10"
+                                                       required />
+                                                <button type="button"
+                                                        class="btn btn-sm btn-success open-adjust-modal"
+                                                        data-driver-id="@driver.DriverId"
+                                                        data-driver-name="@driver.Username">
+                                                    Adjust
+                                                </button>
                                             </form>
                                         </td>
                                     </tr>
@@ -108,3 +119,85 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="adjustPointsModal" tabindex="-1" aria-labelledby="adjustPointsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="adjustPointsModalLabel">Confirm Point Adjustment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="adjustPointsSummary" class="mb-3"></p>
+
+                <div class="mb-0">
+                    <label for="adjustReason" class="form-label">Reason (optional)</label>
+                    <textarea id="adjustReason" class="form-control" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="confirmAdjustButton" class="btn btn-primary">Confirm</button>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const modalElement = document.getElementById("adjustPointsModal");
+            const adjustModal = new bootstrap.Modal(modalElement);
+            const summaryElement = document.getElementById("adjustPointsSummary");
+            const reasonElement = document.getElementById("adjustReason");
+            const confirmButton = document.getElementById("confirmAdjustButton");
+
+            let activeForm = null;
+
+            document.querySelectorAll(".open-adjust-modal").forEach(button => {
+                button.addEventListener("click", function () {
+                    const form = this.closest("form");
+                    const pointInput = form.querySelector(".point-change-input");
+                    const rawValue = pointInput.value.trim();
+                    const pointValue = parseInt(rawValue, 10);
+                    const driverName = this.dataset.driverName;
+
+                    if (rawValue === "" || Number.isNaN(pointValue) || pointValue === 0) {
+                        alert("Enter a valid point adjustment. Zero is not allowed.");
+                        pointInput.focus();
+                        return;
+                    }
+
+                    const action = pointValue > 0 ? "add" : "subtract";
+                    const absolutePoints = Math.abs(pointValue);
+                    const pointWord = absolutePoints === 1 ? "point" : "points";
+
+                    summaryElement.textContent =
+                        `You are about to ${action} ${absolutePoints} ${pointWord} for ${driverName}.`;
+
+                    reasonElement.value = "";
+                    activeForm = form;
+                    adjustModal.show();
+                });
+            });
+
+            confirmButton.addEventListener("click", function () {
+                if (!activeForm) {
+                    return;
+                }
+
+                const hiddenReason = activeForm.querySelector(".reason-hidden-input");
+                hiddenReason.value = reasonElement.value;
+
+                activeForm.submit();
+            });
+
+            modalElement.addEventListener("hidden.bs.modal", function () {
+                activeForm = null;
+                reasonElement.value = "";
+            });
+        });
+    </script>
+}
