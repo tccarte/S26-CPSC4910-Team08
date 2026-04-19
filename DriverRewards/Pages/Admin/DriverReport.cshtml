@@ -1,0 +1,160 @@
+@page
+@model DriverRewards.Pages.Admin.DriverReportModel
+@{
+    ViewData["Title"] = "Driver Report";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-1">
+        <h2 class="mb-0">Driver Report</h2>
+    </div>
+    <p class="text-muted mb-4">
+        Use this page to review driver-related audit events within a selected date range and see which drivers had activity during that period.
+    </p>
+
+    @if (!string.IsNullOrWhiteSpace(Model.ValidationMessage))
+    {
+        <div class="alert alert-warning">
+            @Model.ValidationMessage
+        </div>
+    }
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header">
+            <strong>Filters</strong>
+        </div>
+        <div class="card-body">
+            <form method="get" class="row g-3">
+                <div class="col-md-4">
+                    <label asp-for="DriverId" class="form-label">Driver</label>
+                    <select asp-for="DriverId" class="form-select">
+                        <option value="">All Drivers</option>
+                        @foreach (var driver in Model.DriverOptions)
+                        {
+                            <option value="@driver.DriverId">@driver.Username</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label asp-for="StartDate" class="form-label">Start Date</label>
+                    <input asp-for="StartDate" class="form-control" type="date" max="@Model.MaxSelectableDate.ToString("yyyy-MM-dd")" />
+                </div>
+
+                <div class="col-md-3">
+                    <label asp-for="EndDate" class="form-label">End Date</label>
+                    <input asp-for="EndDate" class="form-control" type="date" max="@Model.MaxSelectableDate.ToString("yyyy-MM-dd")" />
+                </div>
+
+                <div class="col-md-2 d-flex align-items-end gap-2">
+                    <button type="submit" class="btn btn-primary w-100">Run Report</button>
+                </div>
+
+                <div class="col-12">
+                    <a asp-page="/Admin/DriverReport" class="btn btn-outline-secondary">Clear Filters</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <div class="text-muted small">Drivers in Report</div>
+                    <div class="fs-5 fw-semibold">@Model.TotalDrivers</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <div class="text-muted small">Total Points</div>
+                    <div class="fs-5 fw-semibold">@Model.TotalPoints</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <div class="text-muted small">Audit Events in Range</div>
+                    <div class="fs-5 fw-semibold">@Model.AuditEventCount</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <div class="text-muted small">Approved Drivers</div>
+                    <div class="fs-5 fw-semibold">@Model.ApprovedDrivers</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <div class="text-muted small">Suspended Drivers</div>
+                    <div class="fs-5 fw-semibold">@Model.SuspendedDrivers</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <strong>Report Results</strong>
+        </div>
+        <div class="card-body">
+            @if (!Model.ReportRows.Any())
+            {
+                <p class="mb-0 text-muted">No drivers matched the selected filters.</p>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-striped align-middle">
+                        <thead>
+                            <tr>
+                                <th>Driver</th>
+                                <th>Email</th>
+                                <th>Sponsor</th>
+                                <th>Points</th>
+                                <th>Approved</th>
+                                <th>Suspended</th>
+                                <th>Created</th>
+                                <th>Last Login</th>
+                                <th>Audit Events</th>
+                                <th>Latest Audit Action</th>
+                                <th>Latest Audit Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var row in Model.ReportRows)
+                            {
+                                <tr>
+                                    <td>@row.Username</td>
+                                    <td>@row.Email</td>
+                                    <td>@row.Sponsor</td>
+                                    <td>@row.Points</td>
+                                    <td>@(row.IsApproved ? "Yes" : "No")</td>
+                                    <td>@(row.IsSuspended ? "Yes" : "No")</td>
+                                    <td>@row.CreatedAt</td>
+                                    <td>@row.LastLoginAt</td>
+                                    <td>@row.AuditEventsInRange</td>
+                                    <td>@row.LatestAuditAction</td>
+                                    <td>@row.LatestAuditAt</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
