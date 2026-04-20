@@ -124,6 +124,8 @@ namespace DriverRewards.Pages.Driver
                 "price_asc" => query.OrderBy(p => p.PriceInPoints),
                 "price_desc" => query.OrderByDescending(p => p.PriceInPoints),
                 "name_desc" => query.OrderByDescending(p => p.Name),
+                "oldest" => query.OrderBy(p => p.Id),
+                "newest" => query.OrderByDescending(p => p.Id),
                 _ => query.OrderBy(p => p.Name), 
             };
 
