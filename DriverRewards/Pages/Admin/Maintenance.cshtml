@@ -1,0 +1,30 @@
+@page
+@model DriverRewards.Pages.Admin.MaintenanceModel
+
+<h2>Maintenance Mode</h2>
+
+@if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+{
+    <p>@Model.StatusMessage</p>
+}
+
+<p><strong>Active:</strong> @(Model.IsActive ? "Yes" : "No")</p>
+<p><strong>Ends:</strong> @Model.CurrentEndDisplay</p>
+
+<hr />
+
+<form method="post" asp-page-handler="Start">
+    <div>
+        <label asp-for="EndLocal">Maintenance End Time</label>
+        <input asp-for="EndLocal" type="datetime-local" value="@Model.DefaultEndLocalValue" />
+    </div>
+    <div>
+        <button type="submit">Start Maintenance</button>
+    </div>
+</form>
+
+<hr />
+
+<form method="post" asp-page-handler="Stop">
+    <button type="submit">End Maintenance Early</button>
+</form>
