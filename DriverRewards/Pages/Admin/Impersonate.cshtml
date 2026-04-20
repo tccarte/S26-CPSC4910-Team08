@@ -1,0 +1,48 @@
+@page
+@model DriverRewards.Pages.Admin.ImpersonateModel
+
+<h2>Impersonate User</h2>
+
+<form method="post" asp-page-handler="Stop">
+    <button type="submit">Return to Admin</button>
+</form>
+
+<hr />
+
+<h3>Drivers</h3>
+
+<table>
+@foreach (var d in Model.Drivers)
+{
+    <tr>
+        <td>@d.Username</td>
+        <td>@d.Email</td>
+        <td>
+            <form method="post" asp-page-handler="Driver">
+                <input type="hidden" name="driverId" value="@d.DriverId" />
+                <button type="submit">Impersonate</button>
+            </form>
+        </td>
+    </tr>
+}
+</table>
+
+<hr />
+
+<h3>Sponsors</h3>
+
+<table>
+@foreach (var s in Model.Sponsors)
+{
+    <tr>
+        <td>@s.Name</td>
+        <td>@s.Email</td>
+        <td>
+            <form method="post" asp-page-handler="Sponsor">
+                <input type="hidden" name="sponsorId" value="@s.SponsorId" />
+                <button type="submit">Impersonate</button>
+            </form>
+        </td>
+    </tr>
+}
+</table>
