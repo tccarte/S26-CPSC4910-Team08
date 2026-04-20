@@ -78,6 +78,13 @@ public class LoginModel : PageModel
             return Page();
         }
 
+        if (!string.Equals(normalizedRole, "Admin", StringComparison.OrdinalIgnoreCase)
+            && MaintenanceState.IsActive())
+        {
+            StatusMessage = "The site is currently under maintenance. Only admins may sign in.";
+            return Page();
+        }
+
         var email = Email.Trim();
         var password = Password;
         var loginIp = HttpContext.Connection.RemoteIpAddress?.ToString();
