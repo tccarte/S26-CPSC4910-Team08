@@ -1,0 +1,90 @@
+@page
+@model DriverRewards.Pages.Admin.SponsorReportModel
+
+<h2>Sponsor Report</h2>
+
+@if (!string.IsNullOrEmpty(Model.ValidationMessage))
+{
+    <div style="color:red;">
+        @Model.ValidationMessage
+    </div>
+}
+
+<form method="get">
+    <div>
+        <label>Sponsor:</label>
+        <select asp-for="SponsorId">
+            <option value="">All Sponsors</option>
+            @foreach (var s in Model.SponsorOptions)
+            {
+                <option value="@s.SponsorId">@s.Name</option>
+            }
+        </select>
+    </div>
+
+    <div>
+        <label>Start Date:</label>
+        <input asp-for="StartDate" type="date" max="@Model.MaxSelectableDate.ToString("yyyy-MM-dd")" />
+    </div>
+
+    <div>
+        <label>End Date:</label>
+        <input asp-for="EndDate" type="date" max="@Model.MaxSelectableDate.ToString("yyyy-MM-dd")" />
+    </div>
+
+    <div>
+        <button type="submit">Apply Filters</button>
+    </div>
+</form>
+
+<hr />
+
+<div>
+    <p><strong>Total Sponsors:</strong> @Model.TotalSponsors</p>
+    <p><strong>Approved:</strong> @Model.ApprovedSponsors</p>
+    <p><strong>Suspended:</strong> @Model.SuspendedSponsors</p>
+    <p><strong>Audit Events:</strong> @Model.AuditEventCount</p>
+</div>
+
+<hr />
+
+<table border="1" cellpadding="5" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Approved</th>
+            <th>Suspended</th>
+            <th>Created</th>
+            <th>Last Login</th>
+            <th>Audit Events</th>
+            <th>Latest Action</th>
+            <th>Latest Action Time</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.ReportRows.Any())
+        {
+            @foreach (var s in Model.ReportRows)
+            {
+                <tr>
+                    <td>@s.Name</td>
+                    <td>@s.Email</td>
+                    <td>@(s.IsApproved ? "Yes" : "No")</td>
+                    <td>@(s.IsSuspended ? "Yes" : "No")</td>
+                    <td>@s.CreatedAt</td>
+                    <td>@s.LastLoginAt</td>
+                    <td>@s.AuditEventsInRange</td>
+                    <td>@s.LatestAuditAction</td>
+                    <td>@s.LatestAuditAt</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="9">No results found.</td>
+            </tr>
+        }
+    </tbody>
+</table>
