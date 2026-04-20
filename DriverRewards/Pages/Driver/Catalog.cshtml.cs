@@ -95,8 +95,10 @@ namespace DriverRewards.Pages.Driver
             }
 
             var allProducts = await _productCatalogService.GetAllProductsAsync();
-            var sponsorProducts = allProducts.Where(p => selectedProductIds.Contains(p.Id)).ToList();
-            
+            var sponsorProducts = allProducts
+                .Where(p => selectedProductIds.Contains(p.Id) && p.Stock > 0)
+                .ToList();            
+                
             Categories = sponsorProducts
                 .Select(p => p.Category)
                 .Where(c => !string.IsNullOrWhiteSpace(c))

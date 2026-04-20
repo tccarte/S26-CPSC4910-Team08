@@ -30,6 +30,12 @@ namespace DriverRewards.Models
 
         [JsonPropertyName("rating")]
         public decimal Rating { get; set; }
+
+        [JsonPropertyName("stock")]
+        public int Stock { get; set; }
+
+        [JsonPropertyName("availabilityStatus")]
+        public string AvailabilityStatus { get; set; } = string.Empty;
     }
 
     public class ProductRating

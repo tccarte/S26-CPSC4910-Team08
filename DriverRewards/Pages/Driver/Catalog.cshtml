@@ -73,7 +73,16 @@
                             </p>
                             
                             <div class="mt-auto">
-                                <p class="card-text fs-5"><strong>@product.PriceInPoints</strong> points</p>
+                                <p class="card-text fs-5 mb-1"><strong>@product.PriceInPoints</strong> points</p>
+    
+                                @if (product.Stock < 10)
+                                {
+                                    <p class="text-danger small mb-2 fw-bold">⚠️ Only @product.Stock left in stock!</p>
+                                }
+                                else
+                                {
+                                    <p class="text-success small mb-2">● @product.AvailabilityStatus</p>
+    }
                                 <span class="btn btn-outline-primary btn-sm">View details</span>
                             </div>
                         </div>
