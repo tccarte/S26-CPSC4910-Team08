@@ -106,6 +106,7 @@ builder.Services.AddScoped<IAuditActorProvider, AuditActorProvider>();
 builder.Services.AddScoped<AuditService>();
 builder.Services.AddScoped<SessionService>();
 builder.Services.AddScoped<DriverRewards.Services.NotificationService>();
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -212,6 +213,7 @@ using (var scope = app.Services.CreateScope())
     {
         await EnsureColumnAsync(dbContext, column.TableName, column.ColumnName, column.ColumnDefinition);
     }
+
     var hasAnyAdmin = await dbContext.Admins.AnyAsync();
 
     if (!hasAnyAdmin)
@@ -232,7 +234,6 @@ using (var scope = app.Services.CreateScope())
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
     app.UseHttpsRedirection();
 }
@@ -242,6 +243,7 @@ app.UseSession();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.Use(async (context, next) =>
 {
     if (context.User.Identity?.IsAuthenticated == true
@@ -281,6 +283,41 @@ app.Use(async (context, next) =>
     }
 
     await next();
+});
+
+app.Use(async (context, next) =>
+{
+    if (!MaintenanceState.IsActive())
+    {
+        await next();
+        return;
+    }
+
+    var path = context.Request.Path.Value ?? "";
+
+    if (path.StartsWith("/Admin/Maintenance", StringComparison.OrdinalIgnoreCase) ||
+        path.StartsWith("/MaintenanceBlocked", StringComparison.OrdinalIgnoreCase) ||
+        path.StartsWith("/Login", StringComparison.OrdinalIgnoreCase) ||
+        path.StartsWith("/Logout", StringComparison.OrdinalIgnoreCase) ||
+        path.StartsWith("/css", StringComparison.OrdinalIgnoreCase) ||
+        path.StartsWith("/js", StringComparison.OrdinalIgnoreCase) ||
+        path.StartsWith("/lib", StringComparison.OrdinalIgnoreCase) ||
+        path.StartsWith("/favicon", StringComparison.OrdinalIgnoreCase))
+    {
+        await next();
+        return;
+    }
+
+    var role = context.User.FindFirst(ClaimTypes.Role)?.Value;
+    var isAdmin = string.Equals(role, "Admin", StringComparison.OrdinalIgnoreCase);
+
+    if (isAdmin)
+    {
+        await next();
+        return;
+    }
+
+    context.Response.Redirect("/MaintenanceBlocked");
 });
 
 app.MapStaticAssets();
