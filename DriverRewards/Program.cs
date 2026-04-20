@@ -152,6 +152,32 @@ using (var scope = app.Services.CreateScope())
             INDEX IX_team08_user_sessions_role_user_active (role, user_id, is_revoked, expires_at_utc)
         ) CHARACTER SET utf8mb4;
         """);
+    await dbContext.Database.ExecuteSqlRawAsync("""
+        CREATE TABLE IF NOT EXISTS team08_driver_sponsors (
+            id int NOT NULL AUTO_INCREMENT,
+            driver_id int NOT NULL,
+            sponsor_name varchar(50) NOT NULL,
+            is_approved tinyint(1) NOT NULL DEFAULT 0,
+            joined_at datetime(6) NOT NULL,
+            PRIMARY KEY (id),
+            UNIQUE KEY UX_team08_driver_sponsors_driver_sponsor (driver_id, sponsor_name),
+            CONSTRAINT FK_team08_driver_sponsors_driver_id
+                FOREIGN KEY (driver_id) REFERENCES team08_drivers (driver_id)
+                ON DELETE CASCADE
+        ) CHARACTER SET utf8mb4;
+        """);
+
+    await dbContext.Database.ExecuteSqlRawAsync("""
+        INSERT IGNORE INTO team08_driver_sponsors (driver_id, sponsor_name, is_approved, joined_at)
+        SELECT driver_id, sponsor, is_approved, created_at
+        FROM team08_drivers
+        WHERE sponsor IS NOT NULL AND sponsor != ''
+          AND NOT EXISTS (
+              SELECT 1 FROM team08_driver_sponsors ds
+              WHERE ds.driver_id = team08_drivers.driver_id
+          );
+        """);
+
     var ensureColumns = new (string TableName, string ColumnName, string ColumnDefinition)[]
     {
         ("team08_admins", "last_login_ip", "last_login_ip varchar(45) NULL"),
